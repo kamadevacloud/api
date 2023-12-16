@@ -55,7 +55,7 @@ function getOptionGroup($options, $currentValue)
             $content .= '<optgroup label="' . $optionKey . '">' . getOptionGroup($optionValue, $currentValue) . '</optgroup>';
         } else {
             $optionAttributes = array();
-            if ($currentValue == $optionKey) {
+            if ($currentValue == $optionKey) { // Keep weak
                 $optionAttributes['selected'] = 'selected';
             }
             $content .= getOptionHtml($optionKey, $optionValue, $optionAttributes);
@@ -100,7 +100,7 @@ function getCheckboxHtml($name, $currentValue, $attributes = array())
     );
 
     $finalAttributes = array_merge($defaultAttributes, $attributes);
-    if ($currentValue == $finalAttributes['value']) {
+    if ($currentValue == $finalAttributes['value']) { // Keep weak
         $finalAttributes['checked'] = 'checked';
     }
 

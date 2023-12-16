@@ -29,14 +29,14 @@ class BCGisbn extends BCGean13
     const GS1_PREFIX978 = 1;
     const GS1_PREFIX979 = 2;
 
-    private $gs1;
+    private int $gs1;
 
     /**
-     * Constructor.
+     * Creates a ISBN barcode.
      *
-     * @param int $gs1
+     * @param int $gs1 The GS1.
      */
-    public function __construct($gs1 = self::GS1_AUTO)
+    public function __construct(int $gs1 = self::GS1_AUTO)
     {
         parent::__construct();
         $this->setGS1($gs1);
@@ -44,8 +44,10 @@ class BCGisbn extends BCGean13
 
     /**
      * Adds the default label.
+     *
+     * @return void
      */
-    protected function addDefaultLabel()
+    protected function addDefaultLabel(): void
     {
         if ($this->isDefaultEanLabelEnabled()) {
             $isbn = $this->createISBNText();
@@ -65,9 +67,10 @@ class BCGisbn extends BCGean13
      *  - GS1_PREFIX978: Adds 978 before the code
      *  - GS1_PREFIX979: Adds 979 before the code
      *
-     * @param int $gs1
+     * @param int $gs1 The GS1.
+     * @return void
      */
-    public function setGS1($gs1)
+    public function setGS1(int $gs1): void
     {
         $gs1 = (int)$gs1;
         if ($gs1 !== self::GS1_AUTO && $gs1 !== self::GS1_PREFIX978 && $gs1 !== self::GS1_PREFIX979) {
@@ -79,8 +82,10 @@ class BCGisbn extends BCGean13
 
     /**
      * Check chars allowed.
+     *
+     * @return void
      */
-    protected function checkCharsAllowed()
+    protected function checkCharsAllowed(): void
     {
         $c = strlen($this->text);
 
@@ -94,13 +99,15 @@ class BCGisbn extends BCGean13
             $this->text = substr($this->text, 0, 9);
         }
 
-        return parent::checkCharsAllowed();
+        parent::checkCharsAllowed();
     }
 
     /**
      * Check correct length.
+     *
+     * @return void
      */
-    protected function checkCorrectLength()
+    protected function checkCorrectLength(): void
     {
         $c = strlen($this->text);
 
@@ -130,9 +137,9 @@ class BCGisbn extends BCGean13
     /**
      * Creates the ISBN text.
      *
-     * @return string
+     * @return string The ISBN text.
      */
-    private function createISBNText()
+    private function createISBNText(): string
     {
         $isbn = '';
         if (!empty($this->text)) {

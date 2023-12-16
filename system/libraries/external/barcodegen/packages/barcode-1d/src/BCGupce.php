@@ -29,14 +29,14 @@ use BarcodeBakery\Common\BCGParseException;
 
 class BCGupce extends BCGBarcode1D
 {
-    protected $codeParity = array();
-    protected $upce;
-    protected $labelLeft = null;
-    protected $labelCenter = null;
-    protected $labelRight = null;
+    protected array $codeParity = array();
+    protected ?string $upce;
+    protected ?BCGLabel $labelLeft = null;
+    protected ?BCGLabel $labelCenter = null;
+    protected ?BCGLabel $labelRight = null;
 
     /**
-     * Constructor.
+     * Creates a UPC-E barcode.
      */
     public function __construct()
     {
@@ -91,56 +91,59 @@ class BCGupce extends BCGBarcode1D
     /**
      * Draws the barcode.
      *
-     * @param resource $im
+     * @param resource $image The surface.
+     * @return void
      */
-    public function draw($im)
+    public function draw($image): void
     {
         $this->calculateChecksum();
 
         // Starting Code
-        $this->drawChar($im, '000', true);
+        $this->drawChar($image, '000', true);
         $c = strlen($this->upce);
         for ($i = 0; $i < $c; $i++) {
-            $this->drawChar($im, self::inverse($this->findCode($this->upce[$i]), $this->codeParity[intval($this->text[0])][$this->checksumValue][$i]), false);
+            $this->drawChar($image, self::inverse($this->findCode($this->upce[$i]), $this->codeParity[intval($this->text[0])][$this->checksumValue[0]][$i]), false);
         }
 
         // Draw Center Guard Bar
-        $this->drawChar($im, '00000', false);
+        $this->drawChar($image, '00000', false);
 
         // Draw Right Bar
-        $this->drawChar($im, '0', true);
+        $this->drawChar($image, '0', true);
         $this->text = $this->text[0] . $this->upce;
-        $this->drawText($im, 0, 0, $this->positionX, $this->thickness);
+        $this->drawText($image, 0, 0, $this->positionX, $this->thickness);
 
         if ($this->isDefaultEanLabelEnabled()) {
             $dimension = $this->labelCenter->getDimension();
-            $this->drawExtendedBars($im, $dimension[1] - 2);
+            $this->drawExtendedBars($image, $dimension[1] - 2);
         }
     }
 
     /**
      * Returns the maximal size of a barcode.
      *
-     * @param int $w
-     * @param int $h
-     * @return int[]
+     * @param int $width The width.
+     * @param int $height The height.
+     * @return int[] An array, [0] being the width, [1] being the height.
      */
-    public function getDimension($w, $h)
+    public function getDimension(int $width, int $height): array
     {
         $startlength = 3;
         $centerlength = 5;
         $textlength = 6 * 7;
         $endlength = 1;
 
-        $w += $startlength + $centerlength + $textlength + $endlength;
-        $h += $this->thickness;
-        return parent::getDimension($w, $h);
+        $width += $startlength + $centerlength + $textlength + $endlength;
+        $height += $this->thickness;
+        return parent::getDimension($width, $height);
     }
 
     /**
      * Adds the default label.
+     *
+     * @return void
      */
-    protected function addDefaultLabel()
+    protected function addDefaultLabel(): void
     {
         if ($this->isDefaultEanLabelEnabled()) {
             $this->processChecksum();
@@ -149,16 +152,16 @@ class BCGupce extends BCGBarcode1D
             $this->labelLeft = new BCGLabel(substr($this->text, 0, 1), $font, BCGLabel::POSITION_LEFT, BCGLabel::ALIGN_BOTTOM);
             $labelLeftDimension = $this->labelLeft->getDimension();
             $this->labelLeft->setSpacing(8);
-            $this->labelLeft->setOffset($labelLeftDimension[1] / 2);
+            $this->labelLeft->setOffset((int)($labelLeftDimension[1] / 2));
 
             $this->labelCenter = new BCGLabel($this->upce, $font, BCGLabel::POSITION_BOTTOM, BCGLabel::ALIGN_LEFT);
             $labelCenterDimension = $this->labelCenter->getDimension();
-            $this->labelCenter->setOffset(($this->scale * 46 - $labelCenterDimension[0]) / 2 + $this->scale * 2);
+            $this->labelCenter->setOffset((int)(($this->scale * 46 - $labelCenterDimension[0]) / 2 + $this->scale * 2));
 
-            $this->labelRight = new BCGLabel($this->keys[$this->checksumValue], $font, BCGLabel::POSITION_RIGHT, BCGLabel::ALIGN_BOTTOM);
+            $this->labelRight = new BCGLabel($this->keys[$this->checksumValue[0]], $font, BCGLabel::POSITION_RIGHT, BCGLabel::ALIGN_BOTTOM);
             $labelRightDimension = $this->labelRight->getDimension();
             $this->labelRight->setSpacing(8);
-            $this->labelRight->setOffset($labelRightDimension[1] / 2);
+            $this->labelRight->setOffset((int)($labelRightDimension[1] / 2));
 
             $this->addLabel($this->labelLeft);
             $this->addLabel($this->labelCenter);
@@ -169,9 +172,9 @@ class BCGupce extends BCGBarcode1D
     /**
      * Checks if the default ean label is enabled.
      *
-     * @return bool
+     * @return bool True if default label is enabled.
      */
-    protected function isDefaultEanLabelEnabled()
+    protected function isDefaultEanLabelEnabled(): bool
     {
         $label = $this->getLabel();
         $font = $this->font;
@@ -180,8 +183,10 @@ class BCGupce extends BCGBarcode1D
 
     /**
      * Validates the input.
+     *
+     * @return void
      */
-    protected function validate()
+    protected function validate(): void
     {
         $c = strlen($this->text);
         if ($c === 0) {
@@ -257,8 +262,10 @@ class BCGupce extends BCGBarcode1D
 
     /**
      * Overloaded method to calculate checksum.
+     *
+     * @return void
      */
-    protected function calculateChecksum()
+    protected function calculateChecksum(): void
     {
         // Calculating Checksum
         // Consider the right-most digit of the message to be in an "odd" position,
@@ -267,7 +274,7 @@ class BCGupce extends BCGBarcode1D
         // Multiply it by the number
         // Add all of that and do 10-(?mod10)
         $odd = true;
-        $this->checksumValue = 0;
+        $this->checksumValue = array(0);
         $c = strlen($this->text);
         for ($i = $c; $i > 0; $i--) {
             if ($odd === true) {
@@ -282,35 +289,38 @@ class BCGupce extends BCGBarcode1D
                 return;
             }
 
-            $this->checksumValue += $this->keys[$this->text[$i - 1]] * $multiplier;
+            $this->checksumValue[0] += $this->keys[$this->text[$i - 1]] * $multiplier;
         }
 
-        $this->checksumValue = (10 - $this->checksumValue % 10) % 10;
+        $this->checksumValue[0] = (10 - $this->checksumValue[0] % 10) % 10;
     }
 
     /**
      * Overloaded method to display the checksum.
+     *
+     * @return string|null The checksum value.
      */
-    protected function processChecksum()
+    protected function processChecksum(): ?string
     {
-        if ($this->checksumValue === false) { // Calculate the checksum only once
+        if ($this->checksumValue === null) { // Calculate the checksum only once
             $this->calculateChecksum();
         }
 
-        if ($this->checksumValue !== false) {
-            return $this->keys[$this->checksumValue];
+        if ($this->checksumValue !== null) {
+            return $this->keys[$this->checksumValue[0]];
         }
 
-        return false;
+        return null;
     }
 
     /**
      * Draws the extended bars on the image.
      *
-     * @param resource $im
-     * @param int $plus
+     * @param resource $image The surface.
+     * @param int $plus How much more we should display the bars.
+     * @return void
      */
-    protected function drawExtendedBars($im, $plus)
+    protected function drawExtendedBars($image, int $plus): void
     {
         $rememberX = $this->positionX;
         $rememberH = $this->thickness;
@@ -318,15 +328,15 @@ class BCGupce extends BCGBarcode1D
         // We increase the bars
         $this->thickness = $this->thickness + intval($plus / $this->scale);
         $this->positionX = 0;
-        $this->drawSingleBar($im, BCGBarcode::COLOR_FG);
+        $this->drawSingleBar($image, BCGBarcode::COLOR_FG);
         $this->positionX += 2;
-        $this->drawSingleBar($im, BCGBarcode::COLOR_FG);
+        $this->drawSingleBar($image, BCGBarcode::COLOR_FG);
 
         // Last Bars
         $this->positionX += 46;
-        $this->drawSingleBar($im, BCGBarcode::COLOR_FG);
+        $this->drawSingleBar($image, BCGBarcode::COLOR_FG);
         $this->positionX += 2;
-        $this->drawSingleBar($im, BCGBarcode::COLOR_FG);
+        $this->drawSingleBar($image, BCGBarcode::COLOR_FG);
 
         $this->positionX = $rememberX;
         $this->thickness = $rememberH;
@@ -335,11 +345,11 @@ class BCGupce extends BCGBarcode1D
     /**
      * Inverses the string when the $inverse parameter is equal to 1.
      *
-     * @param string $text
-     * @param int $inverse
-     * @return string
+     * @param string $text The text.
+     * @param int $inverse The inverse.
+     * @return string the reversed string.
      */
-    private static function inverse($text, $inverse = 1)
+    private static function inverse(string $text, int $inverse = 1): string
     {
         if ($inverse === 1) {
             $text = strrev($text);
