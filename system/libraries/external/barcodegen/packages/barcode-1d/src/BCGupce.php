@@ -100,7 +100,7 @@ class BCGupce extends BCGBarcode1D
 
         // Starting Code
         $this->drawChar($image, '000', true);
-        $c = strlen($this->upce);
+        $c = strlen((string) $this->upce);
         for ($i = 0; $i < $c; $i++) {
             $this->drawChar($image, self::inverse($this->findCode($this->upce[$i]), $this->codeParity[intval($this->text[0])][$this->checksumValue[0]][$i]), false);
         }
@@ -149,7 +149,7 @@ class BCGupce extends BCGBarcode1D
             $this->processChecksum();
             $font = $this->font;
 
-            $this->labelLeft = new BCGLabel(substr($this->text, 0, 1), $font, BCGLabel::POSITION_LEFT, BCGLabel::ALIGN_BOTTOM);
+            $this->labelLeft = new BCGLabel(substr((string) $this->text, 0, 1), $font, BCGLabel::POSITION_LEFT, BCGLabel::ALIGN_BOTTOM);
             $labelLeftDimension = $this->labelLeft->getDimension();
             $this->labelLeft->setSpacing(8);
             $this->labelLeft->setOffset((int)($labelLeftDimension[1] / 2));
@@ -188,7 +188,7 @@ class BCGupce extends BCGBarcode1D
      */
     protected function validate(): void
     {
-        $c = strlen($this->text);
+        $c = strlen((string) $this->text);
         if ($c === 0) {
             throw new BCGParseException('upce', 'No data has been entered.');
         }
@@ -213,23 +213,23 @@ class BCGupce extends BCGBarcode1D
         $this->upce = '';
         if ($c !== 6) {
             // Checking if UPC-A is convertible
-            $temp1 = substr($this->text, 3, 3);
+            $temp1 = substr((string) $this->text, 3, 3);
             if ($temp1 === '000' || $temp1 === '100' || $temp1 === '200') { // manufacturer code ends with 100, 200 or 300
-                if (substr($this->text, 6, 2) === '00') { // Product must start with 00
-                    $this->upce = substr($this->text, 1, 2) . substr($this->text, 8, 3) . substr($this->text, 3, 1);
+                if (substr((string) $this->text, 6, 2) === '00') { // Product must start with 00
+                    $this->upce = substr((string) $this->text, 1, 2) . substr((string) $this->text, 8, 3) . substr((string) $this->text, 3, 1);
                 }
-            } elseif (substr($this->text, 4, 2) === '00') { // manufacturer code ends with 00
-                if (substr($this->text, 6, 3) === '000') { // Product must start with 000
-                    $this->upce = substr($this->text, 1, 3) . substr($this->text, 9, 2) . '3';
+            } elseif (substr((string) $this->text, 4, 2) === '00') { // manufacturer code ends with 00
+                if (substr((string) $this->text, 6, 3) === '000') { // Product must start with 000
+                    $this->upce = substr((string) $this->text, 1, 3) . substr((string) $this->text, 9, 2) . '3';
                 }
-            } elseif (substr($this->text, 5, 1) === '0') { // manufacturer code ends with 0
-                if (substr($this->text, 6, 4) === '0000') { // Product must start with 0000
-                    $this->upce = substr($this->text, 1, 4) . substr($this->text, 10, 1) . '4';
+            } elseif (substr((string) $this->text, 5, 1) === '0') { // manufacturer code ends with 0
+                if (substr((string) $this->text, 6, 4) === '0000') { // Product must start with 0000
+                    $this->upce = substr((string) $this->text, 1, 4) . substr((string) $this->text, 10, 1) . '4';
                 }
             } else { // No zero leading at manufacturer code
-                $temp2 = intval(substr($this->text, 10, 1));
-                if (substr($this->text, 6, 4) === '0000' && $temp2 >= 5 && $temp2 <= 9) { // Product must start with 0000 and must end by 5, 6, 7, 8 or 9
-                    $this->upce = substr($this->text, 1, 5) . substr($this->text, 10, 1);
+                $temp2 = intval(substr((string) $this->text, 10, 1));
+                if (substr((string) $this->text, 6, 4) === '0000' && $temp2 >= 5 && $temp2 <= 9) { // Product must start with 0000 and must end by 5, 6, 7, 8 or 9
+                    $this->upce = substr((string) $this->text, 1, 5) . substr((string) $this->text, 10, 1);
                 }
             }
         } else {
@@ -245,13 +245,13 @@ class BCGupce extends BCGBarcode1D
 
             // We convert UPC-E to UPC-A to find the checksum
             if ($this->text[5] === '0' || $this->text[5] === '1' || $this->text[5] === '2') {
-                $upca = substr($this->text, 0, 2) . $this->text[5] . '0000' . substr($this->text, 2, 3);
+                $upca = substr((string) $this->text, 0, 2) . $this->text[5] . '0000' . substr((string) $this->text, 2, 3);
             } elseif ($this->text[5] === '3') {
-                $upca = substr($this->text, 0, 3) . '00000' . substr($this->text, 3, 2);
+                $upca = substr((string) $this->text, 0, 3) . '00000' . substr((string) $this->text, 3, 2);
             } elseif ($this->text[5] === '4') {
-                $upca = substr($this->text, 0, 4) . '00000' . $this->text[4];
+                $upca = substr((string) $this->text, 0, 4) . '00000' . $this->text[4];
             } else {
-                $upca = substr($this->text, 0, 5) . '0000' . $this->text[5];
+                $upca = substr((string) $this->text, 0, 5) . '0000' . $this->text[5];
             }
 
             $this->text = '0' . $upca;
@@ -275,7 +275,7 @@ class BCGupce extends BCGBarcode1D
         // Add all of that and do 10-(?mod10)
         $odd = true;
         $this->checksumValue = array(0);
-        $c = strlen($this->text);
+        $c = strlen((string) $this->text);
         for ($i = $c; $i > 0; $i--) {
             if ($odd === true) {
                 $multiplier = 3;

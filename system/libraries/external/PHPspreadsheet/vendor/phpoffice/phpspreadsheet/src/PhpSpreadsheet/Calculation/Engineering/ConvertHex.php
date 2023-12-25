@@ -91,7 +91,7 @@ class ConvertHex extends ConvertBase
             return $e->getMessage();
         }
 
-        if (strlen($value) > 10) {
+        if (strlen((string) $value) > 10) {
             return ExcelError::NAN();
         }
 
@@ -99,7 +99,7 @@ class ConvertHex extends ConvertBase
         foreach (str_split($value) as $char) {
             $binX .= str_pad(base_convert($char, 16, 2), 4, '0', STR_PAD_LEFT);
         }
-        if (strlen($binX) == 40 && $binX[0] == '1') {
+        if (strlen((string) $binX) == 40 && $binX[0] == '1') {
             for ($i = 0; $i < 40; ++$i) {
                 $binX[$i] = ($binX[$i] == '1' ? '0' : '1');
             }
@@ -166,7 +166,7 @@ class ConvertHex extends ConvertBase
 
     protected static function validateHex(string $value): string
     {
-        if (strlen($value) > preg_match_all('/[0123456789ABCDEF]/', $value)) {
+        if (strlen((string) $value) > preg_match_all('/[0123456789ABCDEF]/', $value)) {
             throw new Exception(ExcelError::NAN());
         }
 

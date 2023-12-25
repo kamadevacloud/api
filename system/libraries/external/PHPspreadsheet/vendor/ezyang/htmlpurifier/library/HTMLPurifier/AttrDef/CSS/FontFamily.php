@@ -67,7 +67,7 @@ class HTMLPurifier_AttrDef_CSS_FontFamily extends HTMLPurifier_AttrDef
         $fonts = explode(',', $string);
         $final = '';
         foreach ($fonts as $font) {
-            $font = trim($font);
+            $font = trim((string) $font);
             if ($font === '') {
                 continue;
             }
@@ -80,7 +80,7 @@ class HTMLPurifier_AttrDef_CSS_FontFamily extends HTMLPurifier_AttrDef
             }
             // match a quoted name
             if ($font[0] === '"' || $font[0] === "'") {
-                $length = strlen($font);
+                $length = strlen((string) $font);
                 if ($length <= 2) {
                     continue;
                 }
@@ -88,7 +88,7 @@ class HTMLPurifier_AttrDef_CSS_FontFamily extends HTMLPurifier_AttrDef
                 if ($font[$length - 1] !== $quote) {
                     continue;
                 }
-                $font = substr($font, 1, $length - 2);
+                $font = substr((string) $font, 1, $length - 2);
             }
 
             $font = $this->expandCSSEscape($font);
@@ -188,7 +188,7 @@ class HTMLPurifier_AttrDef_CSS_FontFamily extends HTMLPurifier_AttrDef
             // Edgy: alphanumeric, spaces, dashes, underscores and Unicode.  Use of
             // str(c)spn assumes that the string was already well formed
             // Unicode (which of course it is).
-            if (strspn($font, $this->mask) !== strlen($font)) {
+            if (strspn($font, $this->mask) !== strlen((string) $font)) {
                 continue;
             }
 
@@ -207,7 +207,7 @@ class HTMLPurifier_AttrDef_CSS_FontFamily extends HTMLPurifier_AttrDef
             // font possibly with spaces, requires quoting
             $final .= "'$font', ";
         }
-        $final = rtrim($final, ', ');
+        $final = rtrim((string) $final, ', ');
         if ($final === '') {
             return false;
         }

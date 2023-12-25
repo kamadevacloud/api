@@ -60,14 +60,14 @@ class HTMLPurifier_Encoder
                 }
                 // split into 8000 byte chunks, but be careful to handle
                 // multibyte boundaries properly
-                if (($c = strlen($text)) <= $max_chunk_size) {
+                if (($c = strlen((string) $text)) <= $max_chunk_size) {
                     return self::unsafeIconv($in, $out, $text);
                 }
                 $r = '';
                 $i = 0;
                 while (true) {
                     if ($i + $max_chunk_size >= $c) {
-                        $r .= self::unsafeIconv($in, $out, substr($text, $i));
+                        $r .= self::unsafeIconv($in, $out, substr((string) $text, $i));
                         break;
                     }
                     // wibble the boundary
@@ -82,7 +82,7 @@ class HTMLPurifier_Encoder
                     } else {
                         return false; // rather confusing UTF-8...
                     }
-                    $chunk = substr($text, $i, $chunk_size); // substr doesn't mind overlong lengths
+                    $chunk = substr((string) $text, $i, $chunk_size); // substr doesn't mind overlong lengths
                     $r .= self::unsafeIconv($in, $out, $chunk);
                     $i += $chunk_size;
                 }
@@ -157,7 +157,7 @@ class HTMLPurifier_Encoder
         $out = '';
         $char = '';
 
-        $len = strlen($str);
+        $len = strlen((string) $str);
         for ($i = 0; $i < $len; $i++) {
             $in = ord($str[$i]);
             $char .= $str[$i]; // append byte to char
@@ -482,7 +482,7 @@ class HTMLPurifier_Encoder
         $bytesleft = 0;
         $result = '';
         $working = 0;
-        $len = strlen($str);
+        $len = strlen((string) $str);
         for ($i = 0; $i < $len; $i++) {
             $bytevalue = ord($str[$i]);
             if ($bytevalue <= 0x7F) { //0xxx xxxx
@@ -542,7 +542,7 @@ class HTMLPurifier_Encoder
             $r = self::unsafeIconv('utf-8', 'ascii//IGNORE', "\xCE\xB1" . str_repeat('a', 9000));
             if ($r === false) {
                 $code = self::ICONV_UNUSABLE;
-            } elseif (($c = strlen($r)) < 9000) {
+            } elseif (($c = strlen((string) $r)) < 9000) {
                 $code = self::ICONV_TRUNCATES;
             } elseif ($c > 9000) {
                 trigger_error(
@@ -580,7 +580,7 @@ class HTMLPurifier_Encoder
             if (isset($encodings[$encoding])) {
                 return $encodings[$encoding];
             }
-            $lenc = strtolower($encoding);
+            $lenc = strtolower((string) $encoding);
             switch ($lenc) {
                 case 'shift_jis':
                     return array("\xC2\xA5" => '\\', "\xE2\x80\xBE" => '~');

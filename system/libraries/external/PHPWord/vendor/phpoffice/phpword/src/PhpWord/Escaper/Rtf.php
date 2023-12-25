@@ -54,7 +54,7 @@ class Rtf extends AbstractEscaper
 
         $numberOfBytes = 1;
         $bytes = array();
-        for ($i = 0; $i < strlen($input); ++$i) {
+        for ($i = 0; $i < strlen((string) $input); ++$i) {
             $character = $input[$i];
             $asciiCode = ord($character);
 

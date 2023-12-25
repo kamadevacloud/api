@@ -101,12 +101,12 @@ class Html
 
             foreach ($attributes as $attribute) {
                 $val = $attribute->value;
-                switch (strtolower($attribute->name)) {
+                switch (strtolower((string) $attribute->name)) {
                     case 'style':
                         $styles = self::parseStyle($attribute, $styles);
                         break;
                     case 'align':
-                        $styles['alignment'] = self::mapAlign(trim($val));
+                        $styles['alignment'] = self::mapAlign(trim((string) $val));
                         break;
                     case 'lang':
                         $styles['lang'] = $val;
@@ -130,7 +130,7 @@ class Html
                         break;
                     case 'bgcolor':
                         // tables, rows, cells e.g. <tr bgColor="#FF0000">
-                        $styles['bgColor'] = trim($val, '# ');
+                        $styles['bgColor'] = trim((string) $val, '# ');
                         break;
                     case 'valign':
                         // cells e.g. <td valign="middle">
@@ -620,12 +620,12 @@ class Html
      */
     protected static function parseStyle($attribute, $styles)
     {
-        $properties = explode(';', trim($attribute->value, " \t\n\r\0\x0B;"));
+        $properties = explode(';', trim((string) $attribute->value, " \t\n\r\0\x0B;"));
 
         foreach ($properties as $property) {
             list($cKey, $cValue) = array_pad(explode(':', $property, 2), 2, null);
-            $cValue = trim($cValue);
-            $cKey = strtolower(trim($cKey));
+            $cValue = trim((string) $cValue);
+            $cKey = strtolower(trim((string) $cKey));
             switch ($cKey) {
                 case 'text-decoration':
                     switch ($cValue) {
@@ -651,13 +651,13 @@ class Html
                     break;
                 case 'font-family':
                     $cValue = array_map('trim', explode(',', $cValue));
-                    $styles['name'] = ucwords($cValue[0]);
+                    $styles['name'] = ucwords((string) $cValue[0]);
                     break;
                 case 'color':
-                    $styles['color'] = trim($cValue, '#');
+                    $styles['color'] = trim((string) $cValue, '#');
                     break;
                 case 'background-color':
-                    $styles['bgColor'] = trim($cValue, '#');
+                    $styles['bgColor'] = trim((string) $cValue, '#');
                     break;
                 case 'line-height':
                     $matches = array();
@@ -747,7 +747,7 @@ class Html
                         if (false !== strpos($cKey, '-')) {
                             $tmp = explode('-', $cKey);
                             $which = $tmp[1];
-                            $which = ucfirst($which); // e.g. bottom -> Bottom
+                            $which = ucfirst((string) $which); // e.g. bottom -> Bottom
                         } else {
                             $which = '';
                         }
@@ -761,7 +761,7 @@ class Html
                         $size = (int) ($size / 2);
                         // valid variants may be e.g. borderSize, borderTopSize, borderLeftColor, etc ..
                         $styles["border{$which}Size"] = $size; // twips
-                        $styles["border{$which}Color"] = trim($matches[2], '#');
+                        $styles["border{$which}Color"] = trim((string) $matches[2], '#');
                         $styles["border{$which}Style"] = self::mapBorderStyle($matches[3]);
                     }
                     break;
@@ -811,14 +811,14 @@ class Html
                             list($k, $v) = explode(':', $attr);
                             switch ($k) {
                                 case 'float':
-                                    if (trim($v) == 'right') {
+                                    if (trim((string) $v) == 'right') {
                                         $style['hPos'] = \PhpOffice\PhpWord\Style\Image::POS_RIGHT;
                                         $style['hPosRelTo'] = \PhpOffice\PhpWord\Style\Image::POS_RELTO_MARGIN; // inner section area
                                         $style['pos'] = \PhpOffice\PhpWord\Style\Image::POS_RELATIVE;
                                         $style['wrap'] = \PhpOffice\PhpWord\Style\Image::WRAP_TIGHT;
                                         $style['overlap'] = true;
                                     }
-                                    if (trim($v) == 'left') {
+                                    if (trim((string) $v) == 'left') {
                                         $style['hPos'] = \PhpOffice\PhpWord\Style\Image::POS_LEFT;
                                         $style['hPosRelTo'] = \PhpOffice\PhpWord\Style\Image::POS_RELTO_MARGIN; // inner section area
                                         $style['pos'] = \PhpOffice\PhpWord\Style\Image::POS_RELATIVE;
@@ -905,12 +905,12 @@ class Html
     {
         $numColors = substr_count($cssBorderColor, '#');
         if ($numColors === 1) {
-            $styles['borderColor'] = trim($cssBorderColor, '#');
+            $styles['borderColor'] = trim((string) $cssBorderColor, '#');
         } elseif ($numColors > 1) {
             $colors = explode(' ', $cssBorderColor);
             $borders = array('borderTopColor', 'borderRightColor', 'borderBottomColor', 'borderLeftColor');
             for ($i = 0; $i < min(4, $numColors, count($colors)); $i++) {
-                $styles[$borders[$i]] = trim($colors[$i], '#');
+                $styles[$borders[$i]] = trim((string) $colors[$i], '#');
             }
         }
     }
@@ -943,7 +943,7 @@ class Html
      */
     protected static function mapAlignVertical($alignment)
     {
-        $alignment = strtolower($alignment);
+        $alignment = strtolower((string) $alignment);
         switch ($alignment) {
             case 'top':
             case 'baseline':
@@ -1017,7 +1017,7 @@ class Html
         $styles['font'] = self::parseInlineStyle($node, $styles['font']);
 
         if (strpos($target, '#') === 0) {
-            return $element->addLink(substr($target, 1), $node->textContent, $styles['font'], $styles['paragraph'], true);
+            return $element->addLink(substr((string) $target, 1), $node->textContent, $styles['font'], $styles['paragraph'], true);
         }
 
         return $element->addLink($target, $node->textContent, $styles['font'], $styles['paragraph']);

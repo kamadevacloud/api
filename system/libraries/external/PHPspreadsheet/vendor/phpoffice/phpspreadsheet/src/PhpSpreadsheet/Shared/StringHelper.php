@@ -464,7 +464,7 @@ class StringHelper
      */
     public static function countCharacters($textValue, $encoding = 'UTF-8')
     {
-        return mb_strlen($textValue ?? '', $encoding);
+        return mb_strlen((string) $textValue ?? '', $encoding);
     }
 
     /**
@@ -478,7 +478,7 @@ class StringHelper
      */
     public static function substring($textValue, $offset, $length = 0)
     {
-        return mb_substr($textValue, $offset, $length, 'UTF-8');
+        return mb_substr((string) $textValue, $offset, $length, 'UTF-8');
     }
 
     /**
@@ -488,7 +488,7 @@ class StringHelper
      *
      * @return string
      */
-    public static function strToUpper($textValue)
+    public static function strtoupper((string) $textValue)
     {
         return mb_convert_case($textValue ?? '', MB_CASE_UPPER, 'UTF-8');
     }
@@ -500,7 +500,7 @@ class StringHelper
      *
      * @return string
      */
-    public static function strToLower($textValue)
+    public static function strtolower((string) $textValue)
     {
         return mb_convert_case($textValue ?? '', MB_CASE_LOWER, 'UTF-8');
     }
@@ -520,7 +520,7 @@ class StringHelper
 
     public static function mbIsUpper($character)
     {
-        return mb_strtolower($character, 'UTF-8') != $character;
+        return mb_strtolower((string) $character, 'UTF-8') != $character;
     }
 
     public static function mbStrSplit($string)
@@ -543,9 +543,9 @@ class StringHelper
         $characters = self::mbStrSplit($textValue);
         foreach ($characters as &$character) {
             if (self::mbIsUpper($character)) {
-                $character = mb_strtolower($character, 'UTF-8');
+                $character = mb_strtolower((string) $character, 'UTF-8');
             } else {
-                $character = mb_strtoupper($character, 'UTF-8');
+                $character = mb_strtoupper((string) $character, 'UTF-8');
             }
         }
 
@@ -717,6 +717,6 @@ class StringHelper
         }
         $v = (float) $textValue;
 
-        return (is_numeric(substr($textValue, 0, strlen($v)))) ? $v : $textValue;
+        return (is_numeric(substr((string) $textValue, 0, strlen((string) $v)))) ? $v : $textValue;
     }
 }

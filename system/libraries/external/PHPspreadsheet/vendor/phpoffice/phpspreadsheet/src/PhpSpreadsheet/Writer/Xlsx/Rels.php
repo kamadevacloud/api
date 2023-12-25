@@ -206,7 +206,7 @@ class Rels extends WriterPart
             reset($drawingOriginalIds);
             $relPath = key($drawingOriginalIds);
             if (isset($drawingOriginalIds[$relPath])) {
-                $rId = (int) (substr($drawingOriginalIds[$relPath], 3));
+                $rId = (int) (substr((string) $drawingOriginalIds[$relPath], 3));
             }
 
             // Generate new $relPath to write drawing relationship

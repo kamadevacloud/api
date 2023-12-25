@@ -62,7 +62,7 @@ abstract class WizardAbstract
 
     protected function setReferenceCellForExpressions(string $conditionalRange): void
     {
-        $conditionalRange = Coordinate::splitRange(str_replace('$', '', strtoupper($conditionalRange)));
+        $conditionalRange = Coordinate::splitRange(str_replace('$', '', strtoupper((string) $conditionalRange)));
         [$this->referenceCell] = $conditionalRange[0];
 
         [$this->referenceColumn, $this->referenceRow] = Coordinate::indexesFromString($this->referenceCell);
@@ -92,12 +92,12 @@ abstract class WizardAbstract
     {
         if (
             $operandValueType === Wizard::VALUE_TYPE_LITERAL &&
-            substr($operand, 0, 1) === '"' &&
-            substr($operand, -1) === '"'
+            substr((string) $operand, 0, 1) === '"' &&
+            substr((string) $operand, -1) === '"'
         ) {
-            $operand = str_replace('""', '"', substr($operand, 1, -1));
-        } elseif ($operandValueType === Wizard::VALUE_TYPE_FORMULA && substr($operand, 0, 1) === '=') {
-            $operand = substr($operand, 1);
+            $operand = str_replace('""', '"', substr((string) $operand, 1, -1));
+        } elseif ($operandValueType === Wizard::VALUE_TYPE_FORMULA && substr((string) $operand, 0, 1) === '=') {
+            $operand = substr((string) $operand, 1);
         }
 
         return $operand;
@@ -124,7 +124,7 @@ abstract class WizardAbstract
 
     public static function reverseAdjustCellRef(string $condition, string $cellRange): string
     {
-        $conditionalRange = Coordinate::splitRange(str_replace('$', '', strtoupper($cellRange)));
+        $conditionalRange = Coordinate::splitRange(str_replace('$', '', strtoupper((string) $cellRange)));
         [$referenceCell] = $conditionalRange[0];
         [$referenceColumnIndex, $referenceRow] = Coordinate::indexesFromString($referenceCell);
 

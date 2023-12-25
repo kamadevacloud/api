@@ -75,7 +75,7 @@ class BCGmsi extends BCGBarcode1D
         $this->drawChar($image, '10', true);
 
         // Chars
-        $c = strlen($this->text);
+        $c = strlen((string) $this->text);
         for ($i = 0; $i < $c; $i++) {
             $this->drawChar($image, $this->findCode($this->text[$i]), true);
         }
@@ -99,7 +99,7 @@ class BCGmsi extends BCGBarcode1D
      */
     public function getDimension(int $width, int $height): array
     {
-        $textlength = 12 * strlen($this->text);
+        $textlength = 12 * strlen((string) $this->text);
         $startlength = 3;
         $checksumlength = $this->checksum * 12;
         $endlength = 4;
@@ -116,7 +116,7 @@ class BCGmsi extends BCGBarcode1D
      */
     protected function validate(): void
     {
-        $c = strlen($this->text);
+        $c = strlen((string) $this->text);
         if ($c === 0) {
             throw new BCGParseException('msi', 'No data has been entered.');
         }
@@ -150,7 +150,7 @@ class BCGmsi extends BCGBarcode1D
         for ($i = 0; $i < $this->checksum; $i++) {
             $newText = '';
             $newNumber = 0;
-            $c = strlen($lastText);
+            $c = strlen((string) $lastText);
             if ($c % 2 === 0) { // Even
                 $starting = 1;
             } else {
@@ -162,7 +162,7 @@ class BCGmsi extends BCGBarcode1D
             }
 
             $newText = strval(intval($newText) * 2);
-            $c2 = strlen($newText);
+            $c2 = strlen((string) $newText);
             for ($j = 0; $j < $c2; $j++) {
                 $newNumber += intval($newText[$j]);
             }

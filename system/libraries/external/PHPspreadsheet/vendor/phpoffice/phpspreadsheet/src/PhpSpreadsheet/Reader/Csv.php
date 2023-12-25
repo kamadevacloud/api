@@ -177,8 +177,8 @@ class Csv extends BaseReader
             return;
         }
 
-        if ((strlen(trim($line, "\r\n")) == 5) && (stripos($line, 'sep=') === 0)) {
-            $this->delimiter = substr($line, 4, 1);
+        if ((strlen(trim((string) $line, "\r\n")) == 5) && (stripos($line, 'sep=') === 0)) {
+            $this->delimiter = substr((string) $line, 4, 1);
 
             return;
         }
@@ -421,7 +421,7 @@ class Csv extends BaseReader
                     $numberFormatMask = (strpos($rowDatum, StringHelper::getThousandsSeparator()) !== false)
                         ? '#,##0' : '0';
                     if ($decimalPos !== false) {
-                        $decimals = strlen($rowDatum) - $decimalPos - 1;
+                        $decimals = strlen((string) $rowDatum) - $decimalPos - 1;
                         $numberFormatMask .= '.' . str_repeat('0', min($decimals, 6));
                     }
                 }
@@ -532,7 +532,7 @@ class Csv extends BaseReader
     {
         if ($encoding === '') {
             $pos = strpos($contents, $compare);
-            if ($pos !== false && $pos % strlen($compare) === 0) {
+            if ($pos !== false && $pos % strlen((string) $compare) === 0) {
                 $encoding = $setEncoding;
             }
         }
@@ -556,7 +556,7 @@ class Csv extends BaseReader
     private static function guessEncodingTestBom(string &$encoding, string $first4, string $compare, string $setEncoding): void
     {
         if ($encoding === '') {
-            if ($compare === substr($first4, 0, strlen($compare))) {
+            if ($compare === substr((string) $first4, 0, strlen((string) $compare))) {
                 $encoding = $setEncoding;
             }
         }

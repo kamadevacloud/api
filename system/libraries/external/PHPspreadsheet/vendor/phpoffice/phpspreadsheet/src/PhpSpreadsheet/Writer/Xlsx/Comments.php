@@ -165,7 +165,7 @@ class Comments extends WriterPart
         // Metadata
         [$column, $row] = Coordinate::indexesFromString($cellReference);
         $id = 1024 + $column + $row;
-        $id = substr($id, 0, 4);
+        $id = substr((string) $id, 0, 4);
 
         // v:shape
         $objWriter->startElement('v:shape');

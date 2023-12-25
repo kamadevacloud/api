@@ -80,7 +80,7 @@ class Word2007 extends AbstractWriter implements WriterInterface
                 /** @var \PhpOffice\PhpWord\Writer\Word2007\Part\AbstractPart $part Type hint */
                 $part = new $partClass();
                 $part->setParentWriter($this);
-                $this->writerParts[strtolower($partName)] = $part;
+                $this->writerParts[strtolower((string) $partName)] = $part;
             }
         }
 

@@ -138,7 +138,7 @@ class HTMLPurifier_DefinitionCache_Serializer extends HTMLPurifier_DefinitionCac
             if ($filename[0] === '.') {
                 continue;
             }
-            $key = substr($filename, 0, strlen($filename) - 4);
+            $key = substr((string) $filename, 0, strlen((string) $filename) - 4);
             if ($this->isOld($key, $config)) {
                 unlink($dir . '/' . $filename);
             }

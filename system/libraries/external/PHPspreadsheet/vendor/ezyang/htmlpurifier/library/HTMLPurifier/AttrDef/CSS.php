@@ -32,13 +32,13 @@ class HTMLPurifier_AttrDef_CSS extends HTMLPurifier_AttrDef
         // non-delimiting semicolon can appear are in strings
         // escape sequences.   So here is some dumb hack to
         // handle quotes.
-        $len = strlen($css);
+        $len = strlen((string) $css);
         $accum = "";
         $declarations = array();
         $quoted = false;
         for ($i = 0; $i < $len; $i++) {
             $c = strcspn($css, ";'\"", $i);
-            $accum .= substr($css, $i, $c);
+            $accum .= substr((string) $css, $i, $c);
             $i += $c;
             if ($i == $len) break;
             $d = $css[$i];
@@ -76,8 +76,8 @@ class HTMLPurifier_AttrDef_CSS extends HTMLPurifier_AttrDef
                 continue;
             }
             list($property, $value) = explode(':', $declaration, 2);
-            $property = trim($property);
-            $value = trim($value);
+            $property = trim((string) $property);
+            $value = trim((string) $value);
             $ok = false;
             do {
                 if (isset($definition->info[$property])) {
@@ -87,7 +87,7 @@ class HTMLPurifier_AttrDef_CSS extends HTMLPurifier_AttrDef
                 if (ctype_lower($property)) {
                     break;
                 }
-                $property = strtolower($property);
+                $property = strtolower((string) $property);
                 if (isset($definition->info[$property])) {
                     $ok = true;
                     break;
@@ -97,7 +97,7 @@ class HTMLPurifier_AttrDef_CSS extends HTMLPurifier_AttrDef
                 continue;
             }
             // inefficient call, since the validator will do this again
-            if (strtolower(trim($value)) !== 'inherit') {
+            if (strtolower(trim((string) $value)) !== 'inherit') {
                 // inherit works for everything (but only on the base property)
                 $result = $definition->info[$property]->validate(
                     $value,

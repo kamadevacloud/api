@@ -204,7 +204,7 @@ class Style extends Supervisor
             $pRange = $this->getSelectedCells();
 
             // Uppercase coordinate
-            $pRange = strtoupper($pRange);
+            $pRange = strtoupper((string) $pRange);
 
             // Is it a cell range or a single cell?
             if (strpos($pRange, ':') === false) {

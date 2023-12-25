@@ -63,8 +63,8 @@ class Mpdf extends Pdf
         //   so that Mpdf doesn't parse it as content. Issue 2432.
         if ($bodyLocation !== false) {
             $bodyLocation += strlen(Html::BODY_LINE);
-            $pdf->WriteHTML(substr($html, 0, $bodyLocation));
-            $html = substr($html, $bodyLocation);
+            $pdf->WriteHTML(substr((string) $html, 0, $bodyLocation));
+            $html = substr((string) $html, $bodyLocation);
         }
         foreach (\array_chunk(\explode(PHP_EOL, $html), 1000) as $lines) {
             $pdf->WriteHTML(\implode(PHP_EOL, $lines));

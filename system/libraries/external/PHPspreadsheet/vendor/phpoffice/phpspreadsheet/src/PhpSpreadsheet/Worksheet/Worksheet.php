@@ -1256,7 +1256,7 @@ class Worksheet implements IComparable
             $worksheetReference = self::extractSheetTitle($coordinate, true);
 
             $sheet = $this->parent->getSheetByName($worksheetReference[0]);
-            $finalCoordinate = strtoupper($worksheetReference[1]);
+            $finalCoordinate = strtoupper((string) $worksheetReference[1]);
 
             if ($sheet === null) {
                 throw new Exception('Sheet not found for name: ' . $worksheetReference[0]);
@@ -1274,14 +1274,14 @@ class Worksheet implements IComparable
                 }
 
                 /** @phpstan-ignore-next-line */
-                $cellCoordinate = ltrim(substr($namedRange->getValue(), strrpos($namedRange->getValue(), '!')), '!');
+                $cellCoordinate = ltrim(substr((string) $namedRange->getValue(), strrpos($namedRange->getValue(), '!')), '!');
                 $finalCoordinate = str_replace('$', '', $cellCoordinate);
             }
         }
 
         if ($sheet === null || $finalCoordinate === null) {
             $sheet = $this;
-            $finalCoordinate = strtoupper($coordinate);
+            $finalCoordinate = strtoupper((string) $coordinate);
         }
 
         if (Coordinate::coordinateIsRange($finalCoordinate)) {
@@ -1421,7 +1421,7 @@ class Worksheet implements IComparable
     public function getColumnDimension(string $column): ColumnDimension
     {
         // Uppercase coordinate
-        $column = strtoupper($column);
+        $column = strtoupper((string) $column);
 
         // Fetch dimensions
         if (!isset($this->columnDimensions[$column])) {
@@ -1519,7 +1519,7 @@ class Worksheet implements IComparable
      */
     public function getConditionalStyles(string $coordinate): array
     {
-        $coordinate = strtoupper($coordinate);
+        $coordinate = strtoupper((string) $coordinate);
         if (strpos($coordinate, ':') !== false) {
             return $this->conditionalStylesCollection[$coordinate] ?? [];
         }
@@ -1536,7 +1536,7 @@ class Worksheet implements IComparable
 
     public function getConditionalRange(string $coordinate): ?string
     {
-        $coordinate = strtoupper($coordinate);
+        $coordinate = strtoupper((string) $coordinate);
         $cell = $this->getCell($coordinate);
         foreach (array_keys($this->conditionalStylesCollection) as $conditionalRange) {
             if ($cell->isInRange($conditionalRange)) {
@@ -1558,7 +1558,7 @@ class Worksheet implements IComparable
      */
     public function conditionalStylesExists($coordinate): bool
     {
-        $coordinate = strtoupper($coordinate);
+        $coordinate = strtoupper((string) $coordinate);
         if (strpos($coordinate, ':') !== false) {
             return isset($this->conditionalStylesCollection[$coordinate]);
         }
@@ -1582,7 +1582,7 @@ class Worksheet implements IComparable
      */
     public function removeConditionalStyles($coordinate)
     {
-        unset($this->conditionalStylesCollection[strtoupper($coordinate)]);
+        unset($this->conditionalStylesCollection[strtoupper((string) $coordinate)]);
 
         return $this;
     }
@@ -1607,7 +1607,7 @@ class Worksheet implements IComparable
      */
     public function setConditionalStyles($coordinate, $styles)
     {
-        $this->conditionalStylesCollection[strtoupper($coordinate)] = $styles;
+        $this->conditionalStylesCollection[strtoupper((string) $coordinate)] = $styles;
 
         return $this;
     }
@@ -2137,9 +2137,9 @@ class Worksheet implements IComparable
      */
     public function removeTableByName(string $name): self
     {
-        $name = Shared\StringHelper::strToUpper($name);
+        $name = Shared\StringHelper::strtoupper((string) $name);
         foreach ($this->tableCollection as $key => $table) {
-            if (Shared\StringHelper::strToUpper($table->getName()) === $name) {
+            if (Shared\StringHelper::strtoupper((string) $table->getName()) === $name) {
                 unset($this->tableCollection[$key]);
             }
         }
@@ -2899,7 +2899,7 @@ class Worksheet implements IComparable
         $namedRange = $this->validateNamedRange($definedName);
         $workSheet = $namedRange->getWorksheet();
         /** @phpstan-ignore-next-line */
-        $cellRange = ltrim(substr($namedRange->getValue(), strrpos($namedRange->getValue(), '!')), '!');
+        $cellRange = ltrim(substr((string) $namedRange->getValue(), strrpos($namedRange->getValue(), '!')), '!');
         $cellRange = str_replace('$', '', $cellRange);
 
         return $workSheet->rangeToArray($cellRange, $nullValue, $calculateFormulas, $formatData, $returnCellRef);
@@ -3026,10 +3026,10 @@ class Worksheet implements IComparable
         }
 
         if ($returnRange) {
-            return [substr($range, 0, $sep), substr($range, $sep + 1)];
+            return [substr((string) $range, 0, $sep), substr((string) $range, $sep + 1)];
         }
 
-        return substr($range, $sep + 1);
+        return substr((string) $range, $sep + 1);
     }
 
     /**

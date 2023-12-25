@@ -88,10 +88,10 @@ class BCGDrawJPG extends BCGDraw {
     }
 
     private function internalSetC(&$bin) {
-        if(strcmp(substr($bin, 0, 4), pack('H*', 'FFD8FFE0')) === 0) {
+        if(strcmp(substr((string) $bin, 0, 4), pack('H*', 'FFD8FFE0')) === 0) {
             $offset = 4 + (ord($bin[4]) << 8 | ord($bin[5]));
-            $firstPart = substr($bin, 0, $offset);
-            $secondPart = substr($bin, $offset);
+            $firstPart = substr((string) $bin, 0, $offset);
+            $secondPart = substr((string) $bin, $offset);
             $cr = pack('H*', 'FFFE004447656E657261746564207769746820426172636F64652047656E657261746F7220666F722050485020687474703A2F2F7777772E626172636F64657068702E636F6D');
             $bin = $firstPart;
             $bin .= $cr;

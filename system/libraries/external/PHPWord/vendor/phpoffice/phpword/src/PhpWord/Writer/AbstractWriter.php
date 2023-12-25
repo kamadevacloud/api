@@ -128,8 +128,8 @@ abstract class AbstractWriter implements WriterInterface
      */
     public function getWriterPart($partName = '')
     {
-        if ($partName != '' && isset($this->writerParts[strtolower($partName)])) {
-            return $this->writerParts[strtolower($partName)];
+        if ($partName != '' && isset($this->writerParts[strtolower((string) $partName)])) {
+            return $this->writerParts[strtolower((string) $partName)];
         }
 
         return null;
@@ -220,7 +220,7 @@ abstract class AbstractWriter implements WriterInterface
 
         // Temporary file
         $this->originalFilename = $filename;
-        if (strpos(strtolower($filename), 'php://') === 0) {
+        if (strpos(strtolower((string) $filename), 'php://') === 0) {
             $filename = tempnam(Settings::getTempDir(), 'PhpWord');
             if (false === $filename) {
                 $filename = $this->originalFilename; // @codeCoverageIgnore
@@ -382,7 +382,7 @@ abstract class AbstractWriter implements WriterInterface
         $isArchive = strpos($source, 'zip://') !== false;
         $actualSource = null;
         if ($isArchive) {
-            $source = substr($source, 6);
+            $source = substr((string) $source, 6);
             list($zipFilename, $imageFilename) = explode('#', $source);
 
             $zip = new ZipArchive();

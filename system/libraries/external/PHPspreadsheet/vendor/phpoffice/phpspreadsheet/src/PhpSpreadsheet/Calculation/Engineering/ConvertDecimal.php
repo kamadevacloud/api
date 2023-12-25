@@ -66,7 +66,7 @@ class ConvertDecimal extends ConvertBase
 
         $r = decbin($value);
         // Two's Complement
-        $r = substr($r, -10);
+        $r = substr((string) $r, -10);
 
         return self::nbrConversionFormat($r, $places);
     }
@@ -197,14 +197,14 @@ class ConvertDecimal extends ConvertBase
             return ExcelError::NAN();
         }
         $r = decoct($value);
-        $r = substr($r, -10);
+        $r = substr((string) $r, -10);
 
         return self::nbrConversionFormat($r, $places);
     }
 
     protected static function validateDecimal(string $value): string
     {
-        if (strlen($value) > preg_match_all('/[-0123456789.]/', $value)) {
+        if (strlen((string) $value) > preg_match_all('/[-0123456789.]/', $value)) {
             throw new Exception(ExcelError::VALUE());
         }
 

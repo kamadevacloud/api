@@ -689,7 +689,7 @@ class Worksheet extends WriterPart
 
                 self::writeAttributeIf($objWriter, $conditional->getStopIfTrue(), 'stopIfTrue', '1');
 
-                $cellRange = Coordinate::splitRange(str_replace('$', '', strtoupper($cellCoordinate)));
+                $cellRange = Coordinate::splitRange(str_replace('$', '', strtoupper((string) $cellCoordinate)));
                 [$topLeftCell] = $cellRange[0];
 
                 if (
@@ -1268,7 +1268,7 @@ class Worksheet extends WriterPart
     private function writeCellError(XMLWriter $objWriter, string $mappedType, string $cellValue, string $formulaerr = '#NULL!'): void
     {
         $objWriter->writeAttribute('t', $mappedType);
-        $cellIsFormula = substr($cellValue, 0, 1) === '=';
+        $cellIsFormula = substr((string) $cellValue, 0, 1) === '=';
         self::writeElementIf($objWriter, $cellIsFormula, 'f', Xlfn::addXlfnStripEquals($cellValue));
         $objWriter->writeElement('v', $cellIsFormula ? $formulaerr : $cellValue);
     }
@@ -1296,7 +1296,7 @@ class Worksheet extends WriterPart
             $objWriter->writeAttribute('ref', $cell->getCoordinate());
             $objWriter->writeAttribute('aca', '1');
             $objWriter->writeAttribute('ca', '1');
-            $objWriter->text(substr($cellValue, 1));
+            $objWriter->text(substr((string) $cellValue, 1));
             $objWriter->endElement();
         } else {
             $objWriter->writeElement('f', Xlfn::addXlfnStripEquals($cellValue));
@@ -1304,7 +1304,7 @@ class Worksheet extends WriterPart
                 $objWriter,
                 $this->getParentWriter()->getOffice2003Compatibility() === false,
                 'v',
-                ($this->getParentWriter()->getPreCalculateFormulas() && !is_array($calculatedValue) && substr($calculatedValue ?? '', 0, 1) !== '#')
+                ($this->getParentWriter()->getPreCalculateFormulas() && !is_array($calculatedValue) && substr((string) $calculatedValue ?? '', 0, 1) !== '#')
                     ? StringHelper::formatNumber($calculatedValue) : '0'
             );
         }
@@ -1334,7 +1334,7 @@ class Worksheet extends WriterPart
             $mappedType = $pCell->getDataType();
 
             // Write data depending on its type
-            switch (strtolower($mappedType)) {
+            switch (strtolower((string) $mappedType)) {
                 case 'inlinestr':    // Inline string
                     $this->writeCellInlineStr($objWriter, $mappedType, $cellValue);
 

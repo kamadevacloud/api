@@ -138,11 +138,11 @@ class ZipStreamTest extends TestCase
         $path = (string)realpath($path);
         $files = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($path));
 
-        $pathLen = strlen($path);
+        $pathLen = strlen((string) $path);
         foreach ($files as $file) {
             $filePath = $file->getRealPath();
             if (!is_dir($filePath)) {
-                $data[] = substr($filePath, $pathLen + 1);
+                $data[] = substr((string) $filePath, $pathLen + 1);
             }
         }
 
@@ -542,7 +542,7 @@ class ZipStreamTest extends TestCase
         $zip = new ZipStream(null, $options);
 
         $body = 'Sample String Data';
-        $fileSize = strlen($body);
+        $fileSize = strlen((string) $body);
         // Add fake padding
         $fakePadding = "\0\0\0\0\0\0";
         $response = new Response(200, [], $body . $fakePadding);

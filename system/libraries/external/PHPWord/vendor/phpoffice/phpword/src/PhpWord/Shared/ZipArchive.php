@@ -207,7 +207,7 @@ class ZipArchive
         if (!$this->usePclzip) {
             $contents = $this->zip->getFromName($filename);
             if ($contents === false) {
-                $filename = substr($filename, 1);
+                $filename = substr((string) $filename, 1);
                 $contents = $this->zip->getFromName($filename);
             }
         } else {
@@ -253,7 +253,7 @@ class ZipArchive
         $pathAdded = $localnameParts['dirname'];
 
         if (!$this->usePclzip) {
-            $pathAdded = $pathAdded . '/' . ltrim(str_replace('\\', '/', substr($filename, strlen($pathRemoved))), '/');
+            $pathAdded = $pathAdded . '/' . ltrim(str_replace('\\', '/', substr((string) $filename, strlen((string) $pathRemoved))), '/');
             //$res = $zip->addFile($filename, $pathAdded);
             $res = $zip->addFromString($pathAdded, file_get_contents($filename));       // addFile can't use subfolders in some cases
         } else {
@@ -350,7 +350,7 @@ class ZipArchive
         if ($listIndex !== false) {
             $extracted = $zip->extractByIndex($listIndex, PCLZIP_OPT_EXTRACT_AS_STRING);
         } else {
-            $filename = substr($filename, 1);
+            $filename = substr((string) $filename, 1);
             $listIndex = $this->pclzipLocateName($filename);
             $extracted = $zip->extractByIndex($listIndex, PCLZIP_OPT_EXTRACT_AS_STRING);
         }
@@ -394,8 +394,8 @@ class ZipArchive
         $listCount = count($list);
         $listIndex = -1;
         for ($i = 0; $i < $listCount; ++$i) {
-            if (strtolower($list[$i]['filename']) == strtolower($filename) ||
-                strtolower($list[$i]['stored_filename']) == strtolower($filename)) {
+            if (strtolower((string) $list[$i]['filename']) == strtolower((string) $filename) ||
+                strtolower((string) $list[$i]['stored_filename']) == strtolower((string) $filename)) {
                 $listIndex = $i;
                 break;
             }

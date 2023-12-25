@@ -188,7 +188,7 @@ class Protection
      */
     public function setSalt($salt)
     {
-        if ($salt !== null && strlen($salt) !== 16) {
+        if ($salt !== null && strlen((string) $salt) !== 16) {
             throw new \InvalidArgumentException('salt has to be of exactly 16 bytes length');
         }
 

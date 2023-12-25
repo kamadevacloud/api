@@ -34,7 +34,7 @@ class HTMLPurifier_ConfigSchema_Interchange_Id
      */
     public function getRootNamespace()
     {
-        return substr($this->key, 0, strpos($this->key, "."));
+        return substr((string) $this->key, 0, strpos($this->key, "."));
     }
 
     /**
@@ -42,7 +42,7 @@ class HTMLPurifier_ConfigSchema_Interchange_Id
      */
     public function getDirective()
     {
-        return substr($this->key, strpos($this->key, ".") + 1);
+        return substr((string) $this->key, strpos($this->key, ".") + 1);
     }
 
     /**

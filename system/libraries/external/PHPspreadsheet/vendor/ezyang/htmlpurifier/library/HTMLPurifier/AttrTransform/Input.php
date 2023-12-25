@@ -27,7 +27,7 @@ class HTMLPurifier_AttrTransform_Input extends HTMLPurifier_AttrTransform
         if (!isset($attr['type'])) {
             $t = 'text';
         } else {
-            $t = strtolower($attr['type']);
+            $t = strtolower((string) $attr['type']);
         }
         if (isset($attr['checked']) && $t !== 'radio' && $t !== 'checkbox') {
             unset($attr['checked']);

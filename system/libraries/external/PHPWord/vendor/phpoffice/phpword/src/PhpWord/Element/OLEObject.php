@@ -75,8 +75,8 @@ class OLEObject extends AbstractElement
 
         if (file_exists($source) && in_array($pathInfo['extension'], $supportedTypes)) {
             $ext = $pathInfo['extension'];
-            if (strlen($ext) == 4 && strtolower(substr($ext, -1)) == 'x') {
-                $ext = substr($ext, 0, -1);
+            if (strlen((string) $ext) == 4 && strtolower(substr((string) $ext, -1)) == 'x') {
+                $ext = substr((string) $ext, 0, -1);
             }
 
             $this->source = $source;

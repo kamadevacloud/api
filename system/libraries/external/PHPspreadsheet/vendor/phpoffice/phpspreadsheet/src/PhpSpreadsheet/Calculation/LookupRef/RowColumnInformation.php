@@ -17,7 +17,7 @@ class RowColumnInformation
      */
     private static function cellAddressNullOrWhitespace($cellAddress): bool
     {
-        return $cellAddress === null || (!is_array($cellAddress) && trim($cellAddress) === '');
+        return $cellAddress === null || (!is_array($cellAddress) && trim((string) $cellAddress) === '');
     }
 
     private static function cellColumn(?Cell $cell): int

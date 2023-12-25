@@ -187,7 +187,7 @@ class Stream implements StreamInterface
         if (fwrite($this->stream, $string) === false) {
             throw new RuntimeException;
         }
-        return \mb_strlen($string);
+        return \mb_strlen((string) $string);
     }
 
     /**

@@ -57,7 +57,7 @@ function crc($data, $len) {
  */
 function hex($bin) {
     echo '<span style=\'font-family: "Courier New"; font-size: 10pt;\'>';
-    $c = strlen($bin);
+    $c = strlen((string) $bin);
     $remember = '';
     for($i = 0; $i < $c;) {
         for($j = 0; $j < 16; $j++, $i++) {
@@ -83,7 +83,7 @@ function hex($bin) {
 
 
 function createCode($code, $content) {
-    $contentLength = strlen($content);
+    $contentLength = strlen((string) $content);
     return "\0\0\0" . chr($contentLength) . $code . $content . pack('N', crc($code . $content, $contentLength + 4));
 }
 
@@ -95,20 +95,20 @@ $unpacked = $unpacked[1];
 echo '<br />';
 hex($encoded);
 echo '<br />';
-echo strtoupper($unpacked);
+echo strtoupper((string) $unpacked);
 echo '<br />';
 echo pack('H*', $unpacked);
 
 echo '<br /><br /><br />';
 // JPG:
 $text = "Generated with Barcode Bakery for PHP http://www.barcodebakery.com";
-$length = strlen($text) + 2;
+$length = strlen((string) $text) + 2;
 $encoded = chr(0xff) . chr(0xfe) . chr($length & 0xff00) . chr($length & 0x00ff) . $text;
 $unpacked = unpack('H*', $encoded);
 $unpacked = $unpacked[1];
 echo '<br />';
 hex($encoded);
 echo '<br />';
-echo strtoupper($unpacked);
+echo strtoupper((string) $unpacked);
 echo '<br />';
 echo pack('H*', $unpacked);

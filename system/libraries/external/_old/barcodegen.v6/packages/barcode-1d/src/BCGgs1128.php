@@ -323,7 +323,7 @@ class BCGgs1128 extends BCGcode128
             if (isset($this->identifiersAi[$this->identifiersId[$i]])) {
                 $ai_data = $this->identifiersAi[$this->identifiersId[$i]];
             } elseif (isset($this->identifiersId[$i][3])) {
-                $identifierWithVar = substr($this->identifiersId[$i], 0, -1) . 'y';
+                $identifierWithVar = substr((string) $this->identifiersId[$i], 0, -1) . 'y';
                 $ai_data = isset($this->identifiersAi[$identifierWithVar]) ? $this->identifiersAi[$identifierWithVar] : null;
             } else {
                 $ai_data = null;
@@ -332,7 +332,7 @@ class BCGgs1128 extends BCGcode128
             /* We'll check if we need to add a ~F1 (<GS>) char */
             /* If we use the legacy mode, we always add a ~F1 (<GS>) char between AIs */
             if ($ai_data !== null) {
-                if ((strlen($this->identifiersContent[$i]) < $ai_data[self::MAXLENGTH] && ($i + 1) !== $c) || (!$this->strictMode && ($i + 1) !== $c)) {
+                if ((strlen((string) $this->identifiersContent[$i]) < $ai_data[self::MAXLENGTH] && ($i + 1) !== $c) || (!$this->strictMode && ($i + 1) !== $c)) {
                     $formatedText .= '~F1';
                 }
             } elseif ($this->allowsUnknownIdentifier && $this->identifiersId[$i] === null && ($i + 1) !== $c) {
@@ -346,7 +346,7 @@ class BCGgs1128 extends BCGcode128
             $calculableCharacters = str_replace('(', '', $calculableCharacters);
             $calculableCharacters = str_replace(')', '', $calculableCharacters);
 
-            if (strlen($calculableCharacters) - 1 > self::MAX_GS1128_CHARS) {
+            if (strlen((string) $calculableCharacters) - 1 > self::MAX_GS1128_CHARS) {
                 throw new BCGParseException('gs1128', 'The barcode can\'t contain more than ' . self::MAX_GS1128_CHARS . ' characters.');
             }
         }
@@ -417,11 +417,11 @@ class BCGgs1128 extends BCGcode128
         $checksumAdded = 0;
         $decimalPointRemoved = 0;
         $toParse = str_replace('~F1', chr(29), $text);
-        $nbCharToParse = strlen($toParse);
+        $nbCharToParse = strlen((string) $toParse);
         $nbCharId = 0;
         $isFormated = $toParse[0] === '(' ? true : false;
         $maxCharId = $isFormated ? self::MAX_ID_FORMATED : self::MAX_ID_NOT_FORMATED;
-        $id = strtolower(substr($toParse, 0, min($maxCharId, $nbCharToParse)));
+        $id = strtolower(substr((string) $toParse, 0, min($maxCharId, $nbCharToParse)));
         $id = $isFormated ? $this->findIdFormated($id, $yAlreadySet, $realNameId) : $this->findIdNotFormated($id, $yAlreadySet, $realNameId);
 
         if ($id === false) {
@@ -433,9 +433,9 @@ class BCGgs1128 extends BCGcode128
             $nbCharId = 0;
             $content = $toParse;
         } else {
-            $nbCharId = strlen($id) + ($isFormated ? 2 : 0);
+            $nbCharId = strlen((string) $id) + ($isFormated ? 2 : 0);
             $n = min($this->identifiersAi[$realNameId][self::MAXLENGTH], $nbCharToParse);
-            $content = substr($toParse, $nbCharId, $n);
+            $content = substr((string) $toParse, $nbCharId, $n);
         }
 
         if ($id !== null) {
@@ -446,7 +446,7 @@ class BCGgs1128 extends BCGcode128
                     $n++;
                     if ($n <= $nbCharToParse) {
                         /* We take an extra char */
-                        $content = substr($toParse, $nbCharId, $n);
+                        $content = substr((string) $toParse, $nbCharId, $n);
                     }
                 }
             }
@@ -455,7 +455,7 @@ class BCGgs1128 extends BCGcode128
         /* We check for separator */
         $separator = strpos($content, chr(29));
         if ($separator !== false) {
-            $content = substr($content, 0, $separator);
+            $content = substr((string) $content, 0, $separator);
             $separatorsFound++;
         }
 
@@ -479,14 +479,14 @@ class BCGgs1128 extends BCGcode128
         $this->identifiersId[] = $id;
         $this->identifiersContent[] = $content;
 
-        $nbCharLastContent = (((strlen($content) + $nbCharId) - $checksumAdded) + $decimalPointRemoved) + $separatorsFound;
+        $nbCharLastContent = (((strlen((string) $content) + $nbCharId) - $checksumAdded) + $decimalPointRemoved) + $separatorsFound;
         if ($nbCharToParse - $nbCharLastContent > 0) {
             /* If there is more than one content in this array, we parse again */
-            $otherContent = substr($toParse, $nbCharLastContent, $nbCharToParse);
-            $nbCharOtherContent = strlen($otherContent);
+            $otherContent = substr((string) $toParse, $nbCharLastContent, $nbCharToParse);
+            $nbCharOtherContent = strlen((string) $otherContent);
 
             if ($otherContent[0] === chr(29)) {
-                $otherContent = substr($otherContent, 1);
+                $otherContent = substr((string) $otherContent, 1);
                 $nbCharOtherContent--;
             }
 
@@ -510,7 +510,7 @@ class BCGgs1128 extends BCGcode128
     private function idExists($id, &$yAlreadySet, &$realNameId)
     {
         $yFound = isset($id[3]) && $id[3] === 'y';
-        $idVarAdded = substr($id, 0, -1) . 'y';
+        $idVarAdded = substr((string) $id, 0, -1) . 'y';
 
         if (isset($this->identifiersAi[$id])) {
             if ($yFound) {
@@ -547,7 +547,7 @@ class BCGgs1128 extends BCGcode128
                 throw new BCGParseException('gs1128', 'Identifiers must have at least 2 characters.');
             }
 
-            $id = substr($id, 1, $pos - 1);
+            $id = substr((string) $id, 1, $pos - 1);
             if ($this->idExists($id, $yAlreadySet, $realNameId)) {
                 return $id;
             }
@@ -572,11 +572,11 @@ class BCGgs1128 extends BCGcode128
     {
         $tofind = $id;
 
-        while (strlen($tofind) >= 2) {
+        while (strlen((string) $tofind) >= 2) {
             if ($this->idExists($tofind, $yAlreadySet, $realNameId)) {
                 return $tofind;
             } else {
-                $tofind = substr($tofind, 0, -1);
+                $tofind = substr((string) $tofind, 0, -1);
             }
         }
 
@@ -608,9 +608,9 @@ class BCGgs1128 extends BCGcode128
             case self::DATE_YYMMDD:
                 $valid_date = true;
                 if (preg_match("/^[0-9]{6}$/", $content)) {
-                    $year = substr($content, 0, 2);
-                    $month = substr($content, 2, 2);
-                    $day = substr($content, 4, 2);
+                    $year = substr((string) $content, 0, 2);
+                    $month = substr((string) $content, 2, 2);
+                    $day = substr((string) $content, 4, 2);
 
                     /* day can be 00 if we only need month and year */
                     if (intval($month) < 1 || intval($month) > 12 || intval($day) < 0 || intval($day) > 31) {
@@ -628,7 +628,7 @@ class BCGgs1128 extends BCGcode128
         }
 
         // We check the length of the content
-        $nbCharContent = strlen($content);
+        $nbCharContent = strlen((string) $content);
         $checksumChar = 0;
         $minlengthContent = $this->identifiersAi[$realNameId][self::MINLENGTH];
         $maxlengthContent = $this->identifiersAi[$realNameId][self::MAXLENGTH];
@@ -660,7 +660,7 @@ class BCGgs1128 extends BCGcode128
     private function checkChecksum(&$content, $id, $realNameId, &$checksumAdded)
     {
         if ($this->identifiersAi[$realNameId][self::CHECKSUM]) {
-            $nbCharContent = strlen($content);
+            $nbCharContent = strlen((string) $content);
             $minlengthContent = $this->identifiersAi[$realNameId][self::MINLENGTH];
             if ($nbCharContent === ($minlengthContent - 1)) {
                 /* we need to calculate the checksum */
@@ -668,7 +668,7 @@ class BCGgs1128 extends BCGcode128
                 $checksumAdded++;
             } elseif ($nbCharContent === $minlengthContent) {
                 /* we need to check the checksum */
-                $checksum = self::getAiContentChecksum(substr($content, 0, -1));
+                $checksum = self::getAiContentChecksum(substr((string) $content, 0, -1));
                 if (intval($content[$nbCharContent - 1]) !== $checksum) {
                     throw new BCGParseException('gs1128', 'The checksum of "(' . $id . ') ' . $content . '" must be: ' . $checksum);
                 }
@@ -689,7 +689,7 @@ class BCGgs1128 extends BCGcode128
      */
     private function checkVars(&$content, &$id, $yAlreadySet, &$decimalPointRemoved)
     {
-        $nbCharContent = strlen($content);
+        $nbCharContent = strlen((string) $content);
         /* We check for "y" var in AI */
         if ($yAlreadySet) {
             /* We'll check if we have a decimal point */
@@ -703,7 +703,7 @@ class BCGgs1128 extends BCGcode128
                 $pos = $nbCharContent - 1;
             }
 
-            $id = str_replace('y', $nbCharContent - ($pos + 1), strtolower($id));
+            $id = str_replace('y', $nbCharContent - ($pos + 1), strtolower((string) $id));
             $content = str_replace('.', '', $content);
             $decimalPointRemoved++;
         }
@@ -727,7 +727,7 @@ class BCGgs1128 extends BCGcode128
         // Add all of that and do 10-(?mod10)
         $odd = true;
         $checksumValue = 0;
-        $c = strlen($content);
+        $c = strlen((string) $content);
 
         for ($i = $c; $i > 0; $i--) {
             if ($odd === true) {

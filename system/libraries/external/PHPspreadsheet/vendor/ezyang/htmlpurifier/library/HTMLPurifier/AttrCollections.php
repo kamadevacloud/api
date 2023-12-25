@@ -117,7 +117,7 @@ class HTMLPurifier_AttrCollections
             if ($required = (strpos($def_i, '*') !== false)) {
                 // rename the definition
                 unset($attr[$def_i]);
-                $def_i = trim($def_i, '*');
+                $def_i = trim((string) $def_i, '*');
                 $attr[$def_i] = $def;
             }
 

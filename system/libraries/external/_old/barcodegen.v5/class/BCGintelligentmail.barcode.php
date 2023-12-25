@@ -277,7 +277,7 @@ class BCGintelligentmail extends BCGBarcode1D {
 
         $barcodeIdentifier = str_pad($barcodeIdentifier, 2, '0', STR_PAD_LEFT);
 
-        if (strlen($barcodeIdentifier) !== 2) {
+        if (strlen((string) $barcodeIdentifier) !== 2) {
             throw new BCGArgumentException('Barcode Identifier must contain 2 digits.', 'barcodeIdentifier');
         }
 
@@ -295,7 +295,7 @@ class BCGintelligentmail extends BCGBarcode1D {
             $mailerIdentifierLength = 9;
         }
 
-        if ($mailerIdentifierLength === 9 && strlen($serialNumber) > 6) {
+        if ($mailerIdentifierLength === 9 && strlen((string) $serialNumber) > 6) {
             throw new BCGArgumentException('If the Serial Number has more than 6 digits, the Mailer Identifier must be lower than 900000.', 'mailerIdentifier');
         }
 
@@ -337,7 +337,7 @@ class BCGintelligentmail extends BCGBarcode1D {
             $this->positionX += 9;
         }
 
-        $c = strlen($this->data);
+        $c = strlen((string) $this->data);
         for ($i = 0; $i < $c; $i++) {
             $this->drawChar($im, $this->data[$i]);
         }
@@ -383,7 +383,7 @@ class BCGintelligentmail extends BCGBarcode1D {
         }
 
         // Must contain 0, 5, 9 or 11 chars
-        $c = strlen($this->text);
+        $c = strlen((string) $this->text);
         if ($c !== 0 && $c !== 5 && $c !== 9 && $c !== 11) {
             throw new BCGParseException('intelligentmail', 'Must contain 0, 5, 9, or 11 characters.');
         }
@@ -591,7 +591,7 @@ class BCGintelligentmail extends BCGBarcode1D {
      */
     private static function conversionRoutingCode($zipcode) {
         $number = $zipcode;
-        switch (strlen($zipcode)) {
+        switch (strlen((string) $zipcode)) {
             case 11:
                 $number = bcadd($number, '1000000000', 0);
             case 9:

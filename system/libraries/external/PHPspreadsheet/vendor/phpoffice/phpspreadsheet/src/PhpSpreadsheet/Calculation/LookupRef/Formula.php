@@ -25,7 +25,7 @@ class Formula
         preg_match('/^' . Calculation::CALCULATION_REGEXP_CELLREF . '$/i', $cellReference, $matches);
 
         $cellReference = $matches[6] . $matches[7];
-        $worksheetName = trim($matches[3], "'");
+        $worksheetName = trim((string) $matches[3], "'");
         $worksheet = (!empty($worksheetName))
             ? $cell->getWorksheet()->getParent()->getSheetByName($worksheetName)
             : $cell->getWorksheet();

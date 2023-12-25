@@ -125,7 +125,7 @@ class BCGupcext5 extends BCGBarcode1D
      */
     protected function validate()
     {
-        $c = strlen($this->text);
+        $c = strlen((string) $this->text);
         if ($c === 0) {
             throw new BCGParseException('upcext5', 'No data has been entered.');
         }
@@ -158,7 +158,7 @@ class BCGupcext5 extends BCGBarcode1D
         // Add all of that and do ?mod10
         $odd = true;
         $this->checksumValue = 0;
-        $c = strlen($this->text);
+        $c = strlen((string) $this->text);
         for ($i = $c; $i > 0; $i--) {
             if ($odd === true) {
                 $multiplier = 3;

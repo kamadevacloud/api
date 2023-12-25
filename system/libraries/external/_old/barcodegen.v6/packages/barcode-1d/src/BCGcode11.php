@@ -51,7 +51,7 @@ class BCGcode11 extends BCGBarcode1D
         $this->drawChar($im, '001100', true);
 
         // Chars
-        $c = strlen($this->text);
+        $c = strlen((string) $this->text);
         for ($i = 0; $i < $c; $i++) {
             $this->drawChar($im, $this->findCode($this->text[$i]), true);
         }
@@ -80,7 +80,7 @@ class BCGcode11 extends BCGBarcode1D
         $startlength = 8;
 
         $textlength = 0;
-        $c = strlen($this->text);
+        $c = strlen((string) $this->text);
         for ($i = 0; $i < $c; $i++) {
             $textlength += $this->getIndexLength($this->findIndex($this->text[$i]));
         }
@@ -105,7 +105,7 @@ class BCGcode11 extends BCGBarcode1D
      */
     protected function validate()
     {
-        $c = strlen($this->text);
+        $c = strlen((string) $this->text);
         if ($c === 0) {
             throw new BCGParseException('code11', 'No data has been entered.');
         }
@@ -139,7 +139,7 @@ class BCGcode11 extends BCGBarcode1D
         $temp_text = $this->text;
         $this->checksumValue = array();
         for ($z = 0; $z < 2; $z++) {
-            $c = strlen($temp_text);
+            $c = strlen((string) $temp_text);
 
             // We don't display the K CheckSum if the original text had a length less than 10
             if ($c <= 10 && $z === 1) {

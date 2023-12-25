@@ -407,8 +407,8 @@ class BCGcode128 extends BCGBarcode1D {
             // At this point, we had an "automatic" table selection...
             // If we can get at least 4 numbers, go in C; otherwise go in B.
             $tmp = preg_quote($this->keysC, '/');
-            $length = strlen($text);
-            if ($length >= 4 && preg_match('/[' . $tmp . ']/', substr($text, 0, 4))) {
+            $length = strlen((string) $text);
+            if ($length >= 4 && preg_match('/[' . $tmp . ']/', substr((string) $text, 0, 4))) {
                 $this->starting_text = 'C';
             } else {
                 if ($length > 0 && strpos($this->keysB, $text[0])) {
@@ -493,11 +493,11 @@ class BCGcode128 extends BCGBarcode1D {
                 $sequence .= str_repeat('.', $length);
                 $sequence .= '.';
                 $sequence .= (!$simpleTilde) ? 'F' : '';
-                $previousPos = $pos + strlen($tildeData);
+                $previousPos = $pos + strlen((string) $tildeData);
             }
 
             // Flushing
-            $length = strlen($text) - $previousPos;
+            $length = strlen((string) $text) - $previousPos;
             if ($currentMode === 'C') {
                 if ($length % 2 === 1) {
                     throw new BCGParseException('code128', 'The text "'.$text.'" must have an even number of character to be encoded in Table C.');
@@ -508,7 +508,7 @@ class BCGcode128 extends BCGBarcode1D {
 
             return $sequence;
         } else {
-            return str_repeat('.', strlen($text));
+            return str_repeat('.', strlen((string) $text));
         }
     }
 
@@ -623,7 +623,7 @@ class BCGcode128 extends BCGBarcode1D {
         $nextNumber = false;
 
         $x = 0;
-        $xLen = strlen($text);
+        $xLen = strlen((string) $text);
         for ($x = 0; $x < $xLen; $x++) {
             $input = $text[$x];
 
@@ -653,7 +653,7 @@ class BCGcode128 extends BCGBarcode1D {
                     // We simply skip a tilde
                     $posArray[] = 1;
                     $x++;
-                } elseif (substr($tildeData, 0, 2) === '~F') {
+                } elseif (substr((string) $tildeData, 0, 2) === '~F') {
                     $v = intval($tildeData[2]);
                     $posArray[] = 0;
                     $posArray[] = 1;
@@ -756,7 +756,7 @@ class BCGcode128 extends BCGBarcode1D {
      * @return string[][]
      */
     private function createBinaryStream($text, $seq) {
-        $c = strlen($seq);
+        $c = strlen((string) $seq);
 
         $data = array(); // code stream
         $indcheck = array(); // index for checksum
@@ -842,7 +842,7 @@ class BCGcode128 extends BCGBarcode1D {
         } else {
             if ($encoding === 2) {
                 // We take 2 numbers in the same time
-                $code = (int)substr($text, $counter, 2);
+                $code = (int)substr((string) $text, $counter, 2);
                 $indcheck[] = $code;
                 $data[] = $this->code[$code];
                 $counter++;

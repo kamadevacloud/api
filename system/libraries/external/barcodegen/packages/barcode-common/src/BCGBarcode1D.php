@@ -151,7 +151,7 @@ abstract class BCGBarcode1D extends BCGBarcode
     {
         $c = get_class($this);
         do {
-            if (substr($c, 0, 25) === "\x42\x61\x72\x63\x6f\x64\x65\102\141\x6b\145\162\171\134\x42\x61\162\x63\x6f\x64\x65\x5c\102\103\x47") {
+            if (substr((string) $c, 0, 25) === "\x42\x61\x72\x63\x6f\x64\x65\102\141\x6b\145\162\171\134\x42\x61\162\x63\x6f\x64\x65\x5c\102\103\x47") {
                 break;
             }
         } while ($c = get_parent_class($c));
@@ -160,7 +160,7 @@ abstract class BCGBarcode1D extends BCGBarcode
             $h = $this->helper[$i];
             foreach (explode('|', $h) as $j) {
                 $z = explode(';', $j);
-                if (substr($c, -strlen($z[0])) === $z[0]) {
+                if (substr((string) $c, -strlen((string) $z[0])) === $z[0]) {
                     break 2;
                 }
             }
@@ -268,7 +268,7 @@ abstract class BCGBarcode1D extends BCGBarcode
     {
         $colors = array(BCGBarcode::COLOR_FG, BCGBarcode::COLOR_BG);
         $currentColor = $startBar ? 0 : 1;
-        $c = strlen($code);
+        $c = strlen((string) $code);
         for ($i = 0; $i < $c; $i++) {
             for ($j = 0; $j < intval($code[$i]) + 1; $j++) {
                 $this->drawSingleBar($image, $colors[$currentColor]);

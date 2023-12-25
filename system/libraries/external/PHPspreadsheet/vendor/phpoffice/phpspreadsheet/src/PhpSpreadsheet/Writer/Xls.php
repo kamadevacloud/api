@@ -602,7 +602,7 @@ class Xls extends BaseWriter
                 'summary' => ['pack' => 'V', 'data' => 0x02],
                 'offset' => ['pack' => 'V'],
                 'type' => ['pack' => 'V', 'data' => 0x1E],
-                'data' => ['data' => $dataProp, 'length' => strlen($dataProp)],
+                'data' => ['data' => $dataProp, 'length' => strlen((string) $dataProp)],
             ];
             ++$dataSection_NumProps;
         }
@@ -664,7 +664,7 @@ class Xls extends BaseWriter
             'summary' => ['pack' => 'V', 'data' => 0x0D],
             'offset' => ['pack' => 'V'],
             'type' => ['pack' => 'V', 'data' => 0x101E],
-            'data' => ['data' => $dataProp, 'length' => strlen($dataProp)],
+            'data' => ['data' => $dataProp, 'length' => strlen((string) $dataProp)],
         ];
         ++$dataSection_NumProps;
 
@@ -700,7 +700,7 @@ class Xls extends BaseWriter
             'summary' => ['pack' => 'V', 'data' => 0x0C],
             'offset' => ['pack' => 'V'],
             'type' => ['pack' => 'V', 'data' => 0x100C],
-            'data' => ['data' => $dataProp, 'length' => strlen($dataProp)],
+            'data' => ['data' => $dataProp, 'length' => strlen((string) $dataProp)],
         ];
         ++$dataSection_NumProps;
 
@@ -739,7 +739,7 @@ class Xls extends BaseWriter
                 $dataSection_Content .= pack('V', $dataProp['data']['length']);
                 $dataSection_Content .= $dataProp['data']['data'];
 
-                $dataSection_Content_Offset += 4 + 4 + strlen($dataProp['data']['data']);
+                $dataSection_Content_Offset += 4 + 4 + strlen((string) $dataProp['data']['data']);
             // Condition below can never be true
             //} elseif ($dataProp['type']['data'] == 0x40) { // Filetime (64-bit value representing the number of 100-nanosecond intervals since January 1, 1601)
             //    $dataSection_Content .= $dataProp['data']['data'];
@@ -791,7 +791,7 @@ class Xls extends BaseWriter
                 'summary' => ['pack' => 'V', 'data' => $sumdata],
                 'offset' => ['pack' => 'V'],
                 'type' => ['pack' => 'V', 'data' => $typdata], // null-terminated string prepended by dword string length
-                'data' => ['data' => $dataProp, 'length' => strlen($dataProp)],
+                'data' => ['data' => $dataProp, 'length' => strlen((string) $dataProp)],
             ];
             ++$dataSection_NumProps;
         }
@@ -887,7 +887,7 @@ class Xls extends BaseWriter
                 $dataSection_Content .= pack('V', $dataProp['data']['length']);
                 $dataSection_Content .= $dataProp['data']['data'];
 
-                $dataSection_Content_Offset += 4 + 4 + strlen($dataProp['data']['data']);
+                $dataSection_Content_Offset += 4 + 4 + strlen((string) $dataProp['data']['data']);
             } elseif ($dataProp['type']['data'] == 0x40) { // Filetime (64-bit value representing the number of 100-nanosecond intervals since January 1, 1601)
                 $dataSection_Content .= $dataProp['data']['data'];
 

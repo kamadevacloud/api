@@ -151,6 +151,6 @@ abstract class AbstractStyle
             }
         }
 
-        return trim($style);
+        return trim((string) $style);
     }
 }

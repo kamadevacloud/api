@@ -131,7 +131,7 @@ function listfonts($folder)
     $array = array();
     if (($handle = opendir($folder)) !== false) {
         while (($file = readdir($handle)) !== false) {
-            if (substr($file, -4, 4) === '.ttf') {
+            if (substr((string) $file, -4, 4) === '.ttf') {
                 $array[$file] = $file;
             }
         }

@@ -721,7 +721,7 @@ class HTMLPurifier_Config
                 if (strpos($ns_or_directive, '.') !== false) {
                     // directive
                     if ($ns_or_directive[0] == '-') {
-                        $blacklisted_directives[substr($ns_or_directive, 1)] = true;
+                        $blacklisted_directives[substr((string) $ns_or_directive, 1)] = true;
                     } else {
                         $allowed_directives[$ns_or_directive] = true;
                     }

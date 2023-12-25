@@ -132,8 +132,8 @@ class AdvancedValueBinder extends DefaultValueBinder implements IValueBinder
         $cell->setValueExplicit((float) $value, DataType::TYPE_NUMERIC);
 
         // Build the number format mask based on the size of the matched values
-        $dividend = str_repeat('?', strlen($matches[3]));
-        $divisor = str_repeat('?', strlen($matches[4]));
+        $dividend = str_repeat('?', strlen((string) $matches[3]));
+        $divisor = str_repeat('?', strlen((string) $matches[4]));
         $fractionMask = "# {$dividend}/{$divisor}";
         // Set style
         $cell->getWorksheet()->getStyle($cell->getCoordinate())
@@ -152,8 +152,8 @@ class AdvancedValueBinder extends DefaultValueBinder implements IValueBinder
         $cell->setValueExplicit((float) $value, DataType::TYPE_NUMERIC);
 
         // Build the number format mask based on the size of the matched values
-        $dividend = str_repeat('?', strlen($matches[2]));
-        $divisor = str_repeat('?', strlen($matches[3]));
+        $dividend = str_repeat('?', strlen((string) $matches[2]));
+        $divisor = str_repeat('?', strlen((string) $matches[3]));
         $fractionMask = "{$dividend}/{$divisor}";
         // Set style
         $cell->getWorksheet()->getStyle($cell->getCoordinate())

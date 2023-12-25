@@ -51,7 +51,7 @@ class ODText extends AbstractWriter implements WriterInterface
                 /** @var $partObject \PhpOffice\PhpWord\Writer\ODText\Part\AbstractPart Type hint */
                 $partObject = new $partClass();
                 $partObject->setParentWriter($this);
-                $this->writerParts[strtolower($partName)] = $partObject;
+                $this->writerParts[strtolower((string) $partName)] = $partObject;
             }
         }
 

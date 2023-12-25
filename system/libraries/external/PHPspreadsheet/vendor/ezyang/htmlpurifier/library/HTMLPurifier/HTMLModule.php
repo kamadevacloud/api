@@ -224,8 +224,8 @@ class HTMLPurifier_HTMLModule
                 return array('optional', 'Flow | #PCDATA');
         }
         list($content_model_type, $content_model) = explode(':', $contents);
-        $content_model_type = strtolower(trim($content_model_type));
-        $content_model = trim($content_model);
+        $content_model_type = strtolower(trim((string) $content_model_type));
+        $content_model = trim((string) $content_model);
         return array($content_model_type, $content_model);
     }
 

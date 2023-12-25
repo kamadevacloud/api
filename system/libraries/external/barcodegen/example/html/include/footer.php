@@ -12,7 +12,7 @@ if (!defined('IN_CB')) {
                         foreach (getImageKeys() as $key => $value) {
                             $finalRequest .= '&' . $key . '=' . urlencode($value);
                         }
-                        if (strlen($finalRequest) > 0) {
+                        if (strlen((string) $finalRequest) > 0) {
                             $finalRequest[0] = '?';
                         }
                     ?>

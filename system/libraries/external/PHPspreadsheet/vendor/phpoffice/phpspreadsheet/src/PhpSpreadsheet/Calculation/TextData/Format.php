@@ -177,7 +177,7 @@ class Format
             $numberValue = str_replace(
                 StringHelper::getThousandsSeparator(),
                 '',
-                trim($value, " \t\n\r\0\x0B" . StringHelper::getCurrencyCode())
+                trim((string) $value, " \t\n\r\0\x0B" . StringHelper::getCurrencyCode())
             );
             if (is_numeric($numberValue)) {
                 return (float) $numberValue;
@@ -263,12 +263,12 @@ class Format
             $value = str_replace([$groupSeparator, $decimalSeparator], ['', '.'], $value);
 
             // Handle the special case of trailing % signs
-            $percentageString = rtrim($value, '%');
+            $percentageString = rtrim((string) $value, '%');
             if (!is_numeric($percentageString)) {
                 return ExcelError::VALUE();
             }
 
-            $percentageAdjustment = strlen($value) - strlen($percentageString);
+            $percentageAdjustment = strlen((string) $value) - strlen((string) $percentageString);
             if ($percentageAdjustment) {
                 $value = (float) $percentageString;
                 $value /= 10 ** ($percentageAdjustment * 2);

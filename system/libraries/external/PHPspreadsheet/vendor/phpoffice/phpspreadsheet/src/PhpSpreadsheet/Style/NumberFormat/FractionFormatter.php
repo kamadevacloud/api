@@ -23,7 +23,7 @@ class FractionFormatter extends BaseFormatter
         if ($decimalPart === '0') {
             return "{$sign}{$integerPart}";
         }
-        $decimalLength = strlen($decimalPart);
+        $decimalLength = strlen((string) $decimalPart);
         $decimalDivisor = 10 ** $decimalLength;
 
         /** @var float */
@@ -42,7 +42,7 @@ class FractionFormatter extends BaseFormatter
             }
 
             return "{$sign}{$integerPart} {$adjustedDecimalPart}/{$adjustedDecimalDivisor}";
-        } elseif ((substr($format, 0, 3) == '? ?')) {
+        } elseif ((substr((string) $format, 0, 3) == '? ?')) {
             if ($integerPart == 0) {
                 $integerPart = '';
             }

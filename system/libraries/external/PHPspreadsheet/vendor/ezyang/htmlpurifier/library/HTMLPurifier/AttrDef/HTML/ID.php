@@ -42,7 +42,7 @@ class HTMLPurifier_AttrDef_HTML_ID extends HTMLPurifier_AttrDef
             return false;
         }
 
-        $id = trim($id); // trim it first
+        $id = trim((string) $id); // trim it first
 
         if ($id === '') {
             return false;

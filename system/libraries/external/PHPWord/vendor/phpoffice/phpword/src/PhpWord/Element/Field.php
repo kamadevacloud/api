@@ -246,7 +246,7 @@ class Field extends AbstractElement
     {
         if (is_array($options)) {
             foreach (array_keys($options) as $optionkey) {
-                if (!(isset($this->fieldsArray[$this->type]['options'][$optionkey])) && substr($optionkey, 0, 1) !== '\\') {
+                if (!(isset($this->fieldsArray[$this->type]['options'][$optionkey])) && substr((string) $optionkey, 0, 1) !== '\\') {
                     throw new \InvalidArgumentException("Invalid option '$optionkey', possible values are " . implode(', ', $this->fieldsArray[$this->type]['options']));
                 }
             }

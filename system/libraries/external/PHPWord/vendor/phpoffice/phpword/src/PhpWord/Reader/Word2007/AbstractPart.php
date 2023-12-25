@@ -490,11 +490,11 @@ abstract class AbstractPart
                 $styleNode = $xmlReader->getElement('w:tblPr', $domNode);
                 $styleDefs = array();
                 foreach ($margins as $side) {
-                    $ucfSide = ucfirst($side);
+                    $ucfSide = ucfirst((string) $side);
                     $styleDefs["cellMargin$ucfSide"] = array(self::READ_VALUE, "w:tblCellMar/w:$side", 'w:w');
                 }
                 foreach ($borders as $side) {
-                    $ucfSide = ucfirst($side);
+                    $ucfSide = ucfirst((string) $side);
                     $styleDefs["border{$ucfSide}Size"] = array(self::READ_VALUE, "w:tblBorders/w:$side", 'w:sz');
                     $styleDefs["border{$ucfSide}Color"] = array(self::READ_VALUE, "w:tblBorders/w:$side", 'w:color');
                     $styleDefs["border{$ucfSide}Style"] = array(self::READ_VALUE, "w:tblBorders/w:$side", 'w:val');

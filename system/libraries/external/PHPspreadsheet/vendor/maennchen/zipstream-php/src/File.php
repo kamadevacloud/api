@@ -125,7 +125,7 @@ class File
 
     public function processData(string $data): void
     {
-        $this->len = new Bigint(strlen($data));
+        $this->len = new Bigint(strlen((string) $data));
         $this->crc = crc32($data);
 
         // compress data if needed
@@ -133,7 +133,7 @@ class File
             $data = gzdeflate($data);
         }
 
-        $this->zlen = new Bigint(strlen($data));
+        $this->zlen = new Bigint(strlen((string) $data));
         $this->addFileHeader();
         $this->zip->send($data);
         $this->addFileFooter();
@@ -150,7 +150,7 @@ class File
         $name = static::filterFilename($this->name);
 
         // calculate name length
-        $nameLength = strlen($name);
+        $nameLength = strlen((string) $name);
 
         // create dos timestamp
         $time = static::dosTime($this->opt->getTime()->getTimestamp());
@@ -198,7 +198,7 @@ class File
             ['V', $this->zlen->getLowFF($force)],   // Length of compressed data (forced to 0xFFFFFFFF for zero header)
             ['V', $this->len->getLowFF($force)],    // Length of original data (forced to 0xFFFFFFFF for zero header)
             ['v', $nameLength],                     // Length of filename
-            ['v', strlen($footer)],                 // Extra data (see above)
+            ['v', strlen((string) $footer)],                 // Extra data (see above)
         ];
 
         // pack fields and calculate "total" length
@@ -209,7 +209,7 @@ class File
         $this->zip->send($data);
 
         // save header length
-        $this->hlen = Bigint::init(strlen($data));
+        $this->hlen = Bigint::init(strlen((string) $data));
     }
 
     /**
@@ -330,7 +330,7 @@ class File
         } else {
             $footer = '';
         }
-        $this->totalLength = $this->hlen->add($this->zlen)->add(Bigint::init(strlen($footer)));
+        $this->totalLength = $this->hlen->add($this->zlen)->add(Bigint::init(strlen((string) $footer)));
         $this->zip->addToCdr($this);
     }
 
@@ -361,9 +361,9 @@ class File
         $size = $this->opt->getSize();
         while (!$stream->eof() && ($size === 0 || $total < $size)) {
             $data = $stream->read(self::CHUNKED_READ_BLOCK_SIZE);
-            $total += strlen($data);
+            $total += strlen((string) $data);
             if ($size > 0 && $total > $size) {
-                $data = substr($data, 0 , strlen($data)-($total - $size));
+                $data = substr((string) $data, 0 , strlen((string) $data)-($total - $size));
             }
             $this->deflateData($stream, $data, $options);
             if ($options & self::SEND) {
@@ -388,7 +388,7 @@ class File
     protected function deflateData(StreamInterface $stream, string &$data, ?int $options = null): void
     {
         if ($options & self::COMPUTE) {
-            $this->len = $this->len->add(Bigint::init(strlen($data)));
+            $this->len = $this->len->add(Bigint::init(strlen((string) $data)));
             hash_update($this->hash, $data);
         }
         if ($this->deflate) {
@@ -401,7 +401,7 @@ class File
             );
         }
         if ($options & self::COMPUTE) {
-            $this->zlen = $this->zlen->add(Bigint::init(strlen($data)));
+            $this->zlen = $this->zlen->add(Bigint::init(strlen((string) $data)));
         }
     }
 
@@ -425,7 +425,7 @@ class File
             $this->zlen = new Bigint();
             while (!$stream->eof()) {
                 $data = $stream->read(self::CHUNKED_READ_BLOCK_SIZE);
-                $this->zlen = $this->zlen->add(Bigint::init(strlen($data)));
+                $this->zlen = $this->zlen->add(Bigint::init(strlen((string) $data)));
             }
             $stream->rewind();
         }
@@ -462,9 +462,9 @@ class File
             ['V', $this->crc],                      // CRC32
             ['V', $this->zlen->getLowFF()],         // Compressed Data Length
             ['V', $this->len->getLowFF()],          // Original Data Length
-            ['v', strlen($name)],                   // Length of filename
-            ['v', strlen($footer)],                 // Extra data len (see above)
-            ['v', strlen($comment)],                // Length of comment
+            ['v', strlen((string) $name)],                   // Length of filename
+            ['v', strlen((string) $footer)],                 // Extra data len (see above)
+            ['v', strlen((string) $comment)],                // Length of comment
             ['v', 0],                               // Disk number
             ['v', 0],                               // Internal File Attributes
             ['V', 32],                              // External File Attributes

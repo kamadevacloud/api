@@ -232,8 +232,8 @@ final class Language extends AbstractStyle
             $locale = str_replace('_', '-', $locale);
         }
 
-        if (strlen($locale) === 2) {
-            return strtolower($locale) . '-' . strtoupper($locale);
+        if (strlen((string) $locale) === 2) {
+            return strtolower((string) $locale) . '-' . strtoupper((string) $locale);
         }
 
         if ($locale !== null && $locale !== 'zxx' && strstr($locale, '-') === false) {

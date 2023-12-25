@@ -107,18 +107,18 @@ class PasswordEncoder
         $origEncoding = mb_internal_encoding();
         mb_internal_encoding('UTF-8');
 
-        $password = mb_substr($password, 0, min(self::$passwordMaxLength, mb_strlen($password)));
+        $password = mb_substr((string) $password, 0, min(self::$passwordMaxLength, mb_strlen((string) $password)));
 
         //   Get the single-byte values by iterating through the Unicode characters of the truncated password.
         //   For each character, if the low byte is not equal to 0, take it. Otherwise, take the high byte.
         $passUtf8 = mb_convert_encoding($password, 'UCS-2LE', 'UTF-8');
         $byteChars = array();
 
-        for ($i = 0; $i < mb_strlen($password); $i++) {
-            $byteChars[$i] = ord(substr($passUtf8, $i * 2, 1));
+        for ($i = 0; $i < mb_strlen((string) $password); $i++) {
+            $byteChars[$i] = ord(substr((string) $passUtf8, $i * 2, 1));
 
             if ($byteChars[$i] == 0) {
-                $byteChars[$i] = ord(substr($passUtf8, $i * 2 + 1, 1));
+                $byteChars[$i] = ord(substr((string) $passUtf8, $i * 2 + 1, 1));
             }
         }
 

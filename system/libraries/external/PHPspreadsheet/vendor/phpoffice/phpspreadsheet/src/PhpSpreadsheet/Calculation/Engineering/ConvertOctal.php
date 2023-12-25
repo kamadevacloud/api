@@ -99,7 +99,7 @@ class ConvertOctal extends ConvertBase
         foreach (str_split($value) as $char) {
             $binX .= str_pad(decbin((int) $char), 3, '0', STR_PAD_LEFT);
         }
-        if (strlen($binX) == 30 && $binX[0] == '1') {
+        if (strlen((string) $binX) == 30 && $binX[0] == '1') {
             for ($i = 0; $i < 30; ++$i) {
                 $binX[$i] = ($binX[$i] == '1' ? '0' : '1');
             }
@@ -157,7 +157,7 @@ class ConvertOctal extends ConvertBase
         }
 
         $hexVal = strtoupper(dechex((int) self::toDecimal($value)));
-        $hexVal = (PHP_INT_SIZE === 4 && strlen($value) === 10 && $value[0] >= '4') ? "FF{$hexVal}" : $hexVal;
+        $hexVal = (PHP_INT_SIZE === 4 && strlen((string) $value) === 10 && $value[0] >= '4') ? "FF{$hexVal}" : $hexVal;
 
         return self::nbrConversionFormat($hexVal, $places);
     }
@@ -165,7 +165,7 @@ class ConvertOctal extends ConvertBase
     protected static function validateOctal(string $value): string
     {
         $numDigits = (int) preg_match_all('/[01234567]/', $value);
-        if (strlen($value) > $numDigits || $numDigits > 10) {
+        if (strlen((string) $value) > $numDigits || $numDigits > 10) {
             throw new Exception(ExcelError::NAN());
         }
 

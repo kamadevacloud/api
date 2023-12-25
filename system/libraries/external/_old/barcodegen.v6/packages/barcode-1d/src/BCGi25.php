@@ -84,13 +84,13 @@ class BCGi25 extends BCGBarcode1D
         $this->drawChar($im, '0000', true);
 
         // Chars
-        $c = strlen($temp_text);
+        $c = strlen((string) $temp_text);
         for ($i = 0; $i < $c; $i += 2) {
             $temp_bar = '';
-            $c2 = strlen($this->findCode($temp_text[$i]));
+            $c2 = strlen((string) $this->findCode($temp_text[$i]));
             for ($j = 0; $j < $c2; $j++) {
-                $temp_bar .= substr($this->findCode($temp_text[$i]), $j, 1);
-                $temp_bar .= substr($this->findCode($temp_text[$i + 1]), $j, 1);
+                $temp_bar .= substr((string) $this->findCode($temp_text[$i]), $j, 1);
+                $temp_bar .= substr((string) $this->findCode($temp_text[$i + 1]), $j, 1);
             }
 
             $this->drawChar($im, $this->changeBars($temp_bar), true);
@@ -110,7 +110,7 @@ class BCGi25 extends BCGBarcode1D
      */
     public function getDimension($w, $h)
     {
-        $textlength = (3 + ($this->ratio + 1) * 2) * strlen($this->text);
+        $textlength = (3 + ($this->ratio + 1) * 2) * strlen((string) $this->text);
         $startlength = 4;
         $checksumlength = 0;
         if ($this->checksum === true) {
@@ -129,7 +129,7 @@ class BCGi25 extends BCGBarcode1D
      */
     protected function validate()
     {
-        $c = strlen($this->text);
+        $c = strlen((string) $this->text);
         if ($c === 0) {
             throw new BCGParseException('i25', 'No data has been entered.');
         }
@@ -164,7 +164,7 @@ class BCGi25 extends BCGBarcode1D
         // Add all of that and do 10-(?mod10)
         $even = true;
         $this->checksumValue = 0;
-        $c = strlen($this->text);
+        $c = strlen((string) $this->text);
         for ($i = $c; $i > 0; $i--) {
             if ($even === true) {
                 $multiplier = 3;
@@ -205,7 +205,7 @@ class BCGi25 extends BCGBarcode1D
     private function changeBars($in)
     {
         if ($this->ratio > 1) {
-            $c = strlen($in);
+            $c = strlen((string) $in);
             for ($i = 0; $i < $c; $i++) {
                 $in[$i] = $in[$i] === '1' ? $this->ratio : $in[$i];
             }

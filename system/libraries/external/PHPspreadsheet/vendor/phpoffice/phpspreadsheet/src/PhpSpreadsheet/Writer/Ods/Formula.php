@@ -24,7 +24,7 @@ class Formula
         $formula = $this->convertCellReferences($formula, $worksheetName);
         $formula = $this->convertDefinedNames($formula);
 
-        if (substr($formula, 0, 1) !== '=') {
+        if (substr((string) $formula, 0, 1) !== '=') {
             $formula = '=' . $formula;
         }
 
@@ -51,7 +51,7 @@ class Formula
             $value = $values[$splitCount];
 
             if (in_array($value, $this->definedNames, true)) {
-                $formula = substr($formula, 0, $offset) . '$$' . $value . substr($formula, $offset + $length);
+                $formula = substr((string) $formula, 0, $offset) . '$$' . $value . substr((string) $formula, $offset + $length);
             }
         }
 
@@ -93,11 +93,11 @@ class Formula
                     $worksheet = $worksheetName;
                 }
             } else {
-                $worksheet = str_replace("''", "'", trim($worksheet, "'"));
+                $worksheet = str_replace("''", "'", trim((string) $worksheet, "'"));
             }
             if (!empty($worksheet)) {
                 $newRange = "['" . str_replace("'", "''", $worksheet) . "'";
-            } elseif (substr($formula, $offset - 1, 1) !== ':') {
+            } elseif (substr((string) $formula, $offset - 1, 1) !== ':') {
                 $newRange = '[';
             }
             $newRange .= '.';
@@ -109,9 +109,9 @@ class Formula
                 $newRange .= $row;
             }
             // close the wrapping [] unless this is the first part of a range
-            $newRange .= substr($formula, $offset + $length, 1) !== ':' ? ']' : '';
+            $newRange .= substr((string) $formula, $offset + $length, 1) !== ':' ? ']' : '';
 
-            $formula = substr($formula, 0, $offset) . $newRange . substr($formula, $offset + $length);
+            $formula = substr((string) $formula, 0, $offset) . $newRange . substr((string) $formula, $offset + $length);
         }
 
         return $formula;

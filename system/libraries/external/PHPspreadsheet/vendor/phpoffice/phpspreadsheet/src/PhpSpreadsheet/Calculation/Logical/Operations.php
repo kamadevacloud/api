@@ -40,7 +40,7 @@ class Operations
         }
 
         $args = array_filter($args, function ($value) {
-            return $value !== null || (is_string($value) && trim($value) == '');
+            return $value !== null || (is_string($value) && trim((string) $value) == '');
         });
 
         $returnValue = self::countTrueValues($args);
@@ -81,7 +81,7 @@ class Operations
         }
 
         $args = array_filter($args, function ($value) {
-            return $value !== null || (is_string($value) && trim($value) == '');
+            return $value !== null || (is_string($value) && trim((string) $value) == '');
         });
 
         $returnValue = self::countTrueValues($args);
@@ -123,7 +123,7 @@ class Operations
         }
 
         $args = array_filter($args, function ($value) {
-            return $value !== null || (is_string($value) && trim($value) == '');
+            return $value !== null || (is_string($value) && trim((string) $value) == '');
         });
 
         $returnValue = self::countTrueValues($args);
@@ -163,7 +163,7 @@ class Operations
         }
 
         if (is_string($logical)) {
-            $logical = mb_strtoupper($logical, 'UTF-8');
+            $logical = mb_strtoupper((string) $logical, 'UTF-8');
             if (($logical == 'TRUE') || ($logical == Calculation::getTRUE())) {
                 return false;
             } elseif (($logical == 'FALSE') || ($logical == Calculation::getFALSE())) {
@@ -190,7 +190,7 @@ class Operations
             } elseif ((is_numeric($arg)) && (!is_string($arg))) {
                 $trueValueCount += ((int) $arg != 0);
             } elseif (is_string($arg)) {
-                $arg = mb_strtoupper($arg, 'UTF-8');
+                $arg = mb_strtoupper((string) $arg, 'UTF-8');
                 if (($arg == 'TRUE') || ($arg == Calculation::getTRUE())) {
                     $arg = true;
                 } elseif (($arg == 'FALSE') || ($arg == Calculation::getFALSE())) {

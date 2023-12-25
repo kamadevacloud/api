@@ -58,8 +58,8 @@ class CharacterConvert
         }
 
         $character = $characters;
-        if (mb_strlen($characters, 'UTF-8') > 1) {
-            $character = mb_substr($characters, 0, 1, 'UTF-8');
+        if (mb_strlen((string) $characters, 'UTF-8') > 1) {
+            $character = mb_substr((string) $characters, 0, 1, 'UTF-8');
         }
 
         return self::unicodeToOrd($character);

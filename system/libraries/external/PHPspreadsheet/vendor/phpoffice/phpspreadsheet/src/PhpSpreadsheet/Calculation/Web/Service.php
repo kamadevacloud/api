@@ -20,8 +20,8 @@ class Service
      */
     public static function webService(string $url)
     {
-        $url = trim($url);
-        if (strlen($url) > 2048) {
+        $url = trim((string) $url);
+        if (strlen((string) $url) > 2048) {
             return ExcelError::VALUE(); // Invalid URL length
         }
 
@@ -45,7 +45,7 @@ class Service
         }
 
         $output = $response->getBody()->getContents();
-        if (strlen($output) > 32767) {
+        if (strlen((string) $output) > 32767) {
             return ExcelError::VALUE(); // Output not a string or too long
         }
 

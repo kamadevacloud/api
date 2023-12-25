@@ -244,7 +244,7 @@ class BCGDrawing
 
         $text = 'Error: ' . $exception->getMessage();
 
-        $width = imagefontwidth(2) * strlen($text);
+        $width = imagefontwidth(2) * strlen((string) $text);
         $height = imagefontheight(2);
         if ($width > $w || $height > $h) {
             $width = max($w, $width);

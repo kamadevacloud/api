@@ -89,7 +89,7 @@ class HTMLPurifier_ChildDef_Custom extends HTMLPurifier_ChildDef
             $list_of_children .= $node->name . ',';
         }
         // add leading comma to deal with stray comma declarations
-        $list_of_children = ',' . rtrim($list_of_children, ',');
+        $list_of_children = ',' . rtrim((string) $list_of_children, ',');
         $okay =
             preg_match(
                 '/^,?' . $this->_pcre_regex . '$/',

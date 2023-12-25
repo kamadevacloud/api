@@ -102,7 +102,7 @@ class Offset
         $sheetName = '';
         if (strpos($cellAddress, '!') !== false) {
             [$sheetName, $cellAddress] = Worksheet::extractSheetTitle($cellAddress, true);
-            $sheetName = trim($sheetName, "'");
+            $sheetName = trim((string) $sheetName, "'");
         }
 
         $worksheet = ($sheetName !== '')

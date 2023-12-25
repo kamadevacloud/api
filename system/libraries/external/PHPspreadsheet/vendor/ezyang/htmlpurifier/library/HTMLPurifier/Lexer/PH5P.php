@@ -462,7 +462,7 @@ class HTML5
     {
         $this->data = $data;
         $this->char = -1;
-        $this->EOF = strlen($data);
+        $this->EOF = strlen((string) $data);
         $this->tree = new HTML5TreeConstructer;
         $this->content_model = self::PCDATA;
 
@@ -491,14 +491,14 @@ class HTML5
             if ($l === 0) {
                 return $this->data[$s];
             } else {
-                return substr($this->data, $s, $l);
+                return substr((string) $this->data, $s, $l);
             }
         }
     }
 
     private function characters($char_class, $start)
     {
-        return preg_replace('#^([' . $char_class . ']+).*#s', '\\1', substr($this->data, $start));
+        return preg_replace('#^([' . $char_class . ']+).*#s', '\\1', substr((string) $this->data, $start));
     }
 
     private function dataState()
@@ -587,7 +587,7 @@ class HTML5
             $this->emitToken(
                 array(
                     'type' => self::CHARACTR,
-                    'data' => substr($this->data, $this->char)
+                    'data' => substr((string) $this->data, $this->char)
                 )
             );
 
@@ -599,7 +599,7 @@ class HTML5
             otherwise would also be treated as a character token and emit it
             as a single character token. Stay in the data state. */
             $len = strcspn($this->data, '<&', $this->char);
-            $char = substr($this->data, $this->char, $len);
+            $char = substr((string) $this->data, $this->char, $len);
             $this->char += $len - 1;
 
             $this->emitToken(
@@ -681,7 +681,7 @@ class HTML5
                     point), then switch to the tag name state. (Don't emit the token
                     yet; further details will be filled in before it is emitted.) */
                     $this->token = array(
-                        'name' => strtolower($char),
+                        'name' => strtolower((string) $char),
                         'type' => self::STARTTAG,
                         'attr' => array()
                     );
@@ -726,13 +726,13 @@ class HTML5
 
     private function closeTagOpenState()
     {
-        $next_node = strtolower($this->characters('A-Za-z', $this->char + 1));
+        $next_node = strtolower((string) $this->characters('A-Za-z', $this->char + 1));
         $the_same = count($this->tree->stack) > 0 && $next_node === end($this->tree->stack)->nodeName;
 
         if (($this->content_model === self::RCDATA || $this->content_model === self::CDATA) &&
             (!$the_same || ($the_same && (!preg_match(
                             '/[\t\n\x0b\x0c >\/]/',
-                            $this->character($this->char + 1 + strlen($next_node))
+                            $this->character($this->char + 1 + strlen((string) $next_node))
                         ) || $this->EOF === $this->char)))
         ) {
             /* If the content model flag is set to the RCDATA or CDATA states then
@@ -773,7 +773,7 @@ class HTML5
                 switch to the tag name state. (Don't emit the token yet; further details
                 will be filled in before it is emitted.) */
                 $this->token = array(
-                    'name' => strtolower($char),
+                    'name' => strtolower((string) $char),
                     'type' => self::ENDTAG
                 );
 
@@ -845,7 +845,7 @@ class HTML5
             /* Anything else
             Append the current input character to the current tag token's tag name.
             Stay in the tag name state. */
-            $this->token['name'] .= strtolower($char);
+            $this->token['name'] .= strtolower((string) $char);
             $this->state = 'tagName';
         }
     }
@@ -892,7 +892,7 @@ class HTML5
             name to the current input character, and its value to the empty string.
             Switch to the attribute name state. */
             $this->token['attr'][] = array(
-                'name' => strtolower($char),
+                'name' => strtolower((string) $char),
                 'value' => null
             );
 
@@ -946,7 +946,7 @@ class HTML5
             Append the current input character to the current attribute's name.
             Stay in the attribute name state. */
             $last = count($this->token['attr']) - 1;
-            $this->token['attr'][$last]['name'] .= strtolower($char);
+            $this->token['attr'][$last]['name'] .= strtolower((string) $char);
 
             $this->state = 'attributeName';
         }
@@ -999,7 +999,7 @@ class HTML5
             name to the current input character, and its value to the empty string.
             Switch to the attribute name state. */
             $this->token['attr'][] = array(
-                'name' => strtolower($char),
+                'name' => strtolower((string) $char),
                 'value' => null
             );
 
@@ -1199,7 +1199,7 @@ class HTML5
             )
         );
 
-        $this->char += strlen($data);
+        $this->char += strlen((string) $data);
 
         /* Switch to the data state. */
         $this->state = 'data';
@@ -1226,7 +1226,7 @@ class HTML5
             /* Otherwise if the next seven chacacters are a case-insensitive match
             for the word "DOCTYPE", then consume those characters and switch to the
             DOCTYPE state. */
-        } elseif (strtolower($this->character($this->char + 1, 7)) === 'doctype') {
+        } elseif (strtolower((string) $this->character($this->char + 1, 7)) === 'doctype') {
             $this->char += 7;
             $this->state = 'doctype';
 
@@ -1344,7 +1344,7 @@ class HTML5
 
         } elseif (preg_match('/^[a-z]$/', $char)) {
             $this->token = array(
-                'name' => strtoupper($char),
+                'name' => strtoupper((string) $char),
                 'type' => self::DOCTYPE,
                 'error' => true
             );
@@ -1399,7 +1399,7 @@ class HTML5
             $this->state = 'data';
 
         } elseif (preg_match('/^[a-z]$/', $char)) {
-            $this->token['name'] .= strtoupper($char);
+            $this->token['name'] .= strtoupper((string) $char);
 
         } elseif ($this->char === $this->EOF) {
             $this->emitToken($this->token);
@@ -1505,7 +1505,7 @@ class HTML5
                 $this->char++;
                 $e_name = $this->characters($char_class, $this->char + $char + 1);
                 $entity = $this->character($start, $this->char);
-                $cond = strlen($e_name) > 0;
+                $cond = strlen((string) $e_name) > 0;
 
                 // The rest of the parsing happens below.
                 break;
@@ -1517,10 +1517,10 @@ class HTML5
                 // identifiers in the first column of the entities table.
 
                 $e_name = $this->characters('0-9A-Za-z;', $this->char + 1);
-                $len = strlen($e_name);
+                $len = strlen((string) $e_name);
 
                 for ($c = 1; $c <= $len; $c++) {
-                    $id = substr($e_name, 0, $c);
+                    $id = substr((string) $e_name, 0, $c);
                     $this->char++;
 
                     if (in_array($id, $this->entities)) {
@@ -1548,7 +1548,7 @@ class HTML5
 
         // Return a character token for the character corresponding to the
         // entity name (as given by the second column of the entities table).
-        return html_entity_decode('&' . rtrim($entity, ';') . ';', ENT_QUOTES, 'UTF-8');
+        return html_entity_decode('&' . rtrim((string) $entity, ';') . ';', ENT_QUOTES, 'UTF-8');
     }
 
     private function emitToken($token)
@@ -4399,7 +4399,7 @@ class HTML5TreeConstructer
             // removing anything that's not an ASCII letter, digit, or hyphen
             $token['name'] = preg_replace('/[^a-z0-9-]/i', '', $token['name']);
             // Remove leading hyphens and numbers
-            $token['name'] = ltrim($token['name'], '-0..9');
+            $token['name'] = ltrim((string) $token['name'], '-0..9');
             // In theory, this should ever be needed, but just in case
             if ($token['name'] === '') {
                 $token['name'] = 'span';

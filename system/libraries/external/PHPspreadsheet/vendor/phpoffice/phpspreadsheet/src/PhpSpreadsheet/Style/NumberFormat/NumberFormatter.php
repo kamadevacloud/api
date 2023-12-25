@@ -11,14 +11,14 @@ class NumberFormatter
 
     private static function mergeComplexNumberFormatMasks(array $numbers, array $masks): array
     {
-        $decimalCount = strlen($numbers[1]);
+        $decimalCount = strlen((string) $numbers[1]);
         $postDecimalMasks = [];
 
         do {
             $tempMask = array_pop($masks);
             if ($tempMask !== null) {
                 $postDecimalMasks[] = $tempMask;
-                $decimalCount -= strlen($tempMask);
+                $decimalCount -= strlen((string) $tempMask);
             }
         } while ($tempMask !== null && $decimalCount > 0);
 
@@ -42,7 +42,7 @@ class NumberFormatter
 
             $offset = 0;
             foreach ($maskingBlocks as $block) {
-                $size = strlen($block[0]);
+                $size = strlen((string) $block[0]);
                 $divisor = 10 ** $size;
                 $offset = $block[1];
 
@@ -102,11 +102,11 @@ class NumberFormatter
         $right = $matches[3];
 
         // minimun width of formatted number (including dot)
-        $minWidth = strlen($left) + strlen($dec) + strlen($right);
+        $minWidth = strlen((string) $left) + strlen((string) $dec) + strlen((string) $right);
         if ($useThousands) {
             $value = number_format(
                 $valueFloat,
-                strlen($right),
+                strlen((string) $right),
                 StringHelper::getDecimalSeparator(),
                 StringHelper::getThousandsSeparator()
             );
@@ -125,10 +125,10 @@ class NumberFormatter
             return self::complexNumberFormatMask($value, $format);
         }
 
-        $sprintf_pattern = "%0$minWidth." . strlen($right) . 'f';
+        $sprintf_pattern = "%0$minWidth." . strlen((string) $right) . 'f';
         /** @var float */
         $valueFloat = $value;
-        $value = sprintf($sprintf_pattern, round($valueFloat, strlen($right)));
+        $value = sprintf($sprintf_pattern, round($valueFloat, strlen((string) $right)));
 
         return self::pregReplace(self::NUMBER_REGEX, $value, $format);
     }
@@ -163,7 +163,7 @@ class NumberFormatter
         $scale = 1; // same as no scale
         $matches = [];
         if (preg_match('/(#|0)(,+)/', $format, $matches)) {
-            $scale = 1000 ** strlen($matches[2]);
+            $scale = 1000 ** strlen((string) $matches[2]);
 
             // strip the commas
             $format = self::pregReplace('/0,+/', '0', $format);

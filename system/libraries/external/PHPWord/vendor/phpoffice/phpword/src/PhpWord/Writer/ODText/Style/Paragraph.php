@@ -49,17 +49,17 @@ class Paragraph extends AbstractStyle
         $pagestart = -1;
         $breakafter = $breakbefore = $breakauto = false;
         if ($style->isAuto()) {
-            if (substr($styleName, 0, 2) === 'PB') {
+            if (substr((string) $styleName, 0, 2) === 'PB') {
                 $styleAuto = true;
                 $breakafter = true;
-            } elseif (substr($styleName, 0, 2) === 'SB') {
+            } elseif (substr((string) $styleName, 0, 2) === 'SB') {
                 $styleAuto = true;
-                $mpm = 'Standard' . substr($styleName, 2);
+                $mpm = 'Standard' . substr((string) $styleName, 2);
                 $psn = $style->getNumLevel();
                 $pagestart = $psn;
-            } elseif (substr($styleName, 0, 2) === 'HD') {
+            } elseif (substr((string) $styleName, 0, 2) === 'HD') {
                 $styleAuto = true;
-                $psm = 'Heading_' . substr($styleName, 2);
+                $psm = 'Heading_' . substr((string) $styleName, 2);
                 $stylep = \PhpOffice\PhpWord\Style::getStyle($psm);
                 if ($stylep instanceof \PhpOffice\PhpWord\Style\Font) {
                     if (method_exists($stylep, 'getParagraph')) {
@@ -71,9 +71,9 @@ class Paragraph extends AbstractStyle
                         $breakbefore = true;
                     }
                 }
-            } elseif (substr($styleName, 0, 2) === 'HE') {
+            } elseif (substr((string) $styleName, 0, 2) === 'HE') {
                 $styleAuto = true;
-                $psm = 'Heading_' . substr($styleName, 2);
+                $psm = 'Heading_' . substr((string) $styleName, 2);
                 $breakauto = true;
             } else {
                 $styleAuto = true;
@@ -144,7 +144,7 @@ class Paragraph extends AbstractStyle
 
         $xmlWriter->endElement(); //style:paragraph-properties
 
-        if ($styleAuto && substr($styleName, 0, 2) === 'SB') {
+        if ($styleAuto && substr((string) $styleName, 0, 2) === 'SB') {
             $xmlWriter->startElement('style:text-properties');
             $xmlWriter->writeAttribute('text:display', 'none');
             $xmlWriter->endElement();

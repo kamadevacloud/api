@@ -149,7 +149,7 @@ class Styles extends AbstractPart
         $ins = (string) ($twips * $factor / Converter::INCH_TO_TWIP) . 'in';
         $cms = (string) ($twips * $factor * Converter::INCH_TO_CM / Converter::INCH_TO_TWIP) . 'cm';
 
-        return (strlen($ins) < strlen($cms)) ? $ins : $cms;
+        return (strlen((string) $ins) < strlen((string) $cms)) ? $ins : $cms;
     }
 
     /**

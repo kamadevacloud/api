@@ -116,7 +116,7 @@ class Sample
 
         // Write documents
         foreach ($writers as $writerType) {
-            $path = $this->getFilename($filename, mb_strtolower($writerType));
+            $path = $this->getFilename($filename, mb_strtolower((string) $writerType));
             $writer = IOFactory::createWriter($spreadsheet, $writerType);
             $callStartTime = microtime(true);
             $writer->save($path);

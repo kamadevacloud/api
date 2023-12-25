@@ -49,13 +49,13 @@ class HTMLPurifier_URIScheme_data extends HTMLPurifier_URIScheme
                     $is_base64 = true;
                     break;
                 }
-                if (substr($cur, 0, 8) == 'charset=') {
+                if (substr((string) $cur, 0, 8) == 'charset=') {
                     // doesn't match if there are arbitrary spaces, but
                     // whatever dude
                     if ($charset !== null) {
                         continue;
                     } // garbage
-                    $charset = substr($cur, 8); // not used
+                    $charset = substr((string) $cur, 8); // not used
                 } else {
                     if ($content_type !== null) {
                         continue;
@@ -79,7 +79,7 @@ class HTMLPurifier_URIScheme_data extends HTMLPurifier_URIScheme
         } else {
             $raw_data = $data;
         }
-        if ( strlen($raw_data) < 12 ) {
+        if ( strlen((string) $raw_data) < 12 ) {
             // error; exif_imagetype throws exception with small files,
             // and this likely indicates a corrupt URI/failed parse anyway
             return false;

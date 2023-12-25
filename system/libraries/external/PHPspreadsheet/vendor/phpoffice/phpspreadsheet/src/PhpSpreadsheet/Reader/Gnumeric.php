@@ -514,7 +514,7 @@ class Gnumeric extends BaseReader
                 }
 
                 [$worksheetName] = Worksheet::extractSheetTitle($value, true);
-                $worksheetName = trim($worksheetName, "'");
+                $worksheetName = trim((string) $worksheetName, "'");
                 $worksheet = $this->spreadsheet->getSheetByName($worksheetName);
                 // Worksheet might still be null if we're only loading selected sheets rather than the full spreadsheet
                 if ($worksheet !== null) {

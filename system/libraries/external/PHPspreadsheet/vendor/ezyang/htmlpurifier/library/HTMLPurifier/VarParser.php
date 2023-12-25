@@ -82,7 +82,7 @@ class HTMLPurifier_VarParser
                     break;
                 }
                 if ($type == self::ISTRING || $type == self::ITEXT) {
-                    $var = strtolower($var);
+                    $var = strtolower((string) $var);
                 }
                 return $var;
             case (self::C_INT):

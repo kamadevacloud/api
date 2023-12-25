@@ -353,7 +353,7 @@ class ZipStream
         // add trailing cdr file records
         foreach ($this->files as $cdrFile) {
             $this->send($cdrFile);
-            $this->cdr_ofs = $this->cdr_ofs->add(Bigint::init(strlen($cdrFile)));
+            $this->cdr_ofs = $this->cdr_ofs->add(Bigint::init(strlen((string) $cdrFile)));
         }
 
         // Add 64bit headers (if applicable)
@@ -551,7 +551,7 @@ class ZipStream
             ['v', min($num_files, 0xFFFF)],     // no of entries in cdr
             ['V', $cdr_length->getLowFF()],     // CDR size
             ['V', $cdr_offset->getLowFF()],     // CDR offset
-            ['v', strlen($comment)],            // Zip Comment size
+            ['v', strlen((string) $comment)],            // Zip Comment size
         ];
 
         $ret = static::packFields($fields) . $comment;

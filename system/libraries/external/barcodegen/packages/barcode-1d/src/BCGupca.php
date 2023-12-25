@@ -51,7 +51,7 @@ class BCGupca extends BCGean13
         parent::draw($image);
 
         // We remove the 0 in front, as we said :)
-        $this->text = substr($this->text, 1);
+        $this->text = substr((string) $this->text, 1);
     }
 
     /**
@@ -112,14 +112,14 @@ class BCGupca extends BCGean13
             $label = $this->getLabel();
             $font = $this->font;
 
-            $this->labelLeft = new BCGLabel(substr($label, 0, 1), $font, BCGLabel::POSITION_LEFT, BCGLabel::ALIGN_BOTTOM);
+            $this->labelLeft = new BCGLabel(substr((string) $label, 0, 1), $font, BCGLabel::POSITION_LEFT, BCGLabel::ALIGN_BOTTOM);
             $this->labelLeft->setSpacing(4 * $this->scale);
 
-            $this->labelCenter1 = new BCGLabel(substr($label, 1, 5), $font, BCGLabel::POSITION_BOTTOM, BCGLabel::ALIGN_LEFT);
+            $this->labelCenter1 = new BCGLabel(substr((string) $label, 1, 5), $font, BCGLabel::POSITION_BOTTOM, BCGLabel::ALIGN_LEFT);
             $labelCenter1Dimension = $this->labelCenter1->getDimension();
             $this->labelCenter1->setOffset((int)(($this->scale * 44 - $labelCenter1Dimension[0]) / 2 + $this->scale * 6));
 
-            $this->labelCenter2 = new BCGLabel(substr($label, 6, 5), $font, BCGLabel::POSITION_BOTTOM, BCGLabel::ALIGN_LEFT);
+            $this->labelCenter2 = new BCGLabel(substr((string) $label, 6, 5), $font, BCGLabel::POSITION_BOTTOM, BCGLabel::ALIGN_LEFT);
             $this->labelCenter2->setOffset((int)(($this->scale * 44 - $labelCenter1Dimension[0]) / 2 + $this->scale * 45));
 
             $this->labelRight = new BCGLabel($this->keys[$this->checksumValue[0]], $font, BCGLabel::POSITION_RIGHT, BCGLabel::ALIGN_BOTTOM);
@@ -151,9 +151,9 @@ class BCGupca extends BCGean13
     protected function checkCorrectLength(): void
     {
         // If we have 12 chars, just flush the last one without throwing anything
-        $c = strlen($this->text);
+        $c = strlen((string) $this->text);
         if ($c === 12) {
-            $this->text = substr($this->text, 0, 11);
+            $this->text = substr((string) $this->text, 0, 11);
         } elseif ($c !== 11) {
             throw new BCGParseException('upca', 'Must contain 11 digits, the 12th digit is automatically added.');
         }

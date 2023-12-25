@@ -153,7 +153,7 @@ class Media
         // If header/footer, search for headerx and footerx where x is number
         if ($container == 'header' || $container == 'footer') {
             foreach (self::$elements as $key => $val) {
-                if (substr($key, 0, 6) == $container) {
+                if (substr((string) $key, 0, 6) == $container) {
                     $elements[$key] = $val;
                 }
             }

@@ -55,9 +55,9 @@ class Table extends AbstractElement
                     $cellBgColor === 'auto' && $cellBgColor = null; // auto cannot be parsed to hexadecimal number
                     $cellFgColor = null;
                     if ($cellBgColor) {
-                        $red = hexdec(substr($cellBgColor, 0, 2));
-                        $green = hexdec(substr($cellBgColor, 2, 2));
-                        $blue = hexdec(substr($cellBgColor, 4, 2));
+                        $red = hexdec(substr((string) $cellBgColor, 0, 2));
+                        $green = hexdec(substr((string) $cellBgColor, 2, 2));
+                        $blue = hexdec(substr((string) $cellBgColor, 4, 2));
                         $cellFgColor = (($red * 0.299 + $green * 0.587 + $blue * 0.114) > 186) ? null : 'ffffff';
                     }
                     $cellColSpan = $cellStyle->getGridSpan();

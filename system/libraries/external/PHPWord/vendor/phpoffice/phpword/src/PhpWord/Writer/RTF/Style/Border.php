@@ -90,7 +90,7 @@ class Border extends AbstractStyle
 
         $content = '';
 
-        $content .= '\pgbrdr' . substr($side, 0, 1);
+        $content .= '\pgbrdr' . substr((string) $side, 0, 1);
         $content .= '\brdrs'; // Single-thickness border; @todo Get other type of border
         $content .= '\brdrw' . round($width); // Width
         $content .= '\brdrcf' . $colorIndex; // Color

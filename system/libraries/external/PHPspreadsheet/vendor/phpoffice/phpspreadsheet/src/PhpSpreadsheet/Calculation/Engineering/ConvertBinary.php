@@ -40,9 +40,9 @@ class ConvertBinary extends ConvertBase
             return $e->getMessage();
         }
 
-        if (strlen($value) == 10) {
+        if (strlen((string) $value) == 10) {
             //    Two's Complement
-            $value = substr($value, -9);
+            $value = substr((string) $value, -9);
 
             return '-' . (512 - bindec($value));
         }
@@ -91,9 +91,9 @@ class ConvertBinary extends ConvertBase
             return $e->getMessage();
         }
 
-        if (strlen($value) == 10) {
-            $high2 = substr($value, 0, 2);
-            $low8 = substr($value, 2);
+        if (strlen((string) $value) == 10) {
+            $high2 = substr((string) $value, 0, 2);
+            $low8 = substr((string) $value, 2);
             $xarr = ['00' => '00000000', '01' => '00000001', '10' => 'FFFFFFFE', '11' => 'FFFFFFFF'];
 
             return $xarr[$high2] . strtoupper(substr('0' . dechex((int) bindec($low8)), -2));
@@ -144,7 +144,7 @@ class ConvertBinary extends ConvertBase
             return $e->getMessage();
         }
 
-        if (strlen($value) == 10 && substr($value, 0, 1) === '1') { //    Two's Complement
+        if (strlen((string) $value) == 10 && substr((string) $value, 0, 1) === '1') { //    Two's Complement
             return str_repeat('7', 6) . strtoupper(decoct((int) bindec("11$value")));
         }
         $octVal = (string) decoct((int) bindec($value));
@@ -154,7 +154,7 @@ class ConvertBinary extends ConvertBase
 
     protected static function validateBinary(string $value): string
     {
-        if ((strlen($value) > preg_match_all('/[01]/', $value)) || (strlen($value) > 10)) {
+        if ((strlen((string) $value) > preg_match_all('/[01]/', $value)) || (strlen((string) $value) > 10)) {
             throw new Exception(ExcelError::NAN());
         }
 

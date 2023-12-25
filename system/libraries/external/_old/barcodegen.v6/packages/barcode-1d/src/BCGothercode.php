@@ -80,7 +80,7 @@ class BCGothercode extends BCGBarcode1D
      */
     protected function validate()
     {
-        $c = strlen($this->text);
+        $c = strlen((string) $this->text);
         if ($c === 0) {
             throw new BCGParseException('othercode', 'No data has been entered.');
         }

@@ -132,10 +132,10 @@ class ContentTypes extends WriterPart
             $mimeType = '';
 
             if ($this->getParentWriter()->getDrawingHashTable()->getByIndex($i) instanceof \PhpOffice\PhpSpreadsheet\Worksheet\Drawing) {
-                $extension = strtolower($this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getExtension());
+                $extension = strtolower((string) $this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getExtension());
                 $mimeType = $this->getImageMimeType($this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getPath());
             } elseif ($this->getParentWriter()->getDrawingHashTable()->getByIndex($i) instanceof MemoryDrawing) {
-                $extension = strtolower($this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getMimeType());
+                $extension = strtolower((string) $this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getMimeType());
                 $extension = explode('/', $extension);
                 $extension = $extension[1];
 
@@ -161,10 +161,10 @@ class ContentTypes extends WriterPart
         for ($i = 0; $i < $sheetCount; ++$i) {
             if (count($spreadsheet->getSheet($i)->getHeaderFooter()->getImages()) > 0) {
                 foreach ($spreadsheet->getSheet($i)->getHeaderFooter()->getImages() as $image) {
-                    if (!isset($aMediaContentTypes[strtolower($image->getExtension())])) {
-                        $aMediaContentTypes[strtolower($image->getExtension())] = $this->getImageMimeType($image->getPath());
+                    if (!isset($aMediaContentTypes[strtolower((string) $image->getExtension())])) {
+                        $aMediaContentTypes[strtolower((string) $image->getExtension())] = $this->getImageMimeType($image->getPath());
 
-                        $this->writeDefaultContentType($objWriter, strtolower($image->getExtension()), $aMediaContentTypes[strtolower($image->getExtension())]);
+                        $this->writeDefaultContentType($objWriter, strtolower((string) $image->getExtension()), $aMediaContentTypes[strtolower((string) $image->getExtension())]);
                     }
                 }
             }
@@ -176,7 +176,7 @@ class ContentTypes extends WriterPart
                     }
 
                     $bgImage = $comment->getBackgroundImage();
-                    $bgImageExtentionKey = strtolower($bgImage->getImageFileExtensionForSave(false));
+                    $bgImageExtentionKey = strtolower((string) $bgImage->getImageFileExtensionForSave(false));
 
                     if (!isset($aMediaContentTypes[$bgImageExtentionKey])) {
                         $aMediaContentTypes[$bgImageExtentionKey] = $bgImage->getImageMimeType();

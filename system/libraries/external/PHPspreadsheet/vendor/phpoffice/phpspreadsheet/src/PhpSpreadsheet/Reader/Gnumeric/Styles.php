@@ -140,7 +140,7 @@ class Styles
 
     private function addBorderStyle(SimpleXMLElement $srssb, array &$styleArray, string $direction): void
     {
-        $ucDirection = ucfirst($direction);
+        $ucDirection = ucfirst((string) $direction);
         if (isset($srssb->$ucDirection)) {
             $styleArray['borders'][$direction] = self::parseBorderAttributes($srssb->$ucDirection->attributes());
         }

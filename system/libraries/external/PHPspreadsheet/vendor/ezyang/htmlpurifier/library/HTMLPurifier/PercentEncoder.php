@@ -40,7 +40,7 @@ class HTMLPurifier_PercentEncoder
 
         // extra letters not to escape
         if ($preserve !== false) {
-            for ($i = 0, $c = strlen($preserve); $i < $c; $i++) {
+            for ($i = 0, $c = strlen((string) $preserve); $i < $c; $i++) {
                 $this->preserve[ord($preserve[$i])] = true;
             }
         }
@@ -59,7 +59,7 @@ class HTMLPurifier_PercentEncoder
     public function encode($string)
     {
         $ret = '';
-        for ($i = 0, $c = strlen($string); $i < $c; $i++) {
+        for ($i = 0, $c = strlen((string) $string); $i < $c; $i++) {
             if ($string[$i] !== '%' && !isset($this->preserve[$int = ord($string[$i])])) {
                 $ret .= '%' . sprintf('%02X', $int);
             } else {
@@ -85,13 +85,13 @@ class HTMLPurifier_PercentEncoder
         $parts = explode('%', $string);
         $ret = array_shift($parts);
         foreach ($parts as $part) {
-            $length = strlen($part);
+            $length = strlen((string) $part);
             if ($length < 2) {
                 $ret .= '%25' . $part;
                 continue;
             }
-            $encoding = substr($part, 0, 2);
-            $text     = substr($part, 2);
+            $encoding = substr((string) $part, 0, 2);
+            $text     = substr((string) $part, 2);
             if (!ctype_xdigit($encoding)) {
                 $ret .= '%25' . $part;
                 continue;
@@ -101,7 +101,7 @@ class HTMLPurifier_PercentEncoder
                 $ret .= chr($int) . $text;
                 continue;
             }
-            $encoding = strtoupper($encoding);
+            $encoding = strtoupper((string) $encoding);
             $ret .= '%' . $encoding . $text;
         }
         return $ret;

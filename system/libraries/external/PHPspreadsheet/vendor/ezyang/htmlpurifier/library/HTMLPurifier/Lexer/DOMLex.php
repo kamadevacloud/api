@@ -197,11 +197,11 @@ class HTMLPurifier_Lexer_DOMLex extends HTMLPurifier_Lexer
             $data = $node->data;
             // (note $node->tagname is already normalized)
             if ($last instanceof HTMLPurifier_Token_Start && ($last->name == 'script' || $last->name == 'style')) {
-                $new_data = trim($data);
-                if (substr($new_data, 0, 4) === '<!--') {
-                    $data = substr($new_data, 4);
-                    if (substr($data, -3) === '-->') {
-                        $data = substr($data, 0, -3);
+                $new_data = trim((string) $data);
+                if (substr((string) $new_data, 0, 4) === '<!--') {
+                    $data = substr((string) $new_data, 4);
+                    if (substr((string) $data, -3) === '-->') {
+                        $data = substr((string) $data, 0, -3);
                     } else {
                         // Highly suspicious! Not sure what to do...
                     }

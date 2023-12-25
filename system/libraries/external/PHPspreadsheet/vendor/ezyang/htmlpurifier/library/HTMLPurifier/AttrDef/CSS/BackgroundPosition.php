@@ -94,7 +94,7 @@ class HTMLPurifier_AttrDef_CSS_BackgroundPosition extends HTMLPurifier_AttrDef
             }
 
             // test for keyword
-            $lbit = ctype_lower($bit) ? $bit : strtolower($bit);
+            $lbit = ctype_lower($bit) ? $bit : strtolower((string) $bit);
             if (isset($lookup[$lbit])) {
                 $status = $lookup[$lbit];
                 if ($status == 'c') {

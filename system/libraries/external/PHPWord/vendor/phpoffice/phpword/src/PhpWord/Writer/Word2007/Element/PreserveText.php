@@ -43,8 +43,8 @@ class PreserveText extends Text
         $this->startElementP();
 
         foreach ($texts as $text) {
-            if (substr($text, 0, 1) == '{') {
-                $text = substr($text, 1, -1);
+            if (substr((string) $text, 0, 1) == '{') {
+                $text = substr((string) $text, 1, -1);
 
                 $xmlWriter->startElement('w:r');
                 $xmlWriter->startElement('w:fldChar');

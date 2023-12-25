@@ -57,8 +57,8 @@ class HTMLPurifier_Length
             return $s;
         }
         $n_length = strspn($s, '1234567890.+-');
-        $n = substr($s, 0, $n_length);
-        $unit = substr($s, $n_length);
+        $n = substr((string) $s, 0, $n_length);
+        $unit = substr((string) $s, $n_length);
         if ($unit === '') {
             $unit = false;
         }
@@ -79,7 +79,7 @@ class HTMLPurifier_Length
             return true;
         }
         if (!ctype_lower($this->unit)) {
-            $this->unit = strtolower($this->unit);
+            $this->unit = strtolower((string) $this->unit);
         }
         if (!isset(HTMLPurifier_Length::$allowedUnits[$this->unit])) {
             return false;

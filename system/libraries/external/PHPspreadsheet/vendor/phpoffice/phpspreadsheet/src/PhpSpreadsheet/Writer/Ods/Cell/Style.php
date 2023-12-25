@@ -62,7 +62,7 @@ class Style
             case Fill::FILL_SOLID:
                 $this->writer->writeAttribute('fo:background-color', sprintf(
                     '#%s',
-                    strtolower($fill->getStartColor()->getRGB())
+                    strtolower((string) $fill->getStartColor()->getRGB())
                 ));
 
                 break;

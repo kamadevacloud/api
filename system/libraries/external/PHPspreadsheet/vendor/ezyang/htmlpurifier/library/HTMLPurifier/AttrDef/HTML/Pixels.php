@@ -27,16 +27,16 @@ class HTMLPurifier_AttrDef_HTML_Pixels extends HTMLPurifier_AttrDef
      */
     public function validate($string, $config, $context)
     {
-        $string = trim($string);
+        $string = trim((string) $string);
         if ($string === '0') {
             return $string;
         }
         if ($string === '') {
             return false;
         }
-        $length = strlen($string);
-        if (substr($string, $length - 2) == 'px') {
-            $string = substr($string, 0, $length - 2);
+        $length = strlen((string) $string);
+        if (substr((string) $string, $length - 2) == 'px') {
+            $string = substr((string) $string, 0, $length - 2);
         }
         if (!is_numeric($string)) {
             return false;

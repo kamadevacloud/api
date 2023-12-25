@@ -87,7 +87,7 @@ class CellMatcher
 
     protected function setReferenceCellForExpressions(string $conditionalRange): void
     {
-        $conditionalRange = Coordinate::splitRange(str_replace('$', '', strtoupper($conditionalRange)));
+        $conditionalRange = Coordinate::splitRange(str_replace('$', '', strtoupper((string) $conditionalRange)));
         [$this->referenceCell] = $conditionalRange[0];
 
         [$this->referenceColumn, $this->referenceRow] = Coordinate::indexesFromString($this->referenceCell);
@@ -193,7 +193,7 @@ class CellMatcher
         }
 
         if (!empty($matches[4])) {
-            $worksheet = $this->worksheet->getParent()->getSheetByName(trim($matches[4], "'"));
+            $worksheet = $this->worksheet->getParent()->getSheetByName(trim((string) $matches[4], "'"));
             if ($worksheet === null) {
                 return $this->wrapValue(null);
             }

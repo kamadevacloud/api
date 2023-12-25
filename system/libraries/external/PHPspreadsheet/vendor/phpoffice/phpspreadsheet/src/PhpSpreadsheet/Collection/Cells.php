@@ -172,7 +172,7 @@ class Cells
         foreach ($this->getCoordinates() as $coord) {
             sscanf($coord, '%[A-Z]%d', $c, $r);
             $row[$r] = $r;
-            $col[$c] = strlen($c) . $c;
+            $col[$c] = strlen((string) $c) . $c;
         }
 
         // Determine highest column and row
@@ -239,10 +239,10 @@ class Cells
             if ($r != $row) {
                 continue;
             }
-            $maxColumn = max($maxColumn, strlen($c) . $c);
+            $maxColumn = max($maxColumn, strlen((string) $c) . $c);
         }
 
-        return substr($maxColumn, 1);
+        return substr((string) $maxColumn, 1);
     }
 
     /**

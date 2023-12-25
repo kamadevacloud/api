@@ -10,9 +10,9 @@ abstract class StyleBase
     {
         $returnValue = false;
 
-        $styleAttributeValue = strtolower($styleAttributeValue);
+        $styleAttributeValue = strtolower((string) $styleAttributeValue);
         foreach ($styleList as $style) {
-            if ($styleAttributeValue == strtolower($style)) {
+            if ($styleAttributeValue == strtolower((string) $style)) {
                 $styleAttributeValue = $style;
                 $returnValue = true;
 

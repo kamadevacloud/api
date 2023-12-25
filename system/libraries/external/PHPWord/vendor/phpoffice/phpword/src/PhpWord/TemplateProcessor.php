@@ -243,7 +243,7 @@ class TemplateProcessor
      */
     protected static function ensureMacroCompleted($macro)
     {
-        if (substr($macro, 0, 2) !== '${' && substr($macro, -1) !== '}') {
+        if (substr((string) $macro, 0, 2) !== '${' && substr((string) $macro, -1) !== '}') {
             $macro = '${' . $macro . '}';
         }
 
@@ -406,11 +406,11 @@ class TemplateProcessor
         foreach ($varElements as $argIdx => $varArg) {
             if (strpos($varArg, '=')) { // arg=value
                 list($argName, $argValue) = explode('=', $varArg, 2);
-                $argName = strtolower($argName);
+                $argName = strtolower((string) $argName);
                 if ($argName == 'size') {
                     list($varInlineArgs['width'], $varInlineArgs['height']) = explode('x', $argValue, 2);
                 } else {
-                    $varInlineArgs[strtolower($argName)] = $argValue;
+                    $varInlineArgs[strtolower((string) $argName)] = $argValue;
                 }
             } elseif (preg_match('/^([0-9]*[a-z%]{0,2}|auto)x([0-9]*[a-z%]{0,2}|auto)$/i', $varArg)) { // 60x40
                 list($varInlineArgs['width'], $varInlineArgs['height']) = explode('x', $varArg, 2);
@@ -532,7 +532,7 @@ class TemplateProcessor
         if (is_null($ratio) && isset($varInlineArgs['ratio'])) {
             $ratio = $varInlineArgs['ratio'];
         }
-        if (is_null($ratio) || !in_array(strtolower($ratio), array('', '-', 'f', 'false'))) {
+        if (is_null($ratio) || !in_array(strtolower((string) $ratio), array('', '-', 'f', 'false'))) {
             $this->fixImageWidthHeightRatio($width, $height, $actualWidth, $actualHeight);
         }
 
@@ -1099,10 +1099,10 @@ class TemplateProcessor
      */
     protected function findRowStart($offset)
     {
-        $rowStart = strrpos($this->tempDocumentMainPart, '<w:tr ', ((strlen($this->tempDocumentMainPart) - $offset) * -1));
+        $rowStart = strrpos($this->tempDocumentMainPart, '<w:tr ', ((strlen((string) $this->tempDocumentMainPart) - $offset) * -1));
 
         if (!$rowStart) {
-            $rowStart = strrpos($this->tempDocumentMainPart, '<w:tr>', ((strlen($this->tempDocumentMainPart) - $offset) * -1));
+            $rowStart = strrpos($this->tempDocumentMainPart, '<w:tr>', ((strlen((string) $this->tempDocumentMainPart) - $offset) * -1));
         }
         if (!$rowStart) {
             throw new Exception('Can not find the start position of the row to clone.');
@@ -1134,10 +1134,10 @@ class TemplateProcessor
     protected function getSlice($startPosition, $endPosition = 0)
     {
         if (!$endPosition) {
-            $endPosition = strlen($this->tempDocumentMainPart);
+            $endPosition = strlen((string) $this->tempDocumentMainPart);
         }
 
-        return substr($this->tempDocumentMainPart, $startPosition, ($endPosition - $startPosition));
+        return substr((string) $this->tempDocumentMainPart, $startPosition, ($endPosition - $startPosition));
     }
 
     /**
@@ -1256,7 +1256,7 @@ class TemplateProcessor
      */
     protected function findXmlBlockStart($offset, $blockType)
     {
-        $reverseOffset = (strlen($this->tempDocumentMainPart) - $offset) * -1;
+        $reverseOffset = (strlen((string) $this->tempDocumentMainPart) - $offset) * -1;
         // first try XML tag with attributes
         $blockStart = strrpos($this->tempDocumentMainPart, '<' . $blockType . ' ', $reverseOffset);
         // if not found, or if found but contains the XML tag without attribute
@@ -1280,7 +1280,7 @@ class TemplateProcessor
         $blockEndStart = strpos($this->tempDocumentMainPart, '</' . $blockType . '>', $offset);
         // return position of end of tag if found, otherwise -1
 
-        return ($blockEndStart === false) ? -1 : $blockEndStart + 3 + strlen($blockType);
+        return ($blockEndStart === false) ? -1 : $blockEndStart + 3 + strlen((string) $blockType);
     }
 
     /**

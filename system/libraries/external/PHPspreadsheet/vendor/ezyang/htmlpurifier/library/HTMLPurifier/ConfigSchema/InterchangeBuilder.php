@@ -147,7 +147,7 @@ class HTMLPurifier_ConfigSchema_InterchangeBuilder
         }
 
         if (isset($hash['ALIASES'])) {
-            $raw_aliases = trim($hash->offsetGet('ALIASES'));
+            $raw_aliases = trim((string) $hash->offsetGet('ALIASES'));
             $aliases = preg_split('/\s*,\s*/', $raw_aliases);
             foreach ($aliases as $alias) {
                 $directive->aliases[] = $this->id($alias);
@@ -167,7 +167,7 @@ class HTMLPurifier_ConfigSchema_InterchangeBuilder
         }
 
         if (isset($hash['EXTERNAL'])) {
-            $directive->external = preg_split('/\s*,\s*/', trim($hash->offsetGet('EXTERNAL')));
+            $directive->external = preg_split('/\s*,\s*/', trim((string) $hash->offsetGet('EXTERNAL')));
         }
 
         $interchange->addDirective($directive);

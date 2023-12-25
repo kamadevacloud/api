@@ -422,7 +422,7 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier_Definition
             }
         }
         foreach ($forbidden_attributes as $key => $v) {
-            if (strlen($key) < 2) {
+            if (strlen((string) $key) < 2) {
                 continue;
             }
             if ($key[0] != '*') {
@@ -480,7 +480,7 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier_Definition
             if (!$attr) {
                 continue;
             }
-            $attr = substr($attr, 0, strlen($attr) - 1); // remove trailing ]
+            $attr = substr((string) $attr, 0, strlen((string) $attr) - 1); // remove trailing ]
             $attr = explode('|', $attr);
             foreach ($attr as $key) {
                 $attributes["$element.$key"] = true;

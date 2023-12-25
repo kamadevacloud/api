@@ -38,9 +38,9 @@ class Replace
             $chars = Helpers::extractInt($chars, 0, 0, true);
             $oldText = Helpers::extractString($oldText);
             $newText = Helpers::extractString($newText);
-            $left = mb_substr($oldText, 0, $start - 1, 'UTF-8');
+            $left = mb_substr((string) $oldText, 0, $start - 1, 'UTF-8');
 
-            $right = mb_substr($oldText, $start + $chars - 1, null, 'UTF-8');
+            $right = mb_substr((string) $oldText, $start + $chars - 1, null, 'UTF-8');
         } catch (CalcExp $e) {
             return $e->getMessage();
         }
@@ -106,7 +106,7 @@ class Replace
         }
 
         if ($pos !== false) {
-            return Functions::scalar(self::REPLACE($text, ++$pos, mb_strlen($fromText, 'UTF-8'), $toText));
+            return Functions::scalar(self::REPLACE($text, ++$pos, mb_strlen((string) $fromText, 'UTF-8'), $toText));
         }
 
         return $text;

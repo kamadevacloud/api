@@ -171,7 +171,7 @@ class Text
         $lookingFor = 1;
 
         // Gets unicode for each character
-        for ($i = 0; $i < strlen($text); $i++) {
+        for ($i = 0; $i < strlen((string) $text); $i++) {
             $thisValue = ord($text[$i]);
             if ($thisValue < 128) {
                 $unicode[] = $thisValue;
@@ -226,8 +226,8 @@ class Text
     public static function removeUnderscorePrefix($value)
     {
         if (!is_null($value)) {
-            if (substr($value, 0, 1) == '_') {
-                $value = substr($value, 1);
+            if (substr((string) $value, 0, 1) == '_') {
+                $value = substr((string) $value, 1);
             }
         }
 

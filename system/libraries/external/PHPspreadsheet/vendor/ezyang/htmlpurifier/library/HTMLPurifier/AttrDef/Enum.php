@@ -41,10 +41,10 @@ class HTMLPurifier_AttrDef_Enum extends HTMLPurifier_AttrDef
      */
     public function validate($string, $config, $context)
     {
-        $string = trim($string);
+        $string = trim((string) $string);
         if (!$this->case_sensitive) {
             // we may want to do full case-insensitive libraries
-            $string = ctype_lower($string) ? $string : strtolower($string);
+            $string = ctype_lower($string) ? $string : strtolower((string) $string);
         }
         $result = isset($this->valid_values[$string]);
 
@@ -59,8 +59,8 @@ class HTMLPurifier_AttrDef_Enum extends HTMLPurifier_AttrDef
      */
     public function make($string)
     {
-        if (strlen($string) > 2 && $string[0] == 's' && $string[1] == ':') {
-            $string = substr($string, 2);
+        if (strlen((string) $string) > 2 && $string[0] == 's' && $string[1] == ':') {
+            $string = substr((string) $string, 2);
             $sensitive = true;
         } else {
             $sensitive = false;

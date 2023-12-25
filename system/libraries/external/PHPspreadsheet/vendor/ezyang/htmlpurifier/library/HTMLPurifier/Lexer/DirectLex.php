@@ -70,7 +70,7 @@ class HTMLPurifier_Lexer_DirectLex extends HTMLPurifier_Lexer
         if ($maintain_line_numbers) {
             $current_line = 1;
             $current_col = 0;
-            $length = strlen($html);
+            $length = strlen((string) $html);
         } else {
             $current_line = false;
             $current_col = false;
@@ -102,7 +102,7 @@ class HTMLPurifier_Lexer_DirectLex extends HTMLPurifier_Lexer
 
                 // Column number is cheap, so we calculate it every round.
                 // We're interested at the *end* of the newline string, so
-                // we need to add strlen($nl) == 1 to $nl_pos before subtracting it
+                // we need to add strlen((string) $nl) == 1 to $nl_pos before subtracting it
                 // from our "rcursor" position.
                 $nl_pos = strrpos($html, $nl, $rcursor - $length);
                 $current_col = $rcursor - (is_bool($nl_pos) ? 0 : $nl_pos + 1);
@@ -148,7 +148,7 @@ class HTMLPurifier_Lexer_DirectLex extends HTMLPurifier_Lexer
             } elseif (!$inside_tag) {
                 // We are not inside tag but there are no more tags
                 // If we're already at the end, break
-                if ($cursor === strlen($html)) {
+                if ($cursor === strlen((string) $html)) {
                     break;
                 }
                 // Create Text of rest of string
@@ -178,7 +178,7 @@ class HTMLPurifier_Lexer_DirectLex extends HTMLPurifier_Lexer
                     continue;
                 }
 
-                $segment = substr($html, $cursor, $strlen_segment);
+                $segment = substr((string) $html, $cursor, $strlen_segment);
 
                 if ($segment === false) {
                     // somehow, we attempted to access beyond the end of
@@ -187,7 +187,7 @@ class HTMLPurifier_Lexer_DirectLex extends HTMLPurifier_Lexer
                 }
 
                 // Check if it's a comment
-                if (substr($segment, 0, 3) === '!--') {
+                if (substr((string) $segment, 0, 3) === '!--') {
                     // re-determine segment length, looking for -->
                     $position_comment_end = strpos($html, '-->', $cursor);
                     if ($position_comment_end === false) {
@@ -197,13 +197,13 @@ class HTMLPurifier_Lexer_DirectLex extends HTMLPurifier_Lexer
                         if ($e) {
                             $e->send(E_WARNING, 'Lexer: Unclosed comment');
                         }
-                        $position_comment_end = strlen($html);
+                        $position_comment_end = strlen((string) $html);
                         $end = true;
                     } else {
                         $end = false;
                     }
                     $strlen_segment = $position_comment_end - $cursor;
-                    $segment = substr($html, $cursor, $strlen_segment);
+                    $segment = substr((string) $html, $cursor, $strlen_segment);
                     $token = new
                     HTMLPurifier_Token_Comment(
                         substr(
@@ -225,7 +225,7 @@ class HTMLPurifier_Lexer_DirectLex extends HTMLPurifier_Lexer
                 // Check if it's an end tag
                 $is_end_tag = (strpos($segment, '/') === 0);
                 if ($is_end_tag) {
-                    $type = substr($segment, 1);
+                    $type = substr((string) $segment, 1);
                     $token = new HTMLPurifier_Token_End($type);
                     if ($maintain_line_numbers) {
                         $token->rawPosition($current_line, $current_col);
@@ -262,7 +262,7 @@ class HTMLPurifier_Lexer_DirectLex extends HTMLPurifier_Lexer
                 $is_self_closing = (strrpos($segment, '/') === $strlen_segment - 1);
                 if ($is_self_closing) {
                     $strlen_segment--;
-                    $segment = substr($segment, 0, $strlen_segment);
+                    $segment = substr((string) $segment, 0, $strlen_segment);
                 }
 
                 // Check if there are any attributes
@@ -285,7 +285,7 @@ class HTMLPurifier_Lexer_DirectLex extends HTMLPurifier_Lexer
                 }
 
                 // Grab out all the data
-                $type = substr($segment, 0, $position_first_space);
+                $type = substr((string) $segment, 0, $position_first_space);
                 $attribute_string =
                     trim(
                         substr(
@@ -325,7 +325,7 @@ class HTMLPurifier_Lexer_DirectLex extends HTMLPurifier_Lexer
                 HTMLPurifier_Token_Text(
                     '<' .
                     $this->parseText(
-                        substr($html, $cursor), $config
+                        substr((string) $html, $cursor), $config
                     )
                 );
                 if ($maintain_line_numbers) {
@@ -358,7 +358,7 @@ class HTMLPurifier_Lexer_DirectLex extends HTMLPurifier_Lexer
             $oldVersion = version_compare(PHP_VERSION, '5.1', '<');
         }
         if ($oldVersion) {
-            $haystack = substr($haystack, $offset, $length);
+            $haystack = substr((string) $haystack, $offset, $length);
             return substr_count($haystack, $needle);
         } else {
             return substr_count($haystack, $needle, $offset, $length);
@@ -396,7 +396,7 @@ class HTMLPurifier_Lexer_DirectLex extends HTMLPurifier_Lexer
         } elseif ($num_equal === 1 && !$has_space) {
             // only one attribute
             list($key, $quoted_value) = explode('=', $string);
-            $quoted_value = trim($quoted_value);
+            $quoted_value = trim((string) $quoted_value);
             if (!$key) {
                 if ($e) {
                     $e->send(E_ERROR, 'Lexer: Missing attribute key');
@@ -407,21 +407,21 @@ class HTMLPurifier_Lexer_DirectLex extends HTMLPurifier_Lexer
                 return array($key => '');
             }
             $first_char = @$quoted_value[0];
-            $last_char = @$quoted_value[strlen($quoted_value) - 1];
+            $last_char = @$quoted_value[strlen((string) $quoted_value) - 1];
 
             $same_quote = ($first_char == $last_char);
             $open_quote = ($first_char == '"' || $first_char == "'");
 
             if ($same_quote && $open_quote) {
                 // well behaved
-                $value = substr($quoted_value, 1, strlen($quoted_value) - 2);
+                $value = substr((string) $quoted_value, 1, strlen((string) $quoted_value) - 2);
             } else {
                 // not well behaved
                 if ($open_quote) {
                     if ($e) {
                         $e->send(E_ERROR, 'Lexer: Missing end quote');
                     }
-                    $value = substr($quoted_value, 1);
+                    $value = substr((string) $quoted_value, 1);
                 } else {
                     $value = $quoted_value;
                 }
@@ -435,7 +435,7 @@ class HTMLPurifier_Lexer_DirectLex extends HTMLPurifier_Lexer
         // setup loop environment
         $array = array(); // return assoc array of attributes
         $cursor = 0; // current position in string (moves forward)
-        $size = strlen($string); // size of the string (stays the same)
+        $size = strlen((string) $string); // size of the string (stays the same)
 
         // if we have unquoted attributes, the parser expects a terminating
         // space, so let's guarantee that there's always a terminating space.
@@ -458,7 +458,7 @@ class HTMLPurifier_Lexer_DirectLex extends HTMLPurifier_Lexer
 
             $key_end = $cursor; // now at the end of the key
 
-            $key = substr($string, $key_begin, $key_end - $key_begin);
+            $key = substr((string) $string, $key_begin, $key_end - $key_begin);
 
             if (!$key) {
                 if ($e) {
@@ -514,7 +514,7 @@ class HTMLPurifier_Lexer_DirectLex extends HTMLPurifier_Lexer
                     $value_end = $cursor;
                 }
 
-                $value = substr($string, $value_begin, $value_end - $value_begin);
+                $value = substr((string) $string, $value_begin, $value_end - $value_begin);
                 if ($value === false) {
                     $value = '';
                 }

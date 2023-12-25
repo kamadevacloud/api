@@ -46,8 +46,8 @@ class NamedRange extends DefinedName
     public function getCellsInRange(): array
     {
         $range = $this->value;
-        if (substr($range, 0, 1) === '=') {
-            $range = substr($range, 1);
+        if (substr((string) $range, 0, 1) === '=') {
+            $range = substr((string) $range, 1);
         }
 
         return Coordinate::extractAllCellReferencesInRange($range);

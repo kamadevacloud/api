@@ -93,7 +93,7 @@ class HTMLPurifier_StringHashParser
             if ($line === false) {
                 break;
             }
-            $line = rtrim($line, "\n\r");
+            $line = rtrim((string) $line, "\n\r");
             if (!$state && $line === '') {
                 continue;
             }
@@ -105,7 +105,7 @@ class HTMLPurifier_StringHashParser
                 continue;
             } elseif (strncmp('--', $line, 2) === 0) {
                 // Multiline declaration
-                $state = trim($line, '- ');
+                $state = trim((string) $line, '- ');
                 if (!isset($ret[$state])) {
                     $ret[$state] = '';
                 }
@@ -115,7 +115,7 @@ class HTMLPurifier_StringHashParser
                 if (strpos($line, ':') !== false) {
                     // Single-line declaration
                     list($state, $line) = explode(':', $line, 2);
-                    $line = trim($line);
+                    $line = trim((string) $line);
                 } else {
                     // Use default declaration
                     $state  = $this->default;

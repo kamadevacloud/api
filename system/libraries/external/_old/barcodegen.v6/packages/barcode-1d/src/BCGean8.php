@@ -120,11 +120,11 @@ class BCGean8 extends BCGBarcode1D
             $label = $this->getLabel();
             $font = $this->font;
 
-            $this->labelLeft = new BCGLabel(substr($label, 0, 4), $font, BCGLabel::POSITION_BOTTOM, BCGLabel::ALIGN_LEFT);
+            $this->labelLeft = new BCGLabel(substr((string) $label, 0, 4), $font, BCGLabel::POSITION_BOTTOM, BCGLabel::ALIGN_LEFT);
             $labelLeftDimension = $this->labelLeft->getDimension();
             $this->labelLeft->setOffset(($this->scale * 30 - $labelLeftDimension[0]) / 2 + $this->scale * 2);
 
-            $this->labelRight = new BCGLabel(substr($label, 4, 3) . $this->keys[$this->checksumValue], $font, BCGLabel::POSITION_BOTTOM, BCGLabel::ALIGN_LEFT);
+            $this->labelRight = new BCGLabel(substr((string) $label, 4, 3) . $this->keys[$this->checksumValue], $font, BCGLabel::POSITION_BOTTOM, BCGLabel::ALIGN_LEFT);
             $labelRightDimension = $this->labelRight->getDimension();
             $this->labelRight->setOffset(($this->scale * 30 - $labelRightDimension[0]) / 2 + $this->scale * 34);
 
@@ -150,7 +150,7 @@ class BCGean8 extends BCGBarcode1D
      */
     protected function validate()
     {
-        $c = strlen($this->text);
+        $c = strlen((string) $this->text);
         if ($c === 0) {
             throw new BCGParseException('ean8', 'No data has been entered.');
         }
@@ -164,7 +164,7 @@ class BCGean8 extends BCGBarcode1D
 
         // If we have 8 chars just flush the last one
         if ($c === 8) {
-            $this->text = substr($this->text, 0, 7);
+            $this->text = substr((string) $this->text, 0, 7);
         } elseif ($c !== 7) {
             throw new BCGParseException('ean8', 'Must contain 7 digits, the 8th digit is automatically added.');
         }
@@ -185,7 +185,7 @@ class BCGean8 extends BCGBarcode1D
         // Add all of that and do 10-(?mod10)
         $odd = true;
         $this->checksumValue = 0;
-        $c = strlen($this->text);
+        $c = strlen((string) $this->text);
         for ($i = $c; $i > 0; $i--) {
             if ($odd === true) {
                 $multiplier = 3;

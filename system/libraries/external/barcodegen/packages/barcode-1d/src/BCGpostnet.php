@@ -54,7 +54,7 @@ class BCGpostnet extends BCGBarcode1D
     {
         // Checksum
         $checksum = 0;
-        $c = strlen($this->text);
+        $c = strlen((string) $this->text);
         for ($i = 0; $i < $c; $i++) {
             $checksum += intval($this->text[$i]);
         }
@@ -86,7 +86,7 @@ class BCGpostnet extends BCGBarcode1D
      */
     public function getDimension(int $width, int $height): array
     {
-        $c = strlen($this->text);
+        $c = strlen((string) $this->text);
         $startlength = 3;
         $textlength = $c * 5 * 3;
         $checksumlength = 5 * 3;
@@ -107,7 +107,7 @@ class BCGpostnet extends BCGBarcode1D
      */
     protected function validate(): void
     {
-        $c = strlen($this->text);
+        $c = strlen((string) $this->text);
         if ($c === 0) {
             throw new BCGParseException('postnet', 'No data has been entered.');
         }
@@ -137,7 +137,7 @@ class BCGpostnet extends BCGBarcode1D
      */
     protected function drawChar($image, string $code, bool $startBar = true): void
     {
-        $c = strlen($code);
+        $c = strlen((string) $code);
         for ($i = 0; $i < $c; $i++) {
             if ($code[$i] === '0') {
                 $posY = $this->thickness - ($this->thickness / 2.5);

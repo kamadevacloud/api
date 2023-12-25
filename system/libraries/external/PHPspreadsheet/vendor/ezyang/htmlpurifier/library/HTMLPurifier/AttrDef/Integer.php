@@ -58,12 +58,12 @@ class HTMLPurifier_AttrDef_Integer extends HTMLPurifier_AttrDef
 
         // clip leading sign
         if ($this->negative && $integer[0] === '-') {
-            $digits = substr($integer, 1);
+            $digits = substr((string) $integer, 1);
             if ($digits === '0') {
                 $integer = '0';
             } // rm minus sign for zero
         } elseif ($this->positive && $integer[0] === '+') {
-            $digits = $integer = substr($integer, 1); // rm unnecessary plus
+            $digits = $integer = substr((string) $integer, 1); // rm unnecessary plus
         } else {
             $digits = $integer;
         }

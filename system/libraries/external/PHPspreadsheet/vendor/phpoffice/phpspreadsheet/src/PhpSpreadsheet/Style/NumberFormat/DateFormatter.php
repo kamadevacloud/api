@@ -107,7 +107,7 @@ class DateFormatter
                     self::INTERVAL_MULTIPLIER[$format] * $value,
                     self::INTERVAL_ROUND_PRECISION[$format]
                 );
-                if (strlen($hours) === 1 && in_array($format, self::INTERVAL_LEADING_ZERO, true)) {
+                if (strlen((string) $hours) === 1 && in_array($format, self::INTERVAL_LEADING_ZERO, true)) {
                     $hours = "0$hours";
                 }
                 $block = str_replace($format, $hours, $block);
@@ -173,7 +173,7 @@ class DateFormatter
 
     private static function setLowercaseCallback(array $matches): string
     {
-        return mb_strtolower($matches[0]);
+        return mb_strtolower((string) $matches[0]);
     }
 
     private static function escapeQuotesCallback(array $matches): string

@@ -110,7 +110,7 @@ class BCGupcext2 extends BCGBarcode1D
      */
     protected function validate()
     {
-        $c = strlen($this->text);
+        $c = strlen((string) $this->text);
         if ($c === 0) {
             throw new BCGParseException('upcext2', 'No data has been entered.');
         }

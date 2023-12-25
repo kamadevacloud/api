@@ -166,7 +166,7 @@ abstract class DatabaseAbstract
             if (is_string($dataValue) && strpos($dataValue, '"') !== false) {
                 $dataValue = str_replace('"', '""', $dataValue);
             }
-            $dataValue = (is_string($dataValue)) ? Calculation::wrapResult(strtoupper($dataValue)) : $dataValue;
+            $dataValue = (is_string($dataValue)) ? Calculation::wrapResult(strtoupper((string) $dataValue)) : $dataValue;
         }
 
         return str_replace('[:' . $criterion . ']', $dataValue, $conditions);

@@ -134,7 +134,7 @@ abstract class IOFactory
             $testReaders = array_filter(
                 self::$readers,
                 function (string $readerType) use ($readers) {
-                    return in_array(strtoupper($readerType), $readers, true);
+                    return in_array(strtoupper((string) $readerType), $readers, true);
                 },
                 ARRAY_FILTER_USE_KEY
             );
@@ -176,7 +176,7 @@ abstract class IOFactory
             return null;
         }
 
-        switch (strtolower($pathinfo['extension'])) {
+        switch (strtolower((string) $pathinfo['extension'])) {
             case 'xlsx': // Excel (OfficeOpenXML) Spreadsheet
             case 'xlsm': // Excel (OfficeOpenXML) Macro Spreadsheet (macros will be discarded)
             case 'xltx': // Excel (OfficeOpenXML) Template

@@ -337,7 +337,7 @@ class Image extends AbstractElement
         // Get actual source from archive image or other source
         // Return null if not found
         if ($this->sourceType == self::SOURCE_ARCHIVE) {
-            $source = substr($source, 6);
+            $source = substr((string) $source, 6);
             list($zipFilename, $imageFilename) = explode('#', $source);
 
             $zip = new ZipArchive();
@@ -477,7 +477,7 @@ class Image extends AbstractElement
     private function getArchiveImageSize($source)
     {
         $imageData = null;
-        $source = substr($source, 6);
+        $source = substr((string) $source, 6);
         list($zipFilename, $imageFilename) = explode('#', $source);
 
         $tempFilename = tempnam(Settings::getTempDir(), 'PHPWordImage');

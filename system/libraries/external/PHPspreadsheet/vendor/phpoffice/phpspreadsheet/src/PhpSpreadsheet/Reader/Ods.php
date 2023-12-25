@@ -522,7 +522,7 @@ class Ods extends BaseReader
 
                                 if ($hasCalculatedValue) {
                                     $type = DataType::TYPE_FORMULA;
-                                    $cellDataFormula = substr($cellDataFormula, strpos($cellDataFormula, ':=') + 1);
+                                    $cellDataFormula = substr((string) $cellDataFormula, strpos($cellDataFormula, ':=') + 1);
                                     $cellDataFormula = FormulaTranslator::convertToExcelFormulaValue($cellDataFormula);
                                 }
 

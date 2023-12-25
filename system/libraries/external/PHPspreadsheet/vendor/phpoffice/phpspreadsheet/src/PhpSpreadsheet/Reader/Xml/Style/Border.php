@@ -63,7 +63,7 @@ class Border extends StyleBase
 
                         break;
                     case 'Color':
-                        $borderColour = substr($borderStyleValue, 1);
+                        $borderColour = substr((string) $borderStyleValue, 1);
                         $thisBorder['color']['rgb'] = $borderColour;
 
                         break;
@@ -83,7 +83,7 @@ class Border extends StyleBase
 
     protected function parsePosition(string $borderStyleValue, string $diagonalDirection): array
     {
-        $borderStyleValue = strtolower($borderStyleValue);
+        $borderStyleValue = strtolower((string) $borderStyleValue);
 
         if (in_array($borderStyleValue, self::BORDER_POSITIONS)) {
             $borderPosition = $borderStyleValue;

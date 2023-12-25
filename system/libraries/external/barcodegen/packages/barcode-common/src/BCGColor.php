@@ -40,10 +40,10 @@ class BCGColor
             $this->g = intval($args[1]);
             $this->b = intval($args[2]);
         } elseif ($c === 1) {
-            if (is_string($args[0]) && strlen($args[0]) === 7 && $args[0][0] === '#') {        // Hex Value in String
-                $this->r = intval(substr($args[0], 1, 2), 16);
-                $this->g = intval(substr($args[0], 3, 2), 16);
-                $this->b = intval(substr($args[0], 5, 2), 16);
+            if (is_string($args[0]) && strlen((string) $args[0]) === 7 && $args[0][0] === '#') {        // Hex Value in String
+                $this->r = intval(substr((string) $args[0], 1, 2), 16);
+                $this->g = intval(substr((string) $args[0], 3, 2), 16);
+                $this->b = intval(substr((string) $args[0], 5, 2), 16);
             } else {
                 if (is_string($args[0])) {
                     $args[0] = self::getColor($args[0]);
@@ -127,7 +127,7 @@ class BCGColor
      */
     public static function getColor(string $code, string $default = 'white'): int
     {
-        switch (strtolower($code)) {
+        switch (strtolower((string) $code)) {
             case '':
             case 'white':
                 return 0xffffff;

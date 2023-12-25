@@ -305,7 +305,7 @@ class Spreadsheet
     public function getRibbonXMLData($what = 'all') //we need some constants here...
     {
         $returnData = null;
-        $what = strtolower($what);
+        $what = strtolower((string) $what);
         switch ($what) {
             case 'all':
                 $returnData = $this->ribbonXMLData;
@@ -386,7 +386,7 @@ class Spreadsheet
     public function getRibbonBinObjects($what = 'all')
     {
         $ReturnData = null;
-        $what = strtolower($what);
+        $what = strtolower((string) $what);
         switch ($what) {
             case 'all':
                 return $this->ribbonBinObjects;
@@ -713,7 +713,7 @@ class Spreadsheet
     {
         $worksheetCount = count($this->workSheetCollection);
         for ($i = 0; $i < $worksheetCount; ++$i) {
-            if ($this->workSheetCollection[$i]->getTitle() === trim($worksheetName, "'")) {
+            if ($this->workSheetCollection[$i]->getTitle() === trim((string) $worksheetName, "'")) {
                 return $this->workSheetCollection[$i];
             }
         }
@@ -949,7 +949,7 @@ class Spreadsheet
      */
     public function addDefinedName(DefinedName $definedName): void
     {
-        $upperCaseName = StringHelper::strToUpper($definedName->getName());
+        $upperCaseName = StringHelper::strtoupper((string) $definedName->getName());
         if ($definedName->getScope() == null) {
             // global scope
             $this->definedNames[$upperCaseName] = $definedName;
@@ -969,7 +969,7 @@ class Spreadsheet
         $returnValue = null;
 
         if ($namedRange !== '') {
-            $namedRange = StringHelper::strToUpper($namedRange);
+            $namedRange = StringHelper::strtoupper((string) $namedRange);
             // first look for global named range
             $returnValue = $this->getGlobalDefinedNameByType($namedRange, self::DEFINED_NAME_IS_RANGE);
             // then look for local named range (has priority over global named range if both names exist)
@@ -989,7 +989,7 @@ class Spreadsheet
         $returnValue = null;
 
         if ($namedFormula !== '') {
-            $namedFormula = StringHelper::strToUpper($namedFormula);
+            $namedFormula = StringHelper::strtoupper((string) $namedFormula);
             // first look for global named formula
             $returnValue = $this->getGlobalDefinedNameByType($namedFormula, self::DEFINED_NAME_IS_FORMULA);
             // then look for local named formula (has priority over global named formula if both names exist)
@@ -1030,7 +1030,7 @@ class Spreadsheet
         $returnValue = null;
 
         if ($definedName !== '') {
-            $definedName = StringHelper::strToUpper($definedName);
+            $definedName = StringHelper::strtoupper((string) $definedName);
             // first look for global defined name
             if (isset($this->definedNames[$definedName])) {
                 $returnValue = $this->definedNames[$definedName];
@@ -1086,7 +1086,7 @@ class Spreadsheet
      */
     public function removeDefinedName(string $definedName, ?Worksheet $worksheet = null): self
     {
-        $definedName = StringHelper::strToUpper($definedName);
+        $definedName = StringHelper::strtoupper((string) $definedName);
 
         if ($worksheet === null) {
             if (isset($this->definedNames[$definedName])) {

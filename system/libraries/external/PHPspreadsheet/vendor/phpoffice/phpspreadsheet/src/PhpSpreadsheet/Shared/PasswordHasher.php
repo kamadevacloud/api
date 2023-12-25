@@ -58,7 +58,7 @@ class PasswordHasher
     private static function defaultHashPassword(string $password): string
     {
         $verifier = 0;
-        $pwlen = strlen($password);
+        $pwlen = strlen((string) $password);
         $passwordArray = pack('c', $pwlen) . $password;
         for ($i = $pwlen; $i >= 0; --$i) {
             $intermediate1 = (($verifier & 0x4000) === 0) ? 0 : 1;
@@ -88,7 +88,7 @@ class PasswordHasher
      */
     public static function hashPassword(string $password, string $algorithm = '', string $salt = '', int $spinCount = 10000): string
     {
-        if (strlen($password) > self::MAX_PASSWORD_LENGTH) {
+        if (strlen((string) $password) > self::MAX_PASSWORD_LENGTH) {
             throw new SpException('Password exceeds ' . self::MAX_PASSWORD_LENGTH . ' characters');
         }
         $phpAlgorithm = self::getAlgorithm($algorithm);

@@ -14,7 +14,7 @@ class HTMLPurifier_AttrDef_HTML_Nmtokens extends HTMLPurifier_AttrDef
      */
     public function validate($string, $config, $context)
     {
-        $string = trim($string);
+        $string = trim((string) $string);
 
         // early abort: '' and '0' (strings that convert to false) are invalid
         if (!$string) {

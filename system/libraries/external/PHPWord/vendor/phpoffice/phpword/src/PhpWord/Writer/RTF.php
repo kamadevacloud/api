@@ -49,7 +49,7 @@ class RTF extends AbstractWriter implements WriterInterface
                 /** @var \PhpOffice\PhpWord\Writer\RTF\Part\AbstractPart $part Type hint */
                 $part = new $partClass();
                 $part->setParentWriter($this);
-                $this->writerParts[strtolower($partName)] = $part;
+                $this->writerParts[strtolower((string) $partName)] = $part;
             }
         }
     }

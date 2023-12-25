@@ -47,7 +47,7 @@ class Footnote extends Text
         $xmlWriter->startElement('w:r');
         $xmlWriter->startElement('w:rPr');
         $xmlWriter->startElement('w:rStyle');
-        $xmlWriter->writeAttribute('w:val', ucfirst($this->referenceType));
+        $xmlWriter->writeAttribute('w:val', ucfirst((string) $this->referenceType));
         $xmlWriter->endElement(); // w:rStyle
         $xmlWriter->endElement(); // w:rPr
         $xmlWriter->startElement("w:{$this->referenceType}");

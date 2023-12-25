@@ -126,7 +126,7 @@ class HTMLPurifier_Injector_AutoParagraph extends HTMLPurifier_Injector
                     if (!$prev instanceof HTMLPurifier_Token_Start) {
                         // Token wasn't adjacent
                         if ($prev instanceof HTMLPurifier_Token_Text &&
-                            substr($prev->data, -2) === "\n\n"
+                            substr((string) $prev->data, -2) === "\n\n"
                         ) {
                             // State 1.1.4: <div><p>PAR1</p>\n\n<b>
                             //                                  ---
@@ -225,7 +225,7 @@ class HTMLPurifier_Injector_AutoParagraph extends HTMLPurifier_Injector
         }
         for ($i = 0; $i < $c; $i++) {
             $par = $raw_paragraphs[$i];
-            if (trim($par) !== '') {
+            if (trim((string) $par) !== '') {
                 $paragraphs[] = $par;
             } else {
                 if ($i == 0) {

@@ -63,7 +63,7 @@ class ReferenceHelper
      */
     public static function columnSort($a, $b)
     {
-        return strcasecmp(strlen($a) . $a, strlen($b) . $b);
+        return strcasecmp(strlen((string) $a) . $a, strlen((string) $b) . $b);
     }
 
     /**
@@ -77,7 +77,7 @@ class ReferenceHelper
      */
     public static function columnReverseSort($a, $b)
     {
-        return -strcasecmp(strlen($a) . $a, strlen($b) . $b);
+        return -strcasecmp(strlen((string) $a) . $a, strlen((string) $b) . $b);
     }
 
     /**
@@ -95,7 +95,7 @@ class ReferenceHelper
         sscanf($b, '%[A-Z]%d', $bc, $br);
 
         if ($ar === $br) {
-            return strcasecmp(strlen($ac) . $ac, strlen($bc) . $bc);
+            return strcasecmp(strlen((string) $ac) . $ac, strlen((string) $bc) . $bc);
         }
 
         return ($ar < $br) ? -1 : 1;
@@ -116,7 +116,7 @@ class ReferenceHelper
         sscanf($b, '%[A-Z]%d', $bc, $br);
 
         if ($ar === $br) {
-            return -strcasecmp(strlen($ac) . $ac, strlen($bc) . $bc);
+            return -strcasecmp(strlen((string) $ac) . $ac, strlen((string) $bc) . $bc);
         }
 
         return ($ar < $br) ? 1 : -1;
@@ -581,16 +581,16 @@ class ReferenceHelper
                     foreach ($matches as $match) {
                         $fromString = ($match[2] > '') ? $match[2] . '!' : '';
                         $fromString .= $match[3] . ':' . $match[4];
-                        $modified3 = substr($this->updateCellReference('$A' . $match[3], $includeAbsoluteReferences), 2);
-                        $modified4 = substr($this->updateCellReference('$A' . $match[4], $includeAbsoluteReferences), 2);
+                        $modified3 = substr((string) $this->updateCellReference('$A' . $match[3], $includeAbsoluteReferences), 2);
+                        $modified4 = substr((string) $this->updateCellReference('$A' . $match[4], $includeAbsoluteReferences), 2);
 
                         if ($match[3] . ':' . $match[4] !== $modified3 . ':' . $modified4) {
-                            if (($match[2] == '') || (trim($match[2], "'") == $worksheetName)) {
+                            if (($match[2] == '') || (trim((string) $match[2], "'") == $worksheetName)) {
                                 $toString = ($match[2] > '') ? $match[2] . '!' : '';
                                 $toString .= $modified3 . ':' . $modified4;
                                 //    Max worksheet size is 1,048,576 rows by 16,384 columns in Excel 2007, so our adjustments need to be at least one digit more
                                 $column = 100000;
-                                $row = 10000000 + (int) trim($match[3], '$');
+                                $row = 10000000 + (int) trim((string) $match[3], '$');
                                 $cellIndex = $column . $row;
 
                                 $newCellTokens[$cellIndex] = preg_quote($toString, '/');
@@ -606,15 +606,15 @@ class ReferenceHelper
                     foreach ($matches as $match) {
                         $fromString = ($match[2] > '') ? $match[2] . '!' : '';
                         $fromString .= $match[3] . ':' . $match[4];
-                        $modified3 = substr($this->updateCellReference($match[3] . '$1', $includeAbsoluteReferences), 0, -2);
-                        $modified4 = substr($this->updateCellReference($match[4] . '$1', $includeAbsoluteReferences), 0, -2);
+                        $modified3 = substr((string) $this->updateCellReference($match[3] . '$1', $includeAbsoluteReferences), 0, -2);
+                        $modified4 = substr((string) $this->updateCellReference($match[4] . '$1', $includeAbsoluteReferences), 0, -2);
 
                         if ($match[3] . ':' . $match[4] !== $modified3 . ':' . $modified4) {
-                            if (($match[2] == '') || (trim($match[2], "'") == $worksheetName)) {
+                            if (($match[2] == '') || (trim((string) $match[2], "'") == $worksheetName)) {
                                 $toString = ($match[2] > '') ? $match[2] . '!' : '';
                                 $toString .= $modified3 . ':' . $modified4;
                                 //    Max worksheet size is 1,048,576 rows by 16,384 columns in Excel 2007, so our adjustments need to be at least one digit more
-                                $column = Coordinate::columnIndexFromString(trim($match[3], '$')) + 100000;
+                                $column = Coordinate::columnIndexFromString(trim((string) $match[3], '$')) + 100000;
                                 $row = 10000000;
                                 $cellIndex = $column . $row;
 
@@ -635,13 +635,13 @@ class ReferenceHelper
                         $modified4 = $this->updateCellReference($match[4], $includeAbsoluteReferences);
 
                         if ($match[3] . $match[4] !== $modified3 . $modified4) {
-                            if (($match[2] == '') || (trim($match[2], "'") == $worksheetName)) {
+                            if (($match[2] == '') || (trim((string) $match[2], "'") == $worksheetName)) {
                                 $toString = ($match[2] > '') ? $match[2] . '!' : '';
                                 $toString .= $modified3 . ':' . $modified4;
                                 [$column, $row] = Coordinate::coordinateFromString($match[3]);
                                 //    Max worksheet size is 1,048,576 rows by 16,384 columns in Excel 2007, so our adjustments need to be at least one digit more
-                                $column = Coordinate::columnIndexFromString(trim($column, '$')) + 100000;
-                                $row = (int) trim($row, '$') + 10000000;
+                                $column = Coordinate::columnIndexFromString(trim((string) $column, '$')) + 100000;
+                                $row = (int) trim((string) $row, '$') + 10000000;
                                 $cellIndex = $column . $row;
 
                                 $newCellTokens[$cellIndex] = preg_quote($toString, '/');
@@ -661,15 +661,15 @@ class ReferenceHelper
 
                         $modified3 = $this->updateCellReference($match[3], $includeAbsoluteReferences);
                         if ($match[3] !== $modified3) {
-                            if (($match[2] == '') || (trim($match[2], "'") == $worksheetName)) {
+                            if (($match[2] == '') || (trim((string) $match[2], "'") == $worksheetName)) {
                                 $toString = ($match[2] > '') ? $match[2] . '!' : '';
                                 $toString .= $modified3;
                                 [$column, $row] = Coordinate::coordinateFromString($match[3]);
                                 $columnAdditionalIndex = $column[0] === '$' ? 1 : 0;
                                 $rowAdditionalIndex = $row[0] === '$' ? 1 : 0;
                                 //    Max worksheet size is 1,048,576 rows by 16,384 columns in Excel 2007, so our adjustments need to be at least one digit more
-                                $column = Coordinate::columnIndexFromString(trim($column, '$')) + 100000;
-                                $row = (int) trim($row, '$') + 10000000;
+                                $column = Coordinate::columnIndexFromString(trim((string) $column, '$')) + 100000;
+                                $row = (int) trim((string) $row, '$') + 10000000;
                                 $cellIndex = $row . $rowAdditionalIndex . $column . $columnAdditionalIndex;
 
                                 $newCellTokens[$cellIndex] = preg_quote($toString, '/');
@@ -743,11 +743,11 @@ class ReferenceHelper
 
             if (!empty($column) && $column[0] !== '$') {
                 $column = Coordinate::stringFromColumnIndex(Coordinate::columnIndexFromString($column) + $numberOfColumns);
-                $formula = substr($formula, 0, $columnOffset) . $column . substr($formula, $columnOffset + $columnLength);
+                $formula = substr((string) $formula, 0, $columnOffset) . $column . substr((string) $formula, $columnOffset + $columnLength);
             }
             if (!empty($row) && $row[0] !== '$') {
                 $row += $numberOfRows;
-                $formula = substr($formula, 0, $rowOffset) . $row . substr($formula, $rowOffset + $rowLength);
+                $formula = substr((string) $formula, 0, $rowOffset) . $row . substr((string) $formula, $rowOffset + $rowLength);
             }
         }
 
@@ -782,11 +782,11 @@ class ReferenceHelper
 
             if (!empty($fromColumn) && $fromColumn[0] !== '$') {
                 $fromColumn = Coordinate::stringFromColumnIndex(Coordinate::columnIndexFromString($fromColumn) + $numberOfColumns);
-                $formula = substr($formula, 0, $fromColumnOffset) . $fromColumn . substr($formula, $fromColumnOffset + $fromColumnLength);
+                $formula = substr((string) $formula, 0, $fromColumnOffset) . $fromColumn . substr((string) $formula, $fromColumnOffset + $fromColumnLength);
             }
             if (!empty($toColumn) && $toColumn[0] !== '$') {
                 $toColumn = Coordinate::stringFromColumnIndex(Coordinate::columnIndexFromString($toColumn) + $numberOfColumns);
-                $formula = substr($formula, 0, $toColumnOffset) . $toColumn . substr($formula, $toColumnOffset + $toColumnLength);
+                $formula = substr((string) $formula, 0, $toColumnOffset) . $toColumn . substr((string) $formula, $toColumnOffset + $toColumnLength);
             }
         }
 
@@ -821,11 +821,11 @@ class ReferenceHelper
 
             if (!empty($fromRow) && $fromRow[0] !== '$') {
                 $fromRow += $numberOfRows;
-                $formula = substr($formula, 0, $fromRowOffset) . $fromRow . substr($formula, $fromRowOffset + $fromRowLength);
+                $formula = substr((string) $formula, 0, $fromRowOffset) . $fromRow . substr((string) $formula, $fromRowOffset + $fromRowLength);
             }
             if (!empty($toRow) && $toRow[0] !== '$') {
                 $toRow += $numberOfRows;
-                $formula = substr($formula, 0, $toRowOffset) . $toRow . substr($formula, $toRowOffset + $toRowLength);
+                $formula = substr((string) $formula, 0, $toRowOffset) . $toRow . substr((string) $formula, $toRowOffset + $toRowLength);
             }
         }
 

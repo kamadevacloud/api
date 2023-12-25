@@ -147,7 +147,7 @@ class PPS
         $this->_data = $data;
         $this->children = $children;
         if ($data != '') {
-            $this->Size = strlen($data);
+            $this->Size = strlen((string) $data);
         } else {
             $this->Size = 0;
         }
@@ -164,7 +164,7 @@ class PPS
             return 0;
         }
 
-        return strlen($this->_data);
+        return strlen((string) $this->_data);
     }
 
     /**
@@ -176,7 +176,7 @@ class PPS
     {
         $ret = str_pad($this->Name, 64, "\x00");
 
-        $ret .= pack('v', strlen($this->Name) + 2)  // 66
+        $ret .= pack('v', strlen((string) $this->Name) + 2)  // 66
             . pack('c', $this->Type)              // 67
             . pack('c', 0x00) //UK                // 68
             . pack('V', $this->PrevPps) //Prev    // 72

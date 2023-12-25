@@ -39,7 +39,7 @@ class Field extends Text
             return;
         }
 
-        $type = strtolower($element->getType());
+        $type = strtolower((string) $element->getType());
         switch ($type) {
             case 'date':
             case 'page':

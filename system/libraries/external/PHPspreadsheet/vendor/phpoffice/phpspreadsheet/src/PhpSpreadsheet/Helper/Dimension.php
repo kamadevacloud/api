@@ -58,7 +58,7 @@ class Dimension
     public function __construct(string $dimension)
     {
         [$size, $unit] = sscanf($dimension, '%[1234567890.]%s');
-        $unit = strtolower(trim($unit ?? ''));
+        $unit = strtolower(trim((string) $unit ?? ''));
 
         // If a UoM is specified, then convert the size to pixels for internal storage
         if (isset(self::ABSOLUTE_UNITS[$unit])) {
@@ -88,7 +88,7 @@ class Dimension
 
     public function toUnit(string $unitOfMeasure): float
     {
-        $unitOfMeasure = strtolower($unitOfMeasure);
+        $unitOfMeasure = strtolower((string) $unitOfMeasure);
         if (!array_key_exists($unitOfMeasure, self::ABSOLUTE_UNITS)) {
             throw new Exception("{$unitOfMeasure} is not a vaid unit of measure");
         }

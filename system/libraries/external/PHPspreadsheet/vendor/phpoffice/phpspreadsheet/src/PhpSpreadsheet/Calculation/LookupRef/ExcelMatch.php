@@ -61,7 +61,7 @@ class ExcelMatch
 
         // MATCH() is not case sensitive, so we convert lookup value to be lower cased if it's a string type.
         if (is_string($lookupValue)) {
-            $lookupValue = StringHelper::strToLower($lookupValue);
+            $lookupValue = StringHelper::strtolower((string) $lookupValue);
         }
 
         $valueKey = null;
@@ -188,7 +188,7 @@ class ExcelMatch
             }
             // Convert strings to lowercase for case-insensitive testing
             if (is_string($value)) {
-                $lookupArray[$i] = StringHelper::strToLower($value);
+                $lookupArray[$i] = StringHelper::strtolower((string) $value);
             }
             if (
                 ($value === null) &&

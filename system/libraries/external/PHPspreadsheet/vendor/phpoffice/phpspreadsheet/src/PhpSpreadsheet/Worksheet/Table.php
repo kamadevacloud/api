@@ -88,13 +88,13 @@ class Table
      */
     public function setName(string $name): self
     {
-        $name = trim($name);
+        $name = trim((string) $name);
 
         if (!empty($name)) {
-            if (strlen($name) === 1 && in_array($name, ['C', 'c', 'R', 'r'])) {
+            if (strlen((string) $name) === 1 && in_array($name, ['C', 'c', 'R', 'r'])) {
                 throw new PhpSpreadsheetException('The table name is invalid');
             }
-            if (strlen($name) > 255) {
+            if (strlen((string) $name) > 255) {
                 throw new PhpSpreadsheetException('The table name cannot be longer than 255 characters');
             }
             // Check for A1 or R1C1 cell reference notation
@@ -236,11 +236,11 @@ class Table
     {
         if ($this->name !== '' && $worksheet !== null) {
             $spreadsheet = $worksheet->getParent();
-            $tableName = StringHelper::strToUpper($this->name);
+            $tableName = StringHelper::strtoupper((string) $this->name);
 
             foreach ($spreadsheet->getWorksheetIterator() as $sheet) {
                 foreach ($sheet->getTableCollection() as $table) {
-                    if (StringHelper::strToUpper($table->getName()) === $tableName) {
+                    if (StringHelper::strtoupper((string) $table->getName()) === $tableName) {
                         throw new PhpSpreadsheetException("Workbook already contains a table named '{$this->name}'");
                     }
                 }
@@ -381,8 +381,8 @@ class Table
      */
     public function shiftColumn($fromColumn, $toColumn): self
     {
-        $fromColumn = strtoupper($fromColumn);
-        $toColumn = strtoupper($toColumn);
+        $fromColumn = strtoupper((string) $fromColumn);
+        $toColumn = strtoupper((string) $toColumn);
 
         if (($fromColumn !== null) && (isset($this->columns[$fromColumn])) && ($toColumn !== null)) {
             $this->columns[$fromColumn]->setTable();

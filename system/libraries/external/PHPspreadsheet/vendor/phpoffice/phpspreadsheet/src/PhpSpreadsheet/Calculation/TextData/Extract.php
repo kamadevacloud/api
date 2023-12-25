@@ -34,7 +34,7 @@ class Extract
             return $e->getMessage();
         }
 
-        return mb_substr($value ?? '', 0, $chars, 'UTF-8');
+        return mb_substr((string) $value ?? '', 0, $chars, 'UTF-8');
     }
 
     /**
@@ -65,7 +65,7 @@ class Extract
             return $e->getMessage();
         }
 
-        return mb_substr($value ?? '', --$start, $chars, 'UTF-8');
+        return mb_substr((string) $value ?? '', --$start, $chars, 'UTF-8');
     }
 
     /**
@@ -93,6 +93,6 @@ class Extract
             return $e->getMessage();
         }
 
-        return mb_substr($value ?? '', mb_strlen($value ?? '', 'UTF-8') - $chars, $chars, 'UTF-8');
+        return mb_substr((string) $value ?? '', mb_strlen((string) $value ?? '', 'UTF-8') - $chars, $chars, 'UTF-8');
     }
 }

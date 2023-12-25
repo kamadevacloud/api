@@ -224,7 +224,7 @@ class Value
         preg_match('/^' . Calculation::CALCULATION_REGEXP_CELLREF . '$/i', $fullCellReference, $matches);
 
         $fullCellReference = $matches[6] . $matches[7];
-        $worksheetName = str_replace("''", "'", trim($matches[2], "'"));
+        $worksheetName = str_replace("''", "'", trim((string) $matches[2], "'"));
 
         $worksheet = (!empty($worksheetName))
             ? $cell->getWorksheet()->getParent()->getSheetByName($worksheetName)
@@ -264,7 +264,7 @@ class Value
                 return (int) $value;
             case 'string':
                 //    Errors
-                if ((strlen($value) > 0) && ($value[0] == '#')) {
+                if ((strlen((string) $value) > 0) && ($value[0] == '#')) {
                     return $value;
                 }
 
@@ -316,7 +316,7 @@ class Value
             return 64;
         } elseif (is_string($value)) {
             //    Errors
-            if ((strlen($value) > 0) && ($value[0] == '#')) {
+            if ((strlen((string) $value) > 0) && ($value[0] == '#')) {
                 return 16;
             }
 

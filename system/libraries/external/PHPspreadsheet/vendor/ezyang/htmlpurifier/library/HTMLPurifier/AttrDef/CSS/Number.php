@@ -47,11 +47,11 @@ class HTMLPurifier_AttrDef_CSS_Number extends HTMLPurifier_AttrDef
                 }
                 $sign = '-';
             case '+':
-                $number = substr($number, 1);
+                $number = substr((string) $number, 1);
         }
 
         if (ctype_digit($number)) {
-            $number = ltrim($number, '0');
+            $number = ltrim((string) $number, '0');
             return $number ? $sign . $number : '0';
         }
 
@@ -70,13 +70,13 @@ class HTMLPurifier_AttrDef_CSS_Number extends HTMLPurifier_AttrDef
         }
 
         // Remove leading zeros until positive number or a zero stays left
-        if (ltrim($left, '0') != '') {
-            $left = ltrim($left, '0');
+        if (ltrim((string) $left, '0') != '') {
+            $left = ltrim((string) $left, '0');
         } else {
             $left = '0';
         }
 
-        $right = rtrim($right, '0');
+        $right = rtrim((string) $right, '0');
 
         if ($right === '') {
             return $left ? $sign . $left : '0';

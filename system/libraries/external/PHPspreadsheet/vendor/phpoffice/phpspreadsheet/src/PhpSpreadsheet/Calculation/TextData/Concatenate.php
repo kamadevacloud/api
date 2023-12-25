@@ -57,7 +57,7 @@ class Concatenate
         // Loop through arguments
         $aArgs = Functions::flattenArray($args);
         foreach ($aArgs as $key => &$arg) {
-            if ($ignoreEmpty === true && is_string($arg) && trim($arg) === '') {
+            if ($ignoreEmpty === true && is_string($arg) && trim((string) $arg) === '') {
                 unset($aArgs[$key]);
             } elseif (is_bool($arg)) {
                 $arg = Helpers::convertBooleanValue($arg);

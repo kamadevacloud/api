@@ -572,8 +572,8 @@ class Parser
     private function convertString($string)
     {
         // chop away beggining and ending quotes
-        $string = substr($string, 1, -1);
-        if (strlen($string) > 255) {
+        $string = substr((string) $string, 1, -1);
+        if (strlen((string) $string) > 255) {
             throw new WriterException('String is too long');
         }
 
@@ -748,7 +748,7 @@ class Parser
 
     private function convertDefinedName(string $name): string
     {
-        if (strlen($name) > 255) {
+        if (strlen((string) $name) > 255) {
             throw new WriterException('Defined Name is too long');
         }
 
@@ -870,7 +870,7 @@ class Parser
      */
     private function cellToPackedRowcol($cell)
     {
-        $cell = strtoupper($cell);
+        $cell = strtoupper((string) $cell);
         [$row, $col, $row_rel, $col_rel] = $this->cellToRowcol($cell);
         if ($col >= 256) {
             throw new WriterException("Column in: $cell greater than 255");
@@ -948,9 +948,9 @@ class Parser
         $row = $match[4];
 
         // Convert base26 column string to a number.
-        $expn = strlen($col_ref) - 1;
+        $expn = strlen((string) $col_ref) - 1;
         $col = 0;
-        $col_ref_length = strlen($col_ref);
+        $col_ref_length = strlen((string) $col_ref);
         for ($i = 0; $i < $col_ref_length; ++$i) {
             $col += (ord($col_ref[$i]) - 64) * 26 ** $expn;
             --$expn;
@@ -970,7 +970,7 @@ class Parser
     {
         $token = '';
         $i = $this->currentCharacter;
-        $formula_length = strlen($this->formula);
+        $formula_length = strlen((string) $this->formula);
         // eat up white spaces
         if ($i < $formula_length) {
             while ($this->formula[$i] == ' ') {
@@ -1087,7 +1087,7 @@ class Parser
                     return $token;
                 } elseif (preg_match('/^' . Calculation::CALCULATION_REGEXP_DEFINEDNAME . '$/miu', $token) && $this->spreadsheet->getDefinedName($token) !== null) {
                     return $token;
-                } elseif (substr($token, -1) === ')') {
+                } elseif (substr((string) $token, -1) === ')') {
                     //    It's an argument of some description (e.g. a named range),
                     //        precise nature yet to be determined
                     return $token;
@@ -1364,7 +1364,7 @@ class Parser
     private function func()
     {
         $num_args = 0; // number of arguments received
-        $function = strtoupper($this->currentToken);
+        $function = strtoupper((string) $this->currentToken);
         $result = ''; // initialize result
         $this->advance();
         $this->advance(); // eat the "("

@@ -87,7 +87,7 @@ class BCGisbn extends BCGean13
      */
     protected function checkCharsAllowed(): void
     {
-        $c = strlen($this->text);
+        $c = strlen((string) $this->text);
 
         // Special case, if we have 10 digits, the last one can be X
         if ($c === 10) {
@@ -96,7 +96,7 @@ class BCGisbn extends BCGean13
             }
 
             // Drop the last char
-            $this->text = substr($this->text, 0, 9);
+            $this->text = substr((string) $this->text, 0, 9);
         }
 
         parent::checkCharsAllowed();
@@ -109,11 +109,11 @@ class BCGisbn extends BCGean13
      */
     protected function checkCorrectLength(): void
     {
-        $c = strlen($this->text);
+        $c = strlen((string) $this->text);
 
         // If we have 13 chars just flush the last one
         if ($c === 13) {
-            $this->text = substr($this->text, 0, 12);
+            $this->text = substr((string) $this->text, 0, 12);
         } elseif ($c === 9 || $c === 10) {
             if ($c === 10) {
                 // Before dropping it, we check if it's legal
@@ -121,7 +121,7 @@ class BCGisbn extends BCGean13
                     throw new BCGParseException('isbn', 'The character \'' . $this->text[9] . '\' is not allowed.');
                 }
 
-                $this->text = substr($this->text, 0, 9);
+                $this->text = substr((string) $this->text, 0, 9);
             }
 
             if ($this->gs1 === self::GS1_AUTO || $this->gs1 === self::GS1_PREFIX978) {
@@ -145,18 +145,18 @@ class BCGisbn extends BCGean13
         if (!empty($this->text)) {
             // We try to create the ISBN Text... the hyphen really depends the ISBN agency.
             // We just put one before the checksum and one after the GS1 if present.
-            $c = strlen($this->text);
+            $c = strlen((string) $this->text);
             if ($c === 12 || $c === 13) {
                 // If we have 13 characters now, just transform it temporarily to find the checksum...
                 // Further in the code we take care of that anyway.
                 $lastCharacter = '';
                 if ($c === 13) {
                     $lastCharacter = $this->text[12];
-                    $this->text = substr($this->text, 0, 12);
+                    $this->text = substr((string) $this->text, 0, 12);
                 }
 
                 $checksum = $this->processChecksum();
-                $isbn = 'ISBN ' . substr($this->text, 0, 3) . '-' . substr($this->text, 3, 9) . '-' . $checksum;
+                $isbn = 'ISBN ' . substr((string) $this->text, 0, 3) . '-' . substr((string) $this->text, 3, 9) . '-' . $checksum;
 
                 // Put the last character back
                 if ($c === 13) {
@@ -173,7 +173,7 @@ class BCGisbn extends BCGean13
                     $checksum = 'X'; // Changing type
                 }
 
-                $isbn = 'ISBN ' . substr($this->text, 0, 9) . '-' . $checksum;
+                $isbn = 'ISBN ' . substr((string) $this->text, 0, 9) . '-' . $checksum;
             }
         }
 

@@ -110,7 +110,7 @@ class Indirect
             $endColRef = ($worksheet !== null) ? $worksheet->getHighestDataColumn((int) $start) : 'XFD';
 
             return "A{$start}:{$endColRef}{$end}";
-        } elseif (ctype_alpha($start) && strlen($start) <= 3) {
+        } elseif (ctype_alpha($start) && strlen((string) $start) <= 3) {
             // Max 1,048,576 rows for Excel2007
             $endRowRef = ($worksheet !== null) ? $worksheet->getHighestDataRow($start) : 1048576;
 

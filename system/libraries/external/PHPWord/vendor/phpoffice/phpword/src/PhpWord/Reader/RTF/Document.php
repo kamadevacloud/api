@@ -146,7 +146,7 @@ class Document
         $this->phpWord = $phpWord;
         $this->section = $phpWord->addSection();
         $this->textrun = $this->section->addTextRun();
-        $this->length = strlen($this->rtf);
+        $this->length = strlen((string) $this->rtf);
 
         $this->flags['paragraph'] = true; // Set paragraph flag from the beginning
 

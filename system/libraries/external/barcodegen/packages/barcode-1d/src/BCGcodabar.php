@@ -57,7 +57,7 @@ class BCGcodabar extends BCGBarcode1D
      */
     public function parse($text): void
     {
-        parent::parse(strtoupper($text));    // Only Capital Letters are Allowed
+        parent::parse(strtoupper((string) $text));    // Only Capital Letters are Allowed
     }
 
     /**
@@ -68,7 +68,7 @@ class BCGcodabar extends BCGBarcode1D
      */
     public function draw($image): void
     {
-        $c = strlen($this->text);
+        $c = strlen((string) $this->text);
         for ($i = 0; $i < $c; $i++) {
             $this->drawChar($image, $this->findCode($this->text[$i]), true);
         }
@@ -86,7 +86,7 @@ class BCGcodabar extends BCGBarcode1D
     public function getDimension(int $width, int $height): array
     {
         $textLength = 0;
-        $c = strlen($this->text);
+        $c = strlen((string) $this->text);
         for ($i = 0; $i < $c; $i++) {
             $index = $this->findIndex($this->text[$i]);
             if ($index !== false) {
@@ -107,7 +107,7 @@ class BCGcodabar extends BCGBarcode1D
      */
     protected function validate(): void
     {
-        $c = strlen($this->text);
+        $c = strlen((string) $this->text);
         if ($c === 0) {
             throw new BCGParseException('codabar', 'No data has been entered.');
         }

@@ -17,7 +17,7 @@ class HTMLPurifier_AttrDef_HTML_MultiLength extends HTMLPurifier_AttrDef_HTML_Le
      */
     public function validate($string, $config, $context)
     {
-        $string = trim($string);
+        $string = trim((string) $string);
         if ($string === '') {
             return false;
         }
@@ -27,14 +27,14 @@ class HTMLPurifier_AttrDef_HTML_MultiLength extends HTMLPurifier_AttrDef_HTML_Le
             return $parent_result;
         }
 
-        $length = strlen($string);
+        $length = strlen((string) $string);
         $last_char = $string[$length - 1];
 
         if ($last_char !== '*') {
             return false;
         }
 
-        $int = substr($string, 0, $length - 1);
+        $int = substr((string) $string, 0, $length - 1);
 
         if ($int == '') {
             return '*';

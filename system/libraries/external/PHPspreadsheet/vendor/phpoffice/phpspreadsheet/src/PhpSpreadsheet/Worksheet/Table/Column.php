@@ -83,7 +83,7 @@ class Column
     public function setColumnIndex($column): self
     {
         // Uppercase coordinate
-        $column = strtoupper($column);
+        $column = strtoupper((string) $column);
         if ($this->table !== null) {
             $this->table->isColumnInRange($column);
         }

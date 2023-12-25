@@ -228,12 +228,12 @@ class Drawing
     public static function htmlToRGB($pValue)
     {
         if ($pValue[0] == '#') {
-            $pValue = substr($pValue, 1);
+            $pValue = substr((string) $pValue, 1);
         }
 
-        if (strlen($pValue) == 6) {
+        if (strlen((string) $pValue) == 6) {
             list($colorR, $colorG, $colorB) = array($pValue[0] . $pValue[1], $pValue[2] . $pValue[3], $pValue[4] . $pValue[5]);
-        } elseif (strlen($pValue) == 3) {
+        } elseif (strlen((string) $pValue) == 3) {
             list($colorR, $colorG, $colorB) = array($pValue[0] . $pValue[0], $pValue[1] . $pValue[1], $pValue[2] . $pValue[2]);
         } else {
             return false;

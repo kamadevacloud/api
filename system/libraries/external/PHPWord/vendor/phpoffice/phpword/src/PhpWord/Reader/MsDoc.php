@@ -2169,7 +2169,7 @@ class MsDoc extends AbstractReader implements ReaderInterface
                                     // embeddedBlip : tag
                                     $sprmCPicLocation += 1;
                                     // embeddedBlip : BLIPFileData
-                                    $oStylePrl->image['data'] = substr($this->dataData, $sprmCPicLocation, $embeddedBlipRH['recLen']);
+                                    $oStylePrl->image['data'] = substr((string) $this->dataData, $sprmCPicLocation, $embeddedBlipRH['recLen']);
                                     $oStylePrl->image['format'] = 'jpg';
                                     // Image Size
                                     $iCropWidth = $picmidDxaGoal - ($picmidDxaCropLeft + $picmidDxaCropRight);
@@ -2232,7 +2232,7 @@ class MsDoc extends AbstractReader implements ReaderInterface
             foreach ($this->arrayParagraphs as $itmParagraph) {
                 $textPara = $itmParagraph;
                 foreach ($this->arrayCharacters as $oCharacters) {
-                    $subText = substr($textPara, $oCharacters->pos_start, $oCharacters->pos_len);
+                    $subText = substr((string) $textPara, $oCharacters->pos_start, $oCharacters->pos_len);
                     $subText = str_replace(chr(13), PHP_EOL, $subText);
                     $arrayText = explode(PHP_EOL, $subText);
                     if (end($arrayText) == '') {
@@ -2272,7 +2272,7 @@ class MsDoc extends AbstractReader implements ReaderInterface
                             }
                             if (empty($sHYPERLINK)) {
                                 if (ord($sText[0]) > 20) {
-                                    if (strpos(trim($sText), 'HYPERLINK "') === 0) {
+                                    if (strpos(trim((string) $sText), 'HYPERLINK "') === 0) {
                                         $sHYPERLINK = $sText;
                                     } else {
                                         $oSection->addText($sText, $styleFont);

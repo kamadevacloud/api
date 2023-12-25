@@ -89,7 +89,7 @@ class Xml extends BaseReader
 
         //    Retrieve charset encoding
         if (preg_match('/<?xml.*encoding=[\'"](.*?)[\'"].*?>/m', $data, $matches)) {
-            $charSet = strtoupper($matches[1]);
+            $charSet = strtoupper((string) $matches[1]);
             if (1 == preg_match('/^ISO-8859-\d[\dL]?$/i', $charSet)) {
                 $data = StringHelper::convertEncoding($data, 'UTF-8', $charSet);
                 $data = preg_replace('/(<?xml.*encoding=[\'"]).*?([\'"].*?>)/um', '$1' . 'UTF-8' . '$2', $data, 1);
@@ -302,7 +302,7 @@ class Xml extends BaseReader
                     $definedValue = (string) $definedName_ss['RefersTo'];
                     $convertedValue = AddressHelper::convertFormulaToA1($definedValue);
                     if ($convertedValue[0] === '=') {
-                        $convertedValue = substr($convertedValue, 1);
+                        $convertedValue = substr((string) $convertedValue, 1);
                     }
                     $spreadsheet->addDefinedName(DefinedName::createInstance($name, $spreadsheet->getActiveSheet(), $convertedValue, true));
                 }
@@ -484,7 +484,7 @@ class Xml extends BaseReader
                 $definedValue = (string) $definedName_ss['RefersTo'];
                 $convertedValue = AddressHelper::convertFormulaToA1($definedValue);
                 if ($convertedValue[0] === '=') {
-                    $convertedValue = substr($convertedValue, 1);
+                    $convertedValue = substr((string) $convertedValue, 1);
                 }
                 $spreadsheet->addDefinedName(DefinedName::createInstance($name, $activeWorksheet, $convertedValue));
             }

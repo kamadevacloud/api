@@ -88,11 +88,11 @@ abstract class AbstractContainer extends AbstractElement
         );
         $functions = array();
         foreach ($elements as $element) {
-            $functions['add' . strtolower($element)] = $element == 'Object' ? 'OLEObject' : $element;
+            $functions['add' . strtolower((string) $element)] = $element == 'Object' ? 'OLEObject' : $element;
         }
 
         // Run valid `add` command
-        $function = strtolower($function);
+        $function = strtolower((string) $function);
         if (isset($functions[$function])) {
             $element = $functions[$function];
 

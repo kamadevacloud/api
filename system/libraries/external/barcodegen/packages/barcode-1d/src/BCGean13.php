@@ -134,14 +134,14 @@ class BCGean13 extends BCGBarcode1D
             $label = $this->getLabel();
             $font = $this->font;
 
-            $this->labelLeft = new BCGLabel(substr($label, 0, 1), $font, BCGLabel::POSITION_LEFT, BCGLabel::ALIGN_BOTTOM);
+            $this->labelLeft = new BCGLabel(substr((string) $label, 0, 1), $font, BCGLabel::POSITION_LEFT, BCGLabel::ALIGN_BOTTOM);
             $this->labelLeft->setSpacing(4 * $this->scale);
 
-            $this->labelCenter1 = new BCGLabel(substr($label, 1, 6), $font, BCGLabel::POSITION_BOTTOM, BCGLabel::ALIGN_LEFT);
+            $this->labelCenter1 = new BCGLabel(substr((string) $label, 1, 6), $font, BCGLabel::POSITION_BOTTOM, BCGLabel::ALIGN_LEFT);
             $labelCenter1Dimension = $this->labelCenter1->getDimension();
             $this->labelCenter1->setOffset((int)(($this->scale * 44 - $labelCenter1Dimension[0]) / 2 + $this->scale * 2));
 
-            $this->labelCenter2 = new BCGLabel(substr($label, 7, 5) . $this->keys[$this->checksumValue[0]], $font, BCGLabel::POSITION_BOTTOM, BCGLabel::ALIGN_LEFT);
+            $this->labelCenter2 = new BCGLabel(substr((string) $label, 7, 5) . $this->keys[$this->checksumValue[0]], $font, BCGLabel::POSITION_BOTTOM, BCGLabel::ALIGN_LEFT);
             $this->labelCenter2->setOffset((int)(($this->scale * 44 - $labelCenter1Dimension[0]) / 2 + $this->scale * 48));
 
             if ($this->alignLabel) {
@@ -177,7 +177,7 @@ class BCGean13 extends BCGBarcode1D
      */
     protected function validate(): void
     {
-        $c = strlen($this->text);
+        $c = strlen((string) $this->text);
         if ($c === 0) {
             throw new BCGParseException('ean13', 'No data has been entered.');
         }
@@ -196,7 +196,7 @@ class BCGean13 extends BCGBarcode1D
     protected function checkCharsAllowed(): void
     {
         // Checking if all chars are allowed
-        $c = strlen($this->text);
+        $c = strlen((string) $this->text);
         for ($i = 0; $i < $c; $i++) {
             if (array_search($this->text[$i], $this->keys) === false) {
                 throw new BCGParseException('ean13', 'The character \'' . $this->text[$i] . '\' is not allowed.');
@@ -212,9 +212,9 @@ class BCGean13 extends BCGBarcode1D
     protected function checkCorrectLength(): void
     {
         // If we have 13 chars, just flush the last one without throwing anything
-        $c = strlen($this->text);
+        $c = strlen((string) $this->text);
         if ($c === 13) {
-            $this->text = substr($this->text, 0, 12);
+            $this->text = substr((string) $this->text, 0, 12);
         } elseif ($c !== 12) {
             throw new BCGParseException('ean13', 'Must contain 12 digits, the 13th digit is automatically added.');
         }
@@ -235,7 +235,7 @@ class BCGean13 extends BCGBarcode1D
         // Add all of that and do 10-(?mod10)
         $odd = true;
         $this->checksumValue = array(0);
-        $c = strlen($this->text);
+        $c = strlen((string) $this->text);
         for ($i = $c; $i > 0; $i--) {
             if ($odd === true) {
                 $multiplier = 3;

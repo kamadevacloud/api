@@ -68,7 +68,7 @@ class BCGDrawPNG extends BCGDraw {
 
     private function setInternalProperties(&$bin) {
         // Scan all the ChunkType
-        if (strcmp(substr($bin, 0, 8), pack('H*', '89504E470D0A1A0A')) === 0) {
+        if (strcmp(substr((string) $bin, 0, 8), pack('H*', '89504E470D0A1A0A')) === 0) {
             $chunks = $this->detectChunks($bin);
 
             $this->internalSetDPI($bin, $chunks);
@@ -77,9 +77,9 @@ class BCGDrawPNG extends BCGDraw {
     }
 
     private function detectChunks($bin) {
-        $data = substr($bin, 8);
+        $data = substr((string) $bin, 8);
         $chunks = array();
-        $c = strlen($data);
+        $c = strlen((string) $data);
         
         $offset = 0;
         while ($offset < $c) {
@@ -90,7 +90,7 @@ class BCGDrawPNG extends BCGDraw {
             $chunks[] = array('offset'=>$offset + 8, 'size'=>$size, 'chunk'=>$chunk);
             $jump = $size + 12;
             $offset += $jump;
-            $data = substr($data, $jump);
+            $data = substr((string) $data, $jump);
         }
         
         return $chunks;
@@ -125,8 +125,8 @@ class BCGDrawPNG extends BCGDraw {
                         $chunks[$i]['offset'] += 21;
                     }
 
-                    $firstPart = substr($bin, 0, 33);
-                    $secondPart = substr($bin, 33);
+                    $firstPart = substr((string) $bin, 0, 33);
+                    $secondPart = substr((string) $bin, 33);
                     $bin = $firstPart;
                     $bin .= $cr;
                     $bin .= $secondPart;
@@ -139,8 +139,8 @@ class BCGDrawPNG extends BCGDraw {
 
     private function internalSetC(&$bin, &$chunks) {
         if (count($chunks) >= 2 && $chunk[0]['chunk'] = 'IHDR') {
-            $firstPart = substr($bin, 0, 33);
-            $secondPart = substr($bin, 33);
+            $firstPart = substr((string) $bin, 0, 33);
+            $secondPart = substr((string) $bin, 33);
             $cr = pack('H*', '0000004C74455874436F707972696768740047656E657261746564207769746820426172636F64652047656E657261746F7220666F722050485020687474703A2F2F7777772E626172636F64657068702E636F6D597F70B8');
             $bin = $firstPart;
             $bin .= $cr;

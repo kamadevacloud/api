@@ -34,7 +34,7 @@ class Field extends Text
             return;
         }
 
-        $methodName = 'write' . ucfirst(strtolower($element->getType()));
+        $methodName = 'write' . ucfirst(strtolower((string) $element->getType()));
         if (method_exists($this, $methodName)) {
             $this->$methodName($element);
         } else {

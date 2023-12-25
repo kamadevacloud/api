@@ -175,10 +175,10 @@ class HTMLPurifier_Printer
         }
         $prefix = 'HTMLPurifier_' . $sec_prefix;
         if (!$five) {
-            $prefix = strtolower($prefix);
+            $prefix = strtolower((string) $prefix);
         }
         $class = str_replace($prefix, '', get_class($obj));
-        $lclass = strtolower($class);
+        $lclass = strtolower((string) $class);
         $class .= '(';
         switch ($lclass) {
             case 'enum':

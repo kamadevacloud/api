@@ -94,7 +94,7 @@ class Arabic
         // Convert the roman numeral to an arabic number
         $negativeNumber = $roman[0] === '-';
         if ($negativeNumber) {
-            $roman = substr($roman, 1);
+            $roman = substr((string) $roman, 1);
         }
 
         try {

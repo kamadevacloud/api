@@ -15,7 +15,7 @@ class HTMLPurifier_AttrDef_Lang extends HTMLPurifier_AttrDef
      */
     public function validate($string, $config, $context)
     {
-        $string = trim($string);
+        $string = trim((string) $string);
         if (!$string) {
             return false;
         }
@@ -28,7 +28,7 @@ class HTMLPurifier_AttrDef_Lang extends HTMLPurifier_AttrDef
         }
 
         // process primary subtag : $subtags[0]
-        $length = strlen($subtags[0]);
+        $length = strlen((string) $subtags[0]);
         switch ($length) {
             case 0:
                 return false;
@@ -42,7 +42,7 @@ class HTMLPurifier_AttrDef_Lang extends HTMLPurifier_AttrDef
                 if (!ctype_alpha($subtags[0])) {
                     return false;
                 } elseif (!ctype_lower($subtags[0])) {
-                    $subtags[0] = strtolower($subtags[0]);
+                    $subtags[0] = strtolower((string) $subtags[0]);
                 }
                 break;
             default:
@@ -55,12 +55,12 @@ class HTMLPurifier_AttrDef_Lang extends HTMLPurifier_AttrDef
         }
 
         // process second subtag : $subtags[1]
-        $length = strlen($subtags[1]);
+        $length = strlen((string) $subtags[1]);
         if ($length == 0 || ($length == 1 && $subtags[1] != 'x') || $length > 8 || !ctype_alnum($subtags[1])) {
             return $new_string;
         }
         if (!ctype_lower($subtags[1])) {
-            $subtags[1] = strtolower($subtags[1]);
+            $subtags[1] = strtolower((string) $subtags[1]);
         }
 
         $new_string .= '-' . $subtags[1];
@@ -70,12 +70,12 @@ class HTMLPurifier_AttrDef_Lang extends HTMLPurifier_AttrDef
 
         // process all other subtags, index 2 and up
         for ($i = 2; $i < $num_subtags; $i++) {
-            $length = strlen($subtags[$i]);
+            $length = strlen((string) $subtags[$i]);
             if ($length == 0 || $length > 8 || !ctype_alnum($subtags[$i])) {
                 return $new_string;
             }
             if (!ctype_lower($subtags[$i])) {
-                $subtags[$i] = strtolower($subtags[$i]);
+                $subtags[$i] = strtolower((string) $subtags[$i]);
             }
             $new_string .= '-' . $subtags[$i];
         }

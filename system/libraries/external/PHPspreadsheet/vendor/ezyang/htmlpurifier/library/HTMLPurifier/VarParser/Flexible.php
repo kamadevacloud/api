@@ -71,7 +71,7 @@ class HTMLPurifier_VarParser_Flexible extends HTMLPurifier_VarParser
                     }
                     // remove spaces
                     foreach ($var as $i => $j) {
-                        $var[$i] = trim($j);
+                        $var[$i] = trim((string) $j);
                     }
                     if ($type === self::HASH) {
                         // key:value,key2:value2
@@ -81,7 +81,7 @@ class HTMLPurifier_VarParser_Flexible extends HTMLPurifier_VarParser
                             if (!isset($c[1])) {
                                 continue;
                             }
-                            $nvar[trim($c[0])] = trim($c[1]);
+                            $nvar[trim((string) $c[0])] = trim((string) $c[1]);
                         }
                         $var = $nvar;
                     }

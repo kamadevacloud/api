@@ -44,7 +44,7 @@ class DefinedNames extends BaseLoader
             $expression = $definedNameElement->getAttributeNS($this->tableNs, 'expression');
 
             $baseAddress = FormulaTranslator::convertToExcelAddressValue($baseAddress);
-            $expression = substr($expression, strpos($expression, ':=') + 1);
+            $expression = substr((string) $expression, strpos($expression, ':=') + 1);
             $expression = FormulaTranslator::convertToExcelFormulaValue($expression);
 
             $this->addDefinedName($baseAddress, $definedName, $expression);

@@ -51,7 +51,7 @@ class BCGcode39extended extends BCGcode39
         $data = array();
         $indcheck = array();
 
-        $c = strlen($this->text);
+        $c = strlen((string) $this->text);
         for ($i = 0; $i < $c; $i++) {
             $pos = array_search($this->text[$i], $this->keys);
             if ($pos === false) {
@@ -60,7 +60,7 @@ class BCGcode39extended extends BCGcode39
                 if ($extended === false) {
                     throw new BCGParseException('code39extended', 'The character \'' . $this->text[$i] . '\' is not allowed.');
                 } else {
-                    $extc = strlen($extended);
+                    $extc = strlen((string) $extended);
                     for ($j = 0; $j < $extc; $j++) {
                         $v = $extended[$j];
                         if ($v === '$') {

@@ -296,8 +296,8 @@ class AutoFilter
     public function shiftColumn($fromColumn, $toColumn)
     {
         $this->evaluated = false;
-        $fromColumn = strtoupper($fromColumn);
-        $toColumn = strtoupper($toColumn);
+        $fromColumn = strtoupper((string) $fromColumn);
+        $toColumn = strtoupper((string) $toColumn);
 
         if (($fromColumn !== null) && (isset($this->columns[$fromColumn])) && ($toColumn !== null)) {
             $this->columns[$fromColumn]->setParent();
@@ -366,7 +366,7 @@ class AutoFilter
             }
             foreach ($dateSet as $dateValue) {
                 //    Use of substr to extract value at the appropriate group level
-                if (substr($dtVal, 0, strlen($dateValue)) == $dateValue) {
+                if (substr((string) $dtVal, 0, strlen((string) $dateValue)) == $dateValue) {
                     return true;
                 }
             }
@@ -920,9 +920,9 @@ class AutoFilter
                         if (!is_array($ruleValue) && !is_numeric($ruleValue)) {
                             //    Convert to a regexp allowing for regexp reserved characters, wildcards and escaped wildcards
                             $ruleValue = WildcardMatch::wildcard($ruleValue);
-                            if (trim($ruleValue) == '') {
+                            if (trim((string) $ruleValue) == '') {
                                 $customRuleForBlanks = true;
-                                $ruleValue = trim($ruleValue);
+                                $ruleValue = trim((string) $ruleValue);
                             }
                         }
                         $ruleValues[] = ['operator' => $rule->getOperator(), 'value' => $ruleValue];

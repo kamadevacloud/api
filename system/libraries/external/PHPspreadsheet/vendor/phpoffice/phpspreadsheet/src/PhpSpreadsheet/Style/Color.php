@@ -206,7 +206,7 @@ class Color extends Supervisor
         if ($colorValue === null || $colorValue === '') {
             return self::COLOR_BLACK;
         }
-        $named = ucfirst(strtolower($colorValue));
+        $named = ucfirst(strtolower((string) $colorValue));
         if (array_key_exists($named, self::NAMED_COLOR_TRANSLATIONS)) {
             return self::NAMED_COLOR_TRANSLATIONS[$named];
         }
@@ -266,7 +266,7 @@ class Color extends Supervisor
             return $this->getSharedComponent()->getRGB();
         }
 
-        return substr($this->argb ?? '', 2);
+        return substr((string) $this->argb ?? '', 2);
     }
 
     /**
@@ -293,7 +293,7 @@ class Color extends Supervisor
      */
     private static function getColourComponent($rgbValue, $offset, $hex = true)
     {
-        $colour = substr($rgbValue, $offset, 2) ?: '';
+        $colour = substr((string) $rgbValue, $offset, 2) ?: '';
         if (preg_match('/^[0-9a-f]{2}$/i', $colour) !== 1) {
             $colour = '00';
         }
@@ -312,7 +312,7 @@ class Color extends Supervisor
      */
     public static function getRed($rgbValue, $hex = true)
     {
-        return self::getColourComponent($rgbValue, strlen($rgbValue) - 6, $hex);
+        return self::getColourComponent($rgbValue, strlen((string) $rgbValue) - 6, $hex);
     }
 
     /**
@@ -326,7 +326,7 @@ class Color extends Supervisor
      */
     public static function getGreen($rgbValue, $hex = true)
     {
-        return self::getColourComponent($rgbValue, strlen($rgbValue) - 4, $hex);
+        return self::getColourComponent($rgbValue, strlen((string) $rgbValue) - 4, $hex);
     }
 
     /**
@@ -340,7 +340,7 @@ class Color extends Supervisor
      */
     public static function getBlue($rgbValue, $hex = true)
     {
-        return self::getColourComponent($rgbValue, strlen($rgbValue) - 2, $hex);
+        return self::getColourComponent($rgbValue, strlen((string) $rgbValue) - 2, $hex);
     }
 
     /**
@@ -353,7 +353,7 @@ class Color extends Supervisor
      */
     public static function changeBrightness($hexColourValue, $adjustPercentage)
     {
-        $rgba = (strlen($hexColourValue) === 8);
+        $rgba = (strlen((string) $hexColourValue) === 8);
         $adjustPercentage = max(-1.0, min(1.0, $adjustPercentage));
 
         /** @var int $red */

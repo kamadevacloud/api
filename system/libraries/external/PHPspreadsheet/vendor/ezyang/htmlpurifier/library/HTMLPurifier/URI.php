@@ -57,7 +57,7 @@ class HTMLPurifier_URI
      */
     public function __construct($scheme, $userinfo, $host, $port, $path, $query, $fragment)
     {
-        $this->scheme = is_null($scheme) || ctype_lower($scheme) ? $scheme : strtolower($scheme);
+        $this->scheme = is_null($scheme) || ctype_lower($scheme) ? $scheme : strtolower((string) $scheme);
         $this->userinfo = $userinfo;
         $this->host = $host;
         $this->port = is_null($port) ? $port : (int)$port;
@@ -166,7 +166,7 @@ class HTMLPurifier_URI
                 // path-absolute (hier and relative)
                 // http:/my/path
                 // /my/path
-                if (strlen($this->path) >= 2 && $this->path[1] === '/') {
+                if (strlen((string) $this->path) >= 2 && $this->path[1] === '/') {
                     // This could happen if both the host gets stripped
                     // out
                     // http://my/path
@@ -188,8 +188,8 @@ class HTMLPurifier_URI
                 $c = strpos($this->path, '/');
                 if ($c !== false) {
                     $this->path =
-                        $segment_nc_encoder->encode(substr($this->path, 0, $c)) .
-                        $segments_encoder->encode(substr($this->path, $c));
+                        $segment_nc_encoder->encode(substr((string) $this->path, 0, $c)) .
+                        $segments_encoder->encode(substr((string) $this->path, $c));
                 } else {
                     $this->path = $segment_nc_encoder->encode($this->path);
                 }

@@ -124,7 +124,7 @@ class PageSettings
         $worksheet->getPageSetup()
             ->setOrientation($printSettings->orientation ?? PageSetup::ORIENTATION_DEFAULT)
             ->setPageOrder($printSettings->printOrder === 'ltr' ? PageSetup::PAGEORDER_OVER_THEN_DOWN : PageSetup::PAGEORDER_DOWN_THEN_OVER)
-            ->setScale((int) trim($printSettings->scale, '%'))
+            ->setScale((int) trim((string) $printSettings->scale, '%'))
             ->setHorizontalCentered($printSettings->horizontalCentered)
             ->setVerticalCentered($printSettings->verticalCentered);
 

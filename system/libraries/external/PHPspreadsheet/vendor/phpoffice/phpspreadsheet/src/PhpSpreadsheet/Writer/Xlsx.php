@@ -444,7 +444,7 @@ class Xlsx extends BaseWriter
                 foreach ($unparsedLoadedData['sheets'][$sheetCodeName]['Drawings'] as $relId => $drawingXml) {
                     $drawingFile = array_search($relId, $unparsedLoadedData['sheets'][$sheetCodeName]['drawingOriginalIds']);
                     if ($drawingFile !== false) {
-                        //$drawingFile = ltrim($drawingFile, '.');
+                        //$drawingFile = ltrim((string) $drawingFile, '.');
                         //$zipContent['xl' . $drawingFile] = $drawingXml;
                         $zipContent['xl/drawings/drawing' . ($i + 1) . '.xml'] = $drawingXml;
                     }
@@ -505,7 +505,7 @@ class Xlsx extends BaseWriter
                 $imageContents = null;
                 $imagePath = $this->getDrawingHashTable()->getByIndex($i)->getPath();
                 if (strpos($imagePath, 'zip://') !== false) {
-                    $imagePath = substr($imagePath, 6);
+                    $imagePath = substr((string) $imagePath, 6);
                     $imagePathSplitted = explode('#', $imagePath);
 
                     $imageZip = new ZipArchive();

@@ -97,7 +97,7 @@ class BCGcode39 extends BCGBarcode1D
      */
     public function parse($text)
     {
-        parent::parse(strtoupper($text));    // Only Capital Letters are Allowed
+        parent::parse(strtoupper((string) $text));    // Only Capital Letters are Allowed
     }
 
     /**
@@ -111,7 +111,7 @@ class BCGcode39 extends BCGBarcode1D
         $this->drawChar($im, $this->code[$this->starting], true);
 
         // Chars
-        $c =  strlen($this->text);
+        $c =  strlen((string) $this->text);
         for ($i = 0; $i < $c; $i++) {
             $this->drawChar($im, $this->findCode($this->text[$i]), true);
         }
@@ -136,7 +136,7 @@ class BCGcode39 extends BCGBarcode1D
      */
     public function getDimension($w, $h)
     {
-        $textlength = 13 * strlen($this->text);
+        $textlength = 13 * strlen((string) $this->text);
         $startlength = 13;
         $checksumlength = 0;
         if ($this->checksum === true) {
@@ -155,7 +155,7 @@ class BCGcode39 extends BCGBarcode1D
      */
     protected function validate()
     {
-        $c = strlen($this->text);
+        $c = strlen((string) $this->text);
         if ($c === 0) {
             throw new BCGParseException('code39', 'No data has been entered.');
         }
@@ -180,7 +180,7 @@ class BCGcode39 extends BCGBarcode1D
     protected function calculateChecksum()
     {
         $this->checksumValue = 0;
-        $c = strlen($this->text);
+        $c = strlen((string) $this->text);
         for ($i = 0; $i < $c; $i++) {
             $this->checksumValue += $this->findIndex($this->text[$i]);
         }

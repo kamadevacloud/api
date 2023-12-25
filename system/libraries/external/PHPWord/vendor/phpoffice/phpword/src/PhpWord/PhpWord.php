@@ -127,7 +127,7 @@ class PhpWord
      */
     public function __call($function, $args)
     {
-        $function = strtolower($function);
+        $function = strtolower((string) $function);
 
         $getCollection = array();
         $addCollection = array();

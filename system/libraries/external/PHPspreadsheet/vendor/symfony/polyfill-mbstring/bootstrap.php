@@ -58,22 +58,22 @@ if (!function_exists('mb_parse_str')) {
     function mb_parse_str($string, &$result = []) { parse_str($string, $result); return (bool) $result; }
 }
 if (!function_exists('mb_strlen')) {
-    function mb_strlen($string, $encoding = null) { return p\Mbstring::mb_strlen($string, $encoding); }
+    function mb_strlen((string) $string, $encoding = null) { return p\Mbstring::mb_strlen((string) $string, $encoding); }
 }
 if (!function_exists('mb_strpos')) {
     function mb_strpos($haystack, $needle, $offset = 0, $encoding = null) { return p\Mbstring::mb_strpos($haystack, $needle, $offset, $encoding); }
 }
 if (!function_exists('mb_strtolower')) {
-    function mb_strtolower($string, $encoding = null) { return p\Mbstring::mb_strtolower($string, $encoding); }
+    function mb_strtolower((string) $string, $encoding = null) { return p\Mbstring::mb_strtolower((string) $string, $encoding); }
 }
 if (!function_exists('mb_strtoupper')) {
-    function mb_strtoupper($string, $encoding = null) { return p\Mbstring::mb_strtoupper($string, $encoding); }
+    function mb_strtoupper((string) $string, $encoding = null) { return p\Mbstring::mb_strtoupper((string) $string, $encoding); }
 }
 if (!function_exists('mb_substitute_character')) {
     function mb_substitute_character($substitute_character = null) { return p\Mbstring::mb_substitute_character($substitute_character); }
 }
 if (!function_exists('mb_substr')) {
-    function mb_substr($string, $start, $length = 2147483647, $encoding = null) { return p\Mbstring::mb_substr($string, $start, $length, $encoding); }
+    function mb_substr((string) $string, $start, $length = 2147483647, $encoding = null) { return p\Mbstring::mb_substr((string) $string, $start, $length, $encoding); }
 }
 if (!function_exists('mb_stripos')) {
     function mb_stripos($haystack, $needle, $offset = 0, $encoding = null) { return p\Mbstring::mb_stripos($haystack, $needle, $offset, $encoding); }

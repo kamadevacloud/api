@@ -32,23 +32,23 @@ class HTMLPurifier_AttrDef_CSS_URI extends HTMLPurifier_AttrDef_URI
         if (strpos($uri_string, 'url(') !== 0) {
             return false;
         }
-        $uri_string = substr($uri_string, 4);
-        if (strlen($uri_string) == 0) {
+        $uri_string = substr((string) $uri_string, 4);
+        if (strlen((string) $uri_string) == 0) {
             return false;
         }
-        $new_length = strlen($uri_string) - 1;
+        $new_length = strlen((string) $uri_string) - 1;
         if ($uri_string[$new_length] != ')') {
             return false;
         }
-        $uri = trim(substr($uri_string, 0, $new_length));
+        $uri = trim(substr((string) $uri_string, 0, $new_length));
 
         if (!empty($uri) && ($uri[0] == "'" || $uri[0] == '"')) {
             $quote = $uri[0];
-            $new_length = strlen($uri) - 1;
+            $new_length = strlen((string) $uri) - 1;
             if ($uri[$new_length] !== $quote) {
                 return false;
             }
-            $uri = substr($uri, 1, $new_length - 1);
+            $uri = substr((string) $uri, 1, $new_length - 1);
         }
 
         $uri = $this->expandCSSEscape($uri);

@@ -30,7 +30,7 @@ class HTMLPurifier_AttrDef_URI_IPv6 extends HTMLPurifier_AttrDef_URI_IPv4
         //      prefix check
         if (strpos($aIP, '/') !== false) {
             if (preg_match('#' . $pre . '$#s', $aIP, $find)) {
-                $aIP = substr($aIP, 0, 0 - strlen($find[0]));
+                $aIP = substr((string) $aIP, 0, 0 - strlen((string) $find[0]));
                 unset($find);
             } else {
                 return false;
@@ -39,7 +39,7 @@ class HTMLPurifier_AttrDef_URI_IPv6 extends HTMLPurifier_AttrDef_URI_IPv4
 
         //      IPv4-compatiblity check
         if (preg_match('#(?<=:' . ')' . $this->ip4 . '$#s', $aIP, $find)) {
-            $aIP = substr($aIP, 0, 0 - strlen($find[0]));
+            $aIP = substr((string) $aIP, 0, 0 - strlen((string) $find[0]));
             $ip = explode('.', $find[0]);
             $ip = array_map('dechex', $ip);
             $aIP .= $ip[0] . $ip[1] . ':' . $ip[2] . $ip[3];

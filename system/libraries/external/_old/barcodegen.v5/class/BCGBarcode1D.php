@@ -206,7 +206,7 @@ abstract class BCGBarcode1D extends BCGBarcode {
     protected function drawChar($im, $code, $startBar = true) {
         $colors = array(BCGBarcode::COLOR_FG, BCGBarcode::COLOR_BG);
         $currentColor = $startBar ? 0 : 1;
-        $c = strlen($code);
+        $c = strlen((string) $code);
         for ($i = 0; $i < $c; $i++) {
             for ($j = 0; $j < intval($code[$i]) + 1; $j++) {
                 $this->drawSingleBar($im, $colors[$currentColor]);

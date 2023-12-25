@@ -359,7 +359,7 @@ class Settings
      */
     public static function setDefaultFontName($value)
     {
-        if (is_string($value) && trim($value) !== '') {
+        if (is_string($value) && trim((string) $value) !== '') {
             self::$defaultFontName = $value;
 
             return true;
@@ -457,7 +457,7 @@ class Settings
      */
     public static function setDefaultPaper($value)
     {
-        if (is_string($value) && trim($value) !== '') {
+        if (is_string($value) && trim((string) $value) !== '') {
             self::$defaultPaper = $value;
 
             return true;

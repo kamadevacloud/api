@@ -29,7 +29,7 @@ class AddressHelper
         }
         //    Bracketed R references are relative to the current row
         if ($rowReference[0] === '[') {
-            $rowReference = $currentRowNumber + (int) trim($rowReference, '[]');
+            $rowReference = $currentRowNumber + (int) trim((string) $rowReference, '[]');
         }
         $columnReference = $cellReference[4];
         //    Empty C reference is the current column
@@ -38,7 +38,7 @@ class AddressHelper
         }
         //    Bracketed C references are relative to the current column
         if (is_string($columnReference) && $columnReference[0] === '[') {
-            $columnReference = $currentColumnNumber + (int) trim($columnReference, '[]');
+            $columnReference = $currentColumnNumber + (int) trim((string) $columnReference, '[]');
         }
 
         if ($columnReference <= 0 || $rowReference <= 0) {
@@ -51,7 +51,7 @@ class AddressHelper
 
     protected static function convertSpreadsheetMLFormula(string $formula): string
     {
-        $formula = substr($formula, 3);
+        $formula = substr((string) $formula, 3);
         $temp = explode('"', $formula);
         $key = false;
         foreach ($temp as &$value) {
@@ -73,7 +73,7 @@ class AddressHelper
         int $currentRowNumber = 1,
         int $currentColumnNumber = 1
     ): string {
-        if (substr($formula, 0, 3) == 'of:') {
+        if (substr((string) $formula, 0, 3) == 'of:') {
             // We have an old-style SpreadsheetML Formula
             return self::convertSpreadsheetMLFormula($formula);
         }
@@ -93,7 +93,7 @@ class AddressHelper
                 //        then modify the formula to use that new reference
                 foreach ($cellReferences as $cellReference) {
                     $A1CellReference = self::convertToA1($cellReference[0][0], $currentRowNumber, $currentColumnNumber);
-                    $value = substr_replace($value, $A1CellReference, $cellReference[0][1], strlen($cellReference[0][0]));
+                    $value = substr_replace($value, $A1CellReference, $cellReference[0][1], strlen((string) $cellReference[0][0]));
                 }
             }
         }

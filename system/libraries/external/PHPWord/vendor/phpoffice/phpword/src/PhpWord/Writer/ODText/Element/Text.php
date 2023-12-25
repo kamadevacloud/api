@@ -99,7 +99,7 @@ class Text extends AbstractElement
     private function replacetabs($text, $xmlWriter)
     {
         if (preg_match('/^ +/', $text, $matches)) {
-            $num = strlen($matches[0]);
+            $num = strlen((string) $matches[0]);
             $xmlWriter->startElement('text:s');
             $xmlWriter->writeAttributeIf($num > 1, 'text:c', "$num");
             $xmlWriter->endElement();
@@ -116,7 +116,7 @@ class Text extends AbstractElement
                 $xmlWriter->writeElement('text:s');
                 break;
             } else {
-                $num = strlen($match[2]);
+                $num = strlen((string) $match[2]);
                 $xmlWriter->startElement('text:s');
                 $xmlWriter->writeAttributeIf($num > 1, 'text:c', "$num");
                 $xmlWriter->endElement();

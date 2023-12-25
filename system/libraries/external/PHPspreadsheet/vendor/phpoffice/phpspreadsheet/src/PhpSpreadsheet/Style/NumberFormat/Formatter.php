@@ -139,8 +139,8 @@ class Formatter
             // datetime format
             $value = DateFormatter::format($value, $format);
         } else {
-            if (substr($format, 0, 1) === '"' && substr($format, -1, 1) === '"' && substr_count($format, '"') === 2) {
-                $value = substr($format, 1, -1);
+            if (substr((string) $format, 0, 1) === '"' && substr((string) $format, -1, 1) === '"' && substr_count($format, '"') === 2) {
+                $value = substr((string) $format, 1, -1);
             } elseif (preg_match('/[0#, ]%/', $format)) {
                 // % number format
                 $value = PercentageFormatter::format($value, $format);

@@ -74,7 +74,7 @@ class BCGs25 extends BCGBarcode1D
         $this->drawChar($im, '101000', true);
 
         // Chars
-        $c = strlen($temp_text);
+        $c = strlen((string) $temp_text);
         for ($i = 0; $i < $c; $i++) {
             $this->drawChar($im, $this->findCode($temp_text[$i]), true);
         }
@@ -93,7 +93,7 @@ class BCGs25 extends BCGBarcode1D
      */
     public function getDimension($w, $h)
     {
-        $c = strlen($this->text);
+        $c = strlen((string) $this->text);
         $startlength = 8;
         $textlength = $c * 14;
         $checksumlength = 0;
@@ -113,7 +113,7 @@ class BCGs25 extends BCGBarcode1D
      */
     protected function validate()
     {
-        $c = strlen($this->text);
+        $c = strlen((string) $this->text);
         if ($c === 0) {
             throw new BCGParseException('s25', 'No data has been entered.');
         }
@@ -148,7 +148,7 @@ class BCGs25 extends BCGBarcode1D
         // Add all of that and do 10-(?mod10)
         $even = true;
         $this->checksumValue = 0;
-        $c = strlen($this->text);
+        $c = strlen((string) $this->text);
         for ($i = $c; $i > 0; $i--) {
             if ($even === true) {
                 $multiplier = 3;

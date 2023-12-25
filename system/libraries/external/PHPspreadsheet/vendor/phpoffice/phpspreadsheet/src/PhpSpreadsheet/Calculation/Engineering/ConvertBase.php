@@ -57,13 +57,13 @@ abstract class ConvertBase
     protected static function nbrConversionFormat(string $value, ?int $places): string
     {
         if ($places !== null) {
-            if (strlen($value) <= $places) {
+            if (strlen((string) $value) <= $places) {
                 return substr(str_pad($value, $places, '0', STR_PAD_LEFT), -10);
             }
 
             return ExcelError::NAN();
         }
 
-        return substr($value, -10);
+        return substr((string) $value, -10);
     }
 }

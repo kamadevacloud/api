@@ -228,11 +228,11 @@ class HTMLPurifier_ConfigSchema_Validator
     protected function error($target, $msg)
     {
         if ($target !== false) {
-            $prefix = ucfirst($target) . ' in ' . $this->getFormattedContext();
+            $prefix = ucfirst((string) $target) . ' in ' . $this->getFormattedContext();
         } else {
-            $prefix = ucfirst($this->getFormattedContext());
+            $prefix = ucfirst((string) $this->getFormattedContext());
         }
-        throw new HTMLPurifier_ConfigSchema_Exception(trim($prefix . ' ' . $msg));
+        throw new HTMLPurifier_ConfigSchema_Exception(trim((string) $prefix . ' ' . $msg));
     }
 
     /**

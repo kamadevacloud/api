@@ -206,7 +206,7 @@ class Sort extends LookupRefValidations
                 if (is_bool($value)) {
                     return ($value) ? Calculation::getTRUE() : Calculation::getFALSE();
                 } elseif (is_string($value)) {
-                    return StringHelper::strToLower($value);
+                    return StringHelper::strtolower((string) $value);
                 }
 
                 return $value;

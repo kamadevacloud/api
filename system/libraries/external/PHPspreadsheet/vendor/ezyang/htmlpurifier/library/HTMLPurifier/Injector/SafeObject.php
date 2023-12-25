@@ -94,7 +94,7 @@ class HTMLPurifier_Injector_SafeObject extends HTMLPurifier_Injector
                     $token->attr['name'] === $this->addParam[$n]) {
                     // keep token, and add to param stack
                     $this->paramStack[$i][$n] = true;
-                } elseif (isset($this->allowedParam[strtolower($n)])) {
+                } elseif (isset($this->allowedParam[strtolower((string) $n)])) {
                     // keep token, don't do anything to it
                     // (could possibly check for duplicates here)
                     // Note: In principle, parameters should be case sensitive.

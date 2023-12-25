@@ -54,8 +54,8 @@ abstract class Coordinate
         [$col, $row] = self::coordinateFromString($coordinates);
 
         return [
-            self::columnIndexFromString(ltrim($col, '$')),
-            (int) ltrim($row, '$'),
+            self::columnIndexFromString(ltrim((string) $col, '$')),
+            (int) ltrim((string) $row, '$'),
         ];
     }
 
@@ -96,7 +96,7 @@ abstract class Coordinate
         if (ctype_digit($cellAddress)) {
             return $worksheet . '$' . $cellAddress;
         } elseif (ctype_alpha($cellAddress)) {
-            return $worksheet . '$' . strtoupper($cellAddress);
+            return $worksheet . '$' . strtoupper((string) $cellAddress);
         }
 
         return $worksheet . self::absoluteCoordinate($cellAddress);
@@ -123,8 +123,8 @@ abstract class Coordinate
 
         // Create absolute coordinate
         [$column, $row] = self::coordinateFromString($cellAddress);
-        $column = ltrim($column, '$');
-        $row = ltrim($row, '$');
+        $column = ltrim((string) $column, '$');
+        $row = ltrim((string) $row, '$');
 
         return $worksheet . '$' . $column . '$' . $row;
     }
@@ -194,7 +194,7 @@ abstract class Coordinate
         }
 
         // Uppercase coordinate
-        $range = strtoupper($range);
+        $range = strtoupper((string) $range);
 
         // Extract range
         if (strpos($range, ':') === false) {
@@ -245,7 +245,7 @@ abstract class Coordinate
         }
 
         // Uppercase coordinate
-        $range = strtoupper($range);
+        $range = strtoupper((string) $range);
 
         // Extract range
         if (strpos($range, ':') === false) {
@@ -475,7 +475,7 @@ abstract class Coordinate
             }
 
             [$column, $row] = self::coordinateFromString($coord);
-            $row = (int) (ltrim($row, '$'));
+            $row = (int) (ltrim((string) $row, '$'));
             $hashCode = $column . '-' . (is_object($value) ? $value->getHashCode() : $value);
 
             if (!isset($hashedValues[$hashCode])) {
@@ -541,7 +541,7 @@ abstract class Coordinate
      */
     private static function getCellBlocksFromRangeString($rangeString)
     {
-        $rangeString = str_replace('$', '', strtoupper($rangeString));
+        $rangeString = str_replace('$', '', strtoupper((string) $rangeString));
 
         // split range sets on intersection (space) or union (,) operators
         $tokens = preg_split('/([ ,])/', $rangeString, -1, PREG_SPLIT_DELIM_CAPTURE);

@@ -634,7 +634,7 @@ class Html extends BaseWriter
     public static function winFileToUrl($filename)
     {
         // Windows filename
-        if (substr($filename, 1, 2) === ':\\') {
+        if (substr((string) $filename, 1, 2) === ':\\') {
             $filename = 'file:///' . str_replace('\\', '/', $filename);
         }
 
@@ -1645,7 +1645,7 @@ class Html extends BaseWriter
         $color_regex = '/^\\[[a-zA-Z]+\\]/';
         if (preg_match($color_regex, $format, $matches)) {
             $color = str_replace(['[', ']'], '', $matches[0]);
-            $color = strtolower($color);
+            $color = strtolower((string) $color);
         }
 
         // convert to PCDATA
